@@ -131,5 +131,6 @@ Android social network app that allows users to track their bucket list, keep a 
     
 ## Wireframes
 Rough hand sketch of my app.
+
 <img src="https://i.imgur.com/aOpzwmy.png" width=700>    
     
