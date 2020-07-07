@@ -4,6 +4,7 @@ Original App Design Project - Buckos
 ## Table of Contents
 1. [Overview](#Overview)
 1. [Product Spec](#Product-Spec)
+1. [Wireframes](#Wireframes)
 
 ## Overview
 ### Description
@@ -127,4 +128,8 @@ Android social network app that allows users to track their bucket list, keep a 
     --> None
 * Home 
     --> None    
+    
+## Wireframes
+[Add picture of your hand sketched wireframes in this section]
+<img src="https://i.imgur.com/aOpzwmy.png" width=700>    
     
