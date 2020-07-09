@@ -5,6 +5,7 @@ Original App Design Project - Buckos
 1. [Overview](#Overview)
 1. [Product Spec](#Product-Spec)
 1. [Wireframes](#Wireframes)
+1. [Schema](#Schema)
 
 ## Overview
 ### Description
@@ -133,4 +134,39 @@ Android social network app that allows users to track their bucket list, keep a 
 Rough hand sketch of my app.
 
 <img src="https://i.imgur.com/aOpzwmy.png" width=700>    
+
+## Schema
+### Models
+#### 1. User
+
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | user_id      | String   | unique id for the user  |
+   | username        | String|  |
+   | password         | String     | |
+   | display_name       | String   | name displayed in timeline |
+   | lists | Collection   | an array of List ids that belong to user |
+
+#### 2. List
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | list_id      | String   | unique id of a list  |
+   | user_id        | String| id of author who created the list |
+   | name         | String     | title of list|
+   | description       | String   | brief summary of list |
+   | items | Collection   | an array of Item ids that is in a list |
+
+    
+#### 3. Item 
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | item_id      | String   | unique id for an item  |
+   | user_id | String | id of author who created the item|
+   | name        | String| title of item |
+   | description         | String     | a note added by user to an item|
+   | media      | File   | photos added by user to an item |
+   | completed | Boolean   | whether user has completed the item or not|
+   | sharing | Boolean | whether user wants to share this item to feed |
+   | like_count | Int | number of likes on an item |
+   
     
