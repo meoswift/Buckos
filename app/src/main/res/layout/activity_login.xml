@@ -5,7 +5,7 @@
     android:id="@+id/signUpTv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo">
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/usernameEt"
@@ -48,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
+            android:inputType="textPassword"
             app:layout_constraintHorizontal_bias="0.0" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -56,10 +57,12 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Buckos"
-        android:textColor="#000000"
-        android:textSize="45sp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/playfair_display_bold"
+        android:text="Buck It!"
+        android:textColor="#82C5EC"
+        android:textColorLink="#35A7DF"
+        android:textSize="50sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +76,7 @@
         android:layout_marginEnd="16dp"
         android:insetTop="6dp"
         android:insetBottom="6dp"
+        android:onClick="onLogInClicked"
         android:text="Log In"
         android:textAllCaps="false"
         android:textColor="#454543"
@@ -85,11 +89,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:onClick="onCreateAccountClicked"
         android:text="Create an account"
         android:textColor="#039BE5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logInBtn" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Log in with your account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
