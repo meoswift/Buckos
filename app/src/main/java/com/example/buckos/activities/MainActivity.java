@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.example.buckos.R;
 import com.example.buckos.fragments.AddListFragment;
 import com.example.buckos.fragments.HomeFragment;
+import com.example.buckos.fragments.UserProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new AddListFragment();
                         break;
                     case R.id.action_profile:
-                        //
+                        fragment = new UserProfileFragment();
                         break;
                     default:
                         break;

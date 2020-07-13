@@ -9,14 +9,23 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.buckos.R;
+import com.example.buckos.models.BucketList;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.List;
 
 public class AddListFragment extends Fragment {
 
     private EditText mListTitleEt;
     private EditText mListDescriptionEt;
+    private Button mCreateButton;
 
     public AddListFragment() {
         // Required empty public constructor
@@ -34,5 +43,38 @@ public class AddListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mListTitleEt = view.findViewById(R.id.listTitleEt);
         mListDescriptionEt = view.findViewById(R.id.listDescriptionEt);
+        mCreateButton = view.findViewById(R.id.createBtn);
+
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createList();
+            }
+        });
+    }
+
+    private void createList() {
+        BucketList list = new BucketList();
+
+        // Set core properties of a bucket list object
+        list.setName(mListTitleEt.getText().toString());
+        list.setDescription(mListDescriptionEt.getText().toString());
+        list.setAuthor(ParseUser.getCurrentUser());
+
+        list.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Toast.makeText(getContext(), "Issue creating bucket list!", Toast.LENGTH_SHORT).show();
+
+                // Take user to User Profile with appended new list
+                Fragment fragment = new UserProfileFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.your_placeholder, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
     }
 }

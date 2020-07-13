@@ -2,7 +2,11 @@ package com.example.buckos;
 
 import android.app.Application;
 
+import com.example.buckos.models.Item;
+import com.example.buckos.models.BucketList;
+import com.example.buckos.models.User;
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -16,6 +20,9 @@ public class ParseApplication extends Application {
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
         // Register parse models
+        ParseObject.registerSubclass(BucketList.class);
+        ParseObject.registerSubclass(Item.class);
+        ParseObject.registerSubclass(User.class);
 
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY
