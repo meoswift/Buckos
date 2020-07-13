@@ -8,4 +8,5 @@ import org.parceler.Parcel;
 @ParseClassName("Item")
 @Parcel(analyze={Item.class})
 public class Item extends ParseObject {
+
 }

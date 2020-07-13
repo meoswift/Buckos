@@ -1,6 +1,7 @@
 package com.example.buckos.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
+import com.example.buckos.activities.ListDetailsActivity;
 import com.example.buckos.models.BucketList;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -54,6 +58,22 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
 
             mListTitleTv = item.findViewById(R.id.titleListTv);
             mListDescriptionTv = item.findViewById(R.id.descriptionListTv);
+
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    displayListDetails();
+                }
+            });
+        }
+
+        private void displayListDetails() {
+            int position = getAdapterPosition();
+            BucketList list = mBucketLists.get(position);
+
+            Intent intent = new Intent(context, ListDetailsActivity.class);
+            intent.putExtra("bucketList", Parcels.wrap(list));
+            context.startActivity(intent);
         }
     }
 }

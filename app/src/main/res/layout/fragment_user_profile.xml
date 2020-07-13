@@ -51,7 +51,6 @@
                     android:id="@+id/editProfileBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#66C5F3"
                     android:insetTop="8dp"
                     android:insetBottom="8dp"
                     android:text="Edit profile" />

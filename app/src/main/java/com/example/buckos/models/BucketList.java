@@ -15,6 +15,7 @@ public class BucketList extends ParseObject {
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_ITEMS = "items";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_LIST_ID = "objectId";
 
     public String getName() {
         return getString(KEY_NAME);

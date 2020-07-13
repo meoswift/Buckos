@@ -79,6 +79,8 @@ public class UserProfileFragment extends Fragment {
     private void populateLists() {
         // Specify which class to query
         ParseQuery<BucketList> query = ParseQuery.getQuery(BucketList.class);
+        // get only lists that belong to current users
+        query.whereEqualTo(BucketList.KEY_AUTHOR, user);
         // order the posts from newest to oldest
         query.orderByDescending(BucketList.KEY_CREATED_AT);
         // start an asynchronous call for lists

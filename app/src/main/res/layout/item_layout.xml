@@ -8,27 +8,22 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:cardElevation="0dp"
-        app:strokeColor="@color/stroke_color"
-        app:strokeWidth="1dp">
+        android:layout_height="80dp"
+        android:layout_margin="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent">
+
 
             <TextView
                 android:id="@+id/titleListTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
                 android:text="Try KitKat new flavor"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textSize="20sp" />
@@ -37,11 +32,25 @@
                 android:id="@+id/descriptionListTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_below="@+id/titleListTv"
+                android:layout_marginStart="16dp"
                 android:text="Need to do this by monday!"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="14sp" />
-        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="24dp"
+                android:tint="#4CBAEF"
+                app:srcCompat="@drawable/ic_baseline_check_box_outline_blank_24" />
+
+
+        </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
