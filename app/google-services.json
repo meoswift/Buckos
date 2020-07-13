@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "12207769611",
+    "firebase_url": "https://buckos.firebaseio.com",
+    "project_id": "buckos",
+    "storage_bucket": "buckos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12207769611:android:d23d7c68b0ae2c75dc9f0e",
+        "android_client_info": {
+          "package_name": "com.example.buckos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12207769611-n74m4hgsgmll5j6vookvglmrhvj9t9fn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa9m52r64hhBuXnyR_hSjlB1nYYxdWdBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12207769611-n74m4hgsgmll5j6vookvglmrhvj9t9fn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
