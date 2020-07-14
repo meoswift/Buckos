@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.buckos.R;
+
 public class ItemDetailsActivity extends AppCompatActivity {
 
     @Override
