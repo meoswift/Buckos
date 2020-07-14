@@ -15,6 +15,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// This adapter updates Fragment when user swipe between Incomplete and Done tabs in List Details.
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
     BucketList mBucketList;

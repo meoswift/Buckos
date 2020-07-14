@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import org.parceler.Parcels;
 
+// This class displays the list of completed and incomplete items in a specific list
 public class ListDetailsActivity extends AppCompatActivity {
 
     private TextView mListTitleTv;

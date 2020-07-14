@@ -19,6 +19,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// This adapter inflates a BucketList object into View and display in RecyclerView
 public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.ViewHolder> {
 
     List<BucketList> mBucketLists;
@@ -71,6 +72,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             int position = getAdapterPosition();
             BucketList list = mBucketLists.get(position);
 
+            // When user click on a specific list, show the details of the list
             Intent intent = new Intent(context, ListDetailsActivity.class);
             intent.putExtra("bucketList", Parcels.wrap(list));
             context.startActivity(intent);

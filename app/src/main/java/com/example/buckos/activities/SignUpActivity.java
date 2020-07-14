@@ -12,6 +12,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+// This activity allows user to sign up with a new account
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText mUsernameEt;

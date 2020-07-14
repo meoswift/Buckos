@@ -26,6 +26,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+// This fragment displays a list of bucket list items that have been completed by user
 public class DoneFragment extends Fragment {
 
     private RecyclerView mItemsRv;

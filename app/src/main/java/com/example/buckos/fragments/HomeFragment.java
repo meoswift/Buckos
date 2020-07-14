@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.example.buckos.R;
 
+// This fragment displays the Feed
 public class HomeFragment extends Fragment {
 
     public HomeFragment() {

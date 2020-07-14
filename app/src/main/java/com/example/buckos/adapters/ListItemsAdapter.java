@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
@@ -28,8 +25,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
-
+// This adapter inflates an Item object into View and display that Item in RecyclerView
 public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.ViewHolder> {
 
     private List<Item> mItemList;
@@ -56,8 +52,10 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
         holder.mItemNoteTv.setText(item.getDescription());
 
         // For Done items, there will be no checkbox
-        if (item.getCompleted())
+        if (item.getCompleted()) {
             holder.mCheckBoxIv.setImageDrawable(null);
+        }
+
     }
 
     @Override
@@ -70,6 +68,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
         TextView mItemTitleTv;
         TextView mItemNoteTv;
         ImageView mCheckBoxIv;
+
         Item item;
 
         public ViewHolder(@NonNull View itemView) {
@@ -108,12 +107,12 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
             item.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    Drawable res = mContext.getResources().getDrawable(R.drawable.ic_baseline_check_box_24);
+                    Drawable res = mContext.getResources().getDrawable(R.drawable.ic_check_box);
                     mCheckBoxIv.setImageDrawable(res);
                     mItemList.remove(item);
                     notifyItemRemoved(getAdapterPosition());
                     Snackbar.make(itemView, "1 item archived to Done", Snackbar.LENGTH_LONG)
-                            .setAction("Action", new View.OnClickListener() {
+                            .setAction("Undo", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     onUndoClicked(item);
@@ -128,7 +127,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
             item.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    Drawable res = mContext.getResources().getDrawable(R.drawable.ic_baseline_check_box_outline_blank_24);
+                    Drawable res = mContext.getResources().getDrawable(R.drawable.ic_check_box_outline);
                     mCheckBoxIv.setImageDrawable(res);
                     mItemList.add(0, item);
                     notifyItemInserted(0);

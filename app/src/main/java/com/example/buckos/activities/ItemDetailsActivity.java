@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -19,12 +20,14 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+// This class displays the details of a bucket list item - Title and Note
+// User can also edit their note in this activity
 public class ItemDetailsActivity extends AppCompatActivity {
 
     private EditText mItemTitleEt;
     private EditText mItemNoteEt;
-    private TextView mDoneTv;
-    private ScrollView mScrollView;
+    private ImageView mBackBtnIv;
+    private TextView mShareTv;
 
     private Item item;
 
@@ -40,14 +43,18 @@ public class ItemDetailsActivity extends AppCompatActivity {
         // Find views
         mItemTitleEt = findViewById(R.id.itemTitleEt);
         mItemNoteEt = findViewById(R.id.itemNoteEt);
-        mDoneTv = findViewById(R.id.doneTv);
-        mScrollView = findViewById(R.id.nestedScroll);
+        mBackBtnIv = findViewById(R.id.backBtn);
+        mShareTv = findViewById(R.id.shareTv);
 
-        mScrollView.requestDisallowInterceptTouchEvent(true);
+        // If item clicked on is already completed, do not show option to Share
+        if (item.getCompleted())
+            mShareTv.setText(null);
 
+        // Populate title and note of an item
         populateItemDetails();
 
-        mDoneTv.setOnClickListener(new View.OnClickListener() {
+        // When user press back, save all changes and update to database
+        mBackBtnIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveChanges();
@@ -56,6 +63,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
     }
 
+    // Set item's properties with changes and save in background
     private void saveChanges() {
         item.setName(mItemTitleEt.getText().toString());
         item.setDescription(mItemNoteEt.getText().toString());

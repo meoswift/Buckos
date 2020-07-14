@@ -35,6 +35,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
+// This fragment displays a list of incomplete items in a bucket list.
 public class InProgressFragment extends Fragment {
     public static final int EDIT_ITEM_REQ = 123;
 
@@ -89,6 +90,7 @@ public class InProgressFragment extends Fragment {
         });
     }
 
+    // Get all the items in a list that are not completed yet
     private void queryIncompleteItemsInList() {
         ParseQuery<Item> query = ParseQuery.getQuery(Item.class);
         // get all items in the current bucket list
@@ -112,6 +114,7 @@ public class InProgressFragment extends Fragment {
         });
     }
 
+    // Function to add a new item to database based on user input
     private void addNewItem() {
         String itemTitle = mNewItemEt.getText().toString();
         if (itemTitle.isEmpty())

@@ -14,6 +14,7 @@ import com.example.buckos.fragments.HomeFragment;
 import com.example.buckos.fragments.UserProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+// This activity has a Bottom navigation view that allows users to navigate the app
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView mBottomNavigationView;
 

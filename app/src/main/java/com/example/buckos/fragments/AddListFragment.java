@@ -22,6 +22,7 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
+// This fragment allows user to create a new list with Title and Description.
 public class AddListFragment extends Fragment {
 
     private EditText mListTitleEt;

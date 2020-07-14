@@ -14,6 +14,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+// This activity logs user in and maintain persistence
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private Button mLogInBtn;
