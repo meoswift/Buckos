@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,12 +53,11 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         TextView mListTitleTv;
         TextView mListDescriptionTv;
 
-
         public ViewHolder(@NonNull View item) {
             super(item);
 
-            mListTitleTv = item.findViewById(R.id.titleListTv);
-            mListDescriptionTv = item.findViewById(R.id.descriptionListTv);
+            mListTitleTv = item.findViewById(R.id.titleItemTv);
+            mListDescriptionTv = item.findViewById(R.id.noteItemTv);
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override

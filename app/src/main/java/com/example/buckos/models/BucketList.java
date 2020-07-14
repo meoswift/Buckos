@@ -13,7 +13,6 @@ public class BucketList extends ParseObject {
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_AUTHOR = "author";
-    public static final String KEY_ITEMS = "items";
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_LIST_ID = "objectId";
 
@@ -27,10 +26,6 @@ public class BucketList extends ParseObject {
 
     public ParseUser getAuthor() {
         return getParseUser(KEY_AUTHOR);
-    }
-
-    public ParseRelation<Item> getItems() {
-        return getRelation(KEY_ITEMS);
     }
 
     public void setName(String name) {

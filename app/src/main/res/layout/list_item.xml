@@ -26,7 +26,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/titleListTv"
+                android:id="@+id/titleItemTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Try KitKat new flavor"
@@ -34,7 +34,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/descriptionListTv"
+                android:id="@+id/noteItemTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

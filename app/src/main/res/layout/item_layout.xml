@@ -17,35 +17,38 @@
 
 
             <TextView
-                android:id="@+id/titleListTv"
-                android:layout_width="wrap_content"
+                android:id="@+id/titleItemTv"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/checkBoxIv"
                 android:text="Try KitKat new flavor"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/descriptionListTv"
-                android:layout_width="wrap_content"
+                android:id="@+id/noteItemTv"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/titleListTv"
+                android:layout_below="@+id/titleItemTv"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
+                android:layout_toStartOf="@+id/checkBoxIv"
                 android:text="Need to do this by monday!"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="14sp" />
 
             <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="32dp"
+                android:id="@+id/checkBoxIv"
+                android:layout_width="24dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="16dp"
                 android:tint="#4CBAEF"
                 app:srcCompat="@drawable/ic_baseline_check_box_outline_blank_24" />
 

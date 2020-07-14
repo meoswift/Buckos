@@ -48,6 +48,13 @@ public class AddListFragment extends Fragment {
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String listTitle = mListTitleEt.getText().toString();
+
+                if (listTitle.isEmpty()) {
+                    Toast.makeText(getContext(), "Title cannot be empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 createList();
             }
         });
