@@ -44,4 +44,12 @@ public class Item extends ParseObject {
     public void setCompleted(Boolean completed) {
         put(KEY_COMPLETED, completed);
     }
+
+    public void setList(BucketList list) {
+        put(KEY_LIST, list);
+    }
+
+    public void setAuthor(ParseUser user) {
+        put(KEY_AUTHOR, user);
+    }
 }

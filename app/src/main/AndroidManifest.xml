@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.ItemDetailsActivity"></activity>
         <activity
             android:name=".activities.ListDetailsActivity"
             android:label="@string/title_activity_list_details"

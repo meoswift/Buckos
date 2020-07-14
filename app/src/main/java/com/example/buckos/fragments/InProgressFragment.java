@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.buckos.R;
 import com.example.buckos.adapters.ListItemsAdapter;
@@ -21,6 +23,8 @@ import com.example.buckos.models.Item;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -31,6 +35,8 @@ public class InProgressFragment extends Fragment {
 
     private RecyclerView mItemsRv;
     private ListItemsAdapter mAdapter;
+    private EditText mNewItemEt;
+    private ImageView mAddItemIv;
 
     private List<Item> mItemsList;
     private BucketList mBucketList;
@@ -43,7 +49,7 @@ public class InProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_items, container, false);
+        return inflater.inflate(R.layout.fragment_in_progress, container, false);
 
     }
 
@@ -51,16 +57,31 @@ public class InProgressFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Find views
+        mNewItemEt = view.findViewById(R.id.newItemEt);
+        mAddItemIv = view.findViewById(R.id.addItemBtn);
+        mItemsRv = view.findViewById(R.id.itemsRv);
+
+        // Get the current bucket list clicked on
         Bundle bundle = this.getArguments();
         mBucketList = Parcels.unwrap(bundle.getParcelable("bucketList"));
 
+        // Initialize list of itemss
         mItemsList = new ArrayList<>();
-        mItemsRv = view.findViewById(R.id.itemsRv);
+        // Create an adapter for the list of items
         mAdapter = new ListItemsAdapter(getContext(), mItemsList);
+        // Set adapter and linear layout for RecyclerView
         mItemsRv.setAdapter(mAdapter);
         mItemsRv.setLayoutManager(new LinearLayoutManager(getContext()));
 
         queryIncompleteItemsInList();
+
+        mAddItemIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewItem();
+            }
+        });
     }
 
     private void queryIncompleteItemsInList() {
@@ -85,4 +106,28 @@ public class InProgressFragment extends Fragment {
             }
         });
     }
+
+    private void addNewItem() {
+        String itemTitle = mNewItemEt.getText().toString();
+        if (itemTitle.isEmpty())
+            Toast.makeText(getContext(), "Item cannot be empty!", Toast.LENGTH_SHORT).show();
+
+        final Item item = new Item();
+        item.setName(itemTitle);
+        item.setCompleted(false);
+        item.setList(mBucketList);
+        item.setAuthor(ParseUser.getCurrentUser());
+
+        item.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                mItemsList.add(item);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mNewItemEt.setText(null);
+    }
+
+
 }

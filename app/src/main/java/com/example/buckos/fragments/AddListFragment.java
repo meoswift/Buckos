@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -26,6 +27,7 @@ public class AddListFragment extends Fragment {
     private EditText mListTitleEt;
     private EditText mListDescriptionEt;
     private Button mCreateButton;
+    BottomNavigationView mBottomNavigationView;
 
     public AddListFragment() {
         // Required empty public constructor
@@ -44,6 +46,7 @@ public class AddListFragment extends Fragment {
         mListTitleEt = view.findViewById(R.id.listTitleEt);
         mListDescriptionEt = view.findViewById(R.id.listDescriptionEt);
         mCreateButton = view.findViewById(R.id.createBtn);
+        mBottomNavigationView = view.getRootView().findViewById(R.id.bottomNavigation);
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,12 +77,8 @@ public class AddListFragment extends Fragment {
                 if (e != null)
                     Toast.makeText(getContext(), "Issue creating bucket list!", Toast.LENGTH_SHORT).show();
 
-                // Take user to User Profile with appended new list
-                Fragment fragment = new UserProfileFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.your_placeholder, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                // direct user to profile that shows the newly added list
+                mBottomNavigationView.setSelectedItemId(R.id.action_profile);
             }
         });
 
