@@ -91,6 +91,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
             });
         }
 
+        // Show details of an Item. User can also edit the note.
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
@@ -100,6 +101,9 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
             mActivity.startActivityForResult(intent, InProgressFragment.EDIT_ITEM_REQ);
         }
 
+        // If an item is completed, update in database and remove from view
+        // Also pop up a Snackbar that allows user to Undo in case they accidentally
+        // mark an item complete
         private void checkItemCompleted() {
             int position = getAdapterPosition();
             item = mItemList.get(position);
@@ -122,6 +126,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
             });
         }
 
+        // Update database and display item back into view
         private void onUndoClicked(final Item item) {
             item.setCompleted(false);
             item.saveInBackground(new SaveCallback() {
