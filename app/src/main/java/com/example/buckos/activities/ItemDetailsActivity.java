@@ -47,7 +47,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mShareTv = findViewById(R.id.shareTv);
 
         // If item clicked on is already completed, do not show option to Share
-        if (item.getCompleted())
+        if (!item.getCompleted())
             mShareTv.setText(null);
 
         // Populate title and note of an item
