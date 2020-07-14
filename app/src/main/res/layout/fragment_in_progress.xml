@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.InProgressFragment">
+    tools:context=".fragments.InProgressFragment"
+    android:id="@+id/fragment_in_progress">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,13 +37,12 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
+    <TextView
         android:id="@+id/addItemBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_baseline_add_24"
-        android:tint="#1C1C1C"
+        android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemsRv" />

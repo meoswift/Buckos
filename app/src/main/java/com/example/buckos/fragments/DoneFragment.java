@@ -55,7 +55,7 @@ public class DoneFragment extends Fragment {
 
         mItemsList = new ArrayList<>();
         mItemsRv = view.findViewById(R.id.itemsRv);
-        mAdapter = new ListItemsAdapter(getContext(), mItemsList);
+        mAdapter = new ListItemsAdapter(getContext(), mItemsList, getActivity());
         mItemsRv.setAdapter(mAdapter);
         mItemsRv.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -1,5 +1,6 @@
 package com.example.buckos.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buckos.R;
@@ -31,12 +33,15 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class InProgressFragment extends Fragment {
+    public static final int EDIT_ITEM_REQ = 123;
 
     private RecyclerView mItemsRv;
     private ListItemsAdapter mAdapter;
     private EditText mNewItemEt;
-    private ImageView mAddItemIv;
+    private TextView mAddItemIv;
 
     private List<Item> mItemsList;
     private BucketList mBucketList;
@@ -69,7 +74,7 @@ public class InProgressFragment extends Fragment {
         // Initialize list of itemss
         mItemsList = new ArrayList<>();
         // Create an adapter for the list of items
-        mAdapter = new ListItemsAdapter(getContext(), mItemsList);
+        mAdapter = new ListItemsAdapter(getContext(), mItemsList, getActivity());
         // Set adapter and linear layout for RecyclerView
         mItemsRv.setAdapter(mAdapter);
         mItemsRv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -121,13 +126,18 @@ public class InProgressFragment extends Fragment {
         item.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                mItemsList.add(item);
-                mAdapter.notifyDataSetChanged();
+                mItemsList.add(0, item);
+                mAdapter.notifyItemInserted(0);
+                mItemsRv.scrollToPosition(0);
             }
         });
 
         mNewItemEt.setText(null);
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("debug", String.valueOf(resultCode));
+    }
 }
