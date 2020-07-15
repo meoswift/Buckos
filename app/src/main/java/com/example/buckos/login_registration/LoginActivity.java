@@ -1,4 +1,4 @@
-package com.example.buckos.login_registration_screen;
+package com.example.buckos.login_registration;
 
 import androidx.appcompat.app.AppCompatActivity;
 

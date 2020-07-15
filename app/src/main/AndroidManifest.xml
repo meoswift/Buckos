@@ -25,9 +25,9 @@
             android:label="@string/title_activity_hello"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".main_screen.create_new_list.AddListFragment" />
-        <activity android:name=".login_registration_screen.SignUpActivity" />
+        <activity android:name=".login_registration.SignUpActivity" />
         <activity android:name=".main_screen.MainActivity" />
-        <activity android:name=".login_registration_screen.LoginActivity">
+        <activity android:name=".login_registration.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

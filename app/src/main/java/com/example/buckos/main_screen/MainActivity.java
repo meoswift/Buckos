@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.example.buckos.R;
 import com.example.buckos.main_screen.create_new_list.AddListFragment;
 import com.example.buckos.main_screen.home_feed.HomeFragment;
+import com.example.buckos.main_screen.travel_explore.TravelFragment;
 import com.example.buckos.main_screen.user_profile.UserProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_profile:
                         fragment = new UserProfileFragment();
+                        break;
+                    case R.id.action_explore:
+                        fragment = new TravelFragment();
                         break;
                     default:
                         break;

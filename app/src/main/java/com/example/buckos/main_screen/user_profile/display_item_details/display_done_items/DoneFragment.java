@@ -19,6 +19,7 @@ import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketLi
 import com.example.buckos.main_screen.user_profile.display_item_details.display_incomplete_items.InProgressFragment;
 import com.example.buckos.main_screen.user_profile.display_item_details.Item;
 import com.example.buckos.main_screen.user_profile.display_item_details.ItemsAdapter;
+import com.example.buckos.main_screen.user_profile.item_details_screen.ItemDetailsActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -99,10 +100,18 @@ public class DoneFragment extends Fragment {
         // When user come back from Edit/View item screen, update the content of item
         if (resultCode == RESULT_OK && requestCode == InProgressFragment.EDIT_ITEM_REQ) {
             Item item = Parcels.unwrap(data.getParcelableExtra("item"));
+            String action = data.getStringExtra("action");
             int position = data.getExtras().getInt("position");
 
-            mItemsList.set(position, item);
-            mAdapter.notifyItemChanged(position);
+            // Update RecyclerView based on whether user edited or deleted the item
+            switch (action) {
+                case ItemDetailsActivity.EDIT_ITEM:
+                    mItemsList.set(position, item);
+                    break;
+                case ItemDetailsActivity.DELETE_ITEM:
+                    mItemsList.remove(position);
+                    break;
+            }
         }
     }
 

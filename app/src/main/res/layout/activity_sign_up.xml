@@ -5,7 +5,7 @@
     android:id="@+id/signUpTv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login_registration_screen.LoginActivity">
+    tools:context=".login_registration.LoginActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -105,8 +105,8 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/playfair_display_bold"
         android:text="Let's get started!"
-        android:textColor="#58B8EF"
-        android:textSize="30sp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="36sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
