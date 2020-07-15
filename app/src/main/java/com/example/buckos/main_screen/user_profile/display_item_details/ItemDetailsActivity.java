@@ -135,6 +135,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
+
     // When scroll view is touched, determine which one is a tap, and which is a scroll
     @SuppressLint("ClickableViewAccessibility")
     public void handleScrollViewClicked() {
