@@ -1,4 +1,4 @@
-package com.example.buckos.main_screen.user_profile.display_items_in_list;
+package com.example.buckos.main_screen.user_profile.display_item_details;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.main_screen.user_profile.display_item_details.ItemDetailsActivity;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.display_incomplete_items.InProgressFragment;
+import com.example.buckos.main_screen.user_profile.display_item_details.display_incomplete_items.InProgressFragment;
+import com.example.buckos.main_screen.user_profile.item_details_screen.ItemDetailsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -25,13 +25,13 @@ import org.parceler.Parcels;
 import java.util.List;
 
 // This adapter inflates an Item object into View and display that Item in RecyclerView
-public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.ViewHolder> {
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
     private List<Item> mItemList;
     private Context mContext;
     private Fragment mActivity;
 
-    public ListItemsAdapter(Context context, List<Item> itemList, Fragment activity) {
+    public ItemsAdapter(Context context, List<Item> itemList, Fragment activity) {
         this.mItemList = itemList;
         this.mContext = context;
         this.mActivity = activity;
@@ -39,13 +39,13 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
 
     @NonNull
     @Override
-    public ListItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListItemsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemsAdapter.ViewHolder holder, int position) {
         Item item = mItemList.get(position);
         holder.mItemTitleTv.setText(item.getName());
         holder.mItemNoteTv.setText(item.getDescription());

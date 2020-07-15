@@ -1,4 +1,4 @@
-package com.example.buckos.main_screen.user_profile.display_items_in_list;
+package com.example.buckos.main_screen.user_profile.display_item_details;
 
 import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
 import com.parse.ParseClassName;

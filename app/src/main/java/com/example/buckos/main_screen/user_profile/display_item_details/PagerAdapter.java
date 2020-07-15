@@ -1,4 +1,4 @@
-package com.example.buckos.main_screen.user_profile.display_items_in_list;
+package com.example.buckos.main_screen.user_profile.display_item_details;
 
 import android.os.Bundle;
 
@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.display_done_items.DoneFragment;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.display_incomplete_items.InProgressFragment;
+import com.example.buckos.main_screen.user_profile.display_item_details.display_done_items.DoneFragment;
+import com.example.buckos.main_screen.user_profile.display_item_details.display_incomplete_items.InProgressFragment;
 
 import org.parceler.Parcels;
 
@@ -30,6 +30,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         Bundle bundle = new Bundle();
         bundle.putParcelable("bucketList", Parcels.wrap(mBucketList));
 
+        // Open the fragment depending on which tab was chosen
         switch (position) {
             case 0:
                 fragment = new InProgressFragment();

@@ -1,5 +1,6 @@
-package com.example.buckos.main_screen.user_profile.display_bucket_lists;
+package com.example.buckos.main_screen.user_profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,27 +14,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.buckos.R;
 import com.example.buckos.User;
+import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
+import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketListsAdapter;
+import com.example.buckos.main_screen.user_profile.edit_profile.EditProfileActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class UserProfileFragment extends Fragment {
 
+    private static final int EDIT_PROFILE_REQ = 111;
     private RecyclerView mBucketListsRv;
     private TextView mDisplayNameTv;
     private TextView mBioTv;
     private Button mEditProfileBtn;
-    BucketListsAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
-    ParseUser user;
+    private BucketListsAdapter mAdapter;
+
+
+
+    User user;
     private List<BucketList> mBucketLists;
 
     @Override
@@ -51,10 +65,11 @@ public class UserProfileFragment extends Fragment {
         mBucketListsRv = view.findViewById(R.id.rvBucketLists);
         mDisplayNameTv = view.findViewById(R.id.displayNameTv);
         mBioTv = view.findViewById(R.id.bioTv);
+        mProgressBar = view.findViewById(R.id.progressBar);
+        mEditProfileBtn = view.findViewById(R.id.editProfileBtn);
 
         // Get current user to retrieve information
-        user = ParseUser.getCurrentUser();
-
+        user = (User) ParseUser.getCurrentUser();
 
         // Set up adapter for RecyclerView
         mBucketLists = new ArrayList<>();
@@ -66,13 +81,17 @@ public class UserProfileFragment extends Fragment {
         populateUserProfile();
         populateLists();
 
+        // Navigate to Edit Profile screen on button clicked
+        handleEditProfile();
     }
 
+    // Populate views that comes with an user profile
     private void populateUserProfile() {
-        mDisplayNameTv.setText(user.getString(User.KEY_NAME));
-        mBioTv.setText(user.getString(User.KEY_BIO));
+        mDisplayNameTv.setText(user.getName());
+        mBioTv.setText(user.getBio());
     }
 
+    // Display the bucket lists that user has created
     private void populateLists() {
         // Specify which class to query
         ParseQuery<BucketList> query = ParseQuery.getQuery(BucketList.class);
@@ -91,8 +110,31 @@ public class UserProfileFragment extends Fragment {
 
                 mBucketLists.addAll(objects);
                 mAdapter.notifyDataSetChanged();
+                mProgressBar.setVisibility(View.GONE);
             }
         });
+    }
 
+    // When user clicks Edit Profile button, takes them to Edit screen
+    public void handleEditProfile() {
+        mEditProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                startActivityForResult(intent, EDIT_PROFILE_REQ);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Display the updated information of user profile after changes
+        if (resultCode == RESULT_OK && requestCode == EDIT_PROFILE_REQ) {
+            User user = Parcels.unwrap(data.getParcelableExtra("user"));
+            mDisplayNameTv.setText(user.getName());
+            mBioTv.setText(user.getBio());
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.buckos.main_screen.user_profile.display_items_in_list;
+package com.example.buckos.main_screen.user_profile.display_item_details;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ public class ListDetailsActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private ImageView mBackBtnIv;
+    private TextView mListDescriptionTv;
+    private BucketList list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +37,25 @@ public class ListDetailsActivity extends AppCompatActivity {
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.pager);
         mBackBtnIv = findViewById(R.id.backBtn);
+        mListDescriptionTv = findViewById(R.id.listDescription);
 
         // Unwrap list object sent by previous fragment
         Intent intent = getIntent();
-        BucketList list = Parcels.unwrap(intent.getParcelableExtra("bucketList"));
+        list = Parcels.unwrap(intent.getParcelableExtra("bucketList"));
 
         // Update list title in tool bar
         mListTitleTv.setText(list.getName());
+        if(!list.getDescription().equals("")) {
+            mListDescriptionTv.setText(list.getDescription());
+            mListDescriptionTv.setVisibility(View.VISIBLE);
+        }
 
+        handleBackPress(); // on back button clicked
+        changeTabOnSwiping(); // on swiping, change tabs
+    }
+
+    // When using swipes between two tabs, update the according fragment
+    public void changeTabOnSwiping() {
         // Set adapter to change fragment when user swipe between two tabs
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), list);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -65,4 +79,13 @@ public class ListDetailsActivity extends AppCompatActivity {
         });
     }
 
+    // When user click back button on screen, takes them to previous screen
+    public void handleBackPress() {
+        mBackBtnIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ListDetailsActivity.super.onBackPressed();
+            }
+        });
+    }
 }

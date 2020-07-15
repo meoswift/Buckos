@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_screen.user_profile.display_items_in_list.ListDetailsActivity">
+    tools:context=".main_screen.user_profile.display_item_details.ListDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarListDetail"
@@ -20,8 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:tint="#000000"
-            android:src="@drawable/ic_baseline_keyboard_backspace_24" />
+            android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            android:tint="#000000" />
 
         <TextView
             android:id="@+id/listTitleTv"
@@ -38,7 +38,9 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarListDetail">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listDescription">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -60,6 +62,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/tab_layout"/>
+
+    <TextView
+        android:id="@+id/listDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarListDetail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

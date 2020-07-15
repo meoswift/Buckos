@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.ListDetailsActivity;
+import com.example.buckos.main_screen.user_profile.display_item_details.ListDetailsActivity;
 
 import org.parceler.Parcels;
 

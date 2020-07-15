@@ -1,4 +1,4 @@
-package com.example.buckos.main_screen.user_profile.display_items_in_list.display_done_items;
+package com.example.buckos.main_screen.user_profile.display_item_details.display_done_items;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 
 import com.example.buckos.R;
 import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.display_incomplete_items.InProgressFragment;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.Item;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.ListItemsAdapter;
+import com.example.buckos.main_screen.user_profile.display_item_details.display_incomplete_items.InProgressFragment;
+import com.example.buckos.main_screen.user_profile.display_item_details.Item;
+import com.example.buckos.main_screen.user_profile.display_item_details.ItemsAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -34,7 +34,7 @@ import static android.app.Activity.RESULT_OK;
 public class DoneFragment extends Fragment {
 
     private RecyclerView mItemsRv;
-    private ListItemsAdapter mAdapter;
+    private ItemsAdapter mAdapter;
 
     private List<Item> mItemsList;
     private BucketList mBucketList;
@@ -60,7 +60,7 @@ public class DoneFragment extends Fragment {
 
         mItemsList = new ArrayList<>();
         mItemsRv = view.findViewById(R.id.itemsRv);
-        mAdapter = new ListItemsAdapter(getContext(), mItemsList, this);
+        mAdapter = new ItemsAdapter(getContext(), mItemsList, this);
         mItemsRv.setAdapter(mAdapter);
         mItemsRv.setLayoutManager(new LinearLayoutManager(getContext()));
 

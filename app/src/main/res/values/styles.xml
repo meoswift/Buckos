@@ -5,7 +5,6 @@
         <item name="colorPrimary">#F9AA33</item>
         <item name="colorPrimaryDark">#2C000000</item>
         <item name="colorAccent">#EFAB54</item>
-        <item name="android:fontFamily">@font/lato</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

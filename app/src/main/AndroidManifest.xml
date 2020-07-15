@@ -14,9 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main_screen.user_profile.display_item_details.ItemDetailsActivity"></activity>
+        <activity android:name=".main_screen.user_profile.edit_profile.EditProfileActivity"></activity>
+        <activity android:name=".main_screen.user_profile.item_details_screen.ItemDetailsActivity" />
         <activity
-            android:name=".main_screen.user_profile.display_items_in_list.ListDetailsActivity"
+            android:name=".main_screen.user_profile.display_item_details.ListDetailsActivity"
             android:label="@string/title_activity_list_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

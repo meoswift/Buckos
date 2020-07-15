@@ -1,4 +1,4 @@
-package com.example.buckos.main_screen.user_profile.display_items_in_list.display_incomplete_items;
+package com.example.buckos.main_screen.user_profile.display_item_details.display_incomplete_items;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buckos.R;
-import com.example.buckos.main_screen.user_profile.display_item_details.ItemDetailsActivity;
+import com.example.buckos.main_screen.user_profile.item_details_screen.ItemDetailsActivity;
 import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.Item;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.ListItemsAdapter;
+import com.example.buckos.main_screen.user_profile.display_item_details.Item;
+import com.example.buckos.main_screen.user_profile.display_item_details.ItemsAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -40,7 +40,7 @@ public class InProgressFragment extends Fragment {
     public static final int EDIT_ITEM_REQ = 123;
 
     private RecyclerView mItemsRv;
-    private ListItemsAdapter mAdapter;
+    private ItemsAdapter mAdapter;
     private EditText mNewItemEt;
     private TextView mAddItemIv;
 
@@ -75,7 +75,7 @@ public class InProgressFragment extends Fragment {
         // Initialize list of itemss
         mItemsList = new ArrayList<>();
         // Create an adapter for the list of items
-        mAdapter = new ListItemsAdapter(getContext(), mItemsList, this);
+        mAdapter = new ItemsAdapter(getContext(), mItemsList, this);
         // Set adapter and linear layout for RecyclerView
         mItemsRv.setAdapter(mAdapter);
         mItemsRv.setLayoutManager(new LinearLayoutManager(getContext()));

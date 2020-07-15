@@ -1,4 +1,4 @@
-package com.example.buckos.main_screen.user_profile.display_item_details;
+package com.example.buckos.main_screen.user_profile.item_details_screen;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.buckos.R;
-import com.example.buckos.main_screen.user_profile.display_items_in_list.Item;
+import com.example.buckos.main_screen.user_profile.display_item_details.Item;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
@@ -95,46 +95,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // Populate views
-    private void populateItemDetails() {
-        mItemTitleEt.setText(item.getName());
-
-        if (item.getDescription() != null)
-            mItemNoteEt.setText(item.getDescription());
-    }
-
-    // Set item's properties with changes and save in background
-    private void saveChanges() {
-        item.setName(mItemTitleEt.getText().toString());
-        item.setDescription(mItemNoteEt.getText().toString());
-
-        item.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Intent intent = new Intent();
-                intent.putExtra("item", Parcels.wrap(item));
-                intent.putExtra("position", itemPosition);
-                intent.putExtra("action", EDIT_ITEM);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-    }
-
-    // Remove item from database and update RecyclerView
-    private void deleteItem() {
-        item.deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                Intent intent = new Intent();
-                intent.putExtra("position", itemPosition);
-                intent.putExtra("action", DELETE_ITEM);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-    }
-
 
     // When scroll view is touched, determine which one is a tap, and which is a scroll
     @SuppressLint("ClickableViewAccessibility")
@@ -164,6 +124,52 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     }
                 }
                 return false;
+            }
+        });
+    }
+
+    // When user navigate via hardware back press, also save changes and update
+    @Override
+    public void onBackPressed() {
+        saveChanges();
+    }
+
+    // Populate views
+    private void populateItemDetails() {
+        mItemTitleEt.setText(item.getName()); // set item title
+        if (item.getDescription() != null)   // set item description if available
+            mItemNoteEt.setText(item.getDescription());
+    }
+
+    // Set item's properties with changes and save in background
+    private void saveChanges() {
+
+        item.setName(mItemTitleEt.getText().toString());
+        item.setDescription(mItemNoteEt.getText().toString());
+
+        item.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Intent intent = new Intent();
+                intent.putExtra("item", Parcels.wrap(item));
+                intent.putExtra("position", itemPosition);
+                intent.putExtra("action", EDIT_ITEM);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+    }
+
+    // Remove item from database and update RecyclerView
+    private void deleteItem() {
+        item.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                Intent intent = new Intent();
+                intent.putExtra("position", itemPosition);
+                intent.putExtra("action", DELETE_ITEM);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
