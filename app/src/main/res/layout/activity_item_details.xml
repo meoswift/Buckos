@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ItemDetailsActivity">
+    tools:context=".main_screen.user_profile.display_item_details.ItemDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/itemDetailsTb"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="#FFFFFF"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -47,7 +47,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -85,34 +85,39 @@
                 android:background="#00FFFFFF"
                 android:ems="10"
                 android:hint="Add a note..."
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
                 android:textSize="16sp" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
-        android:tint="#000000"
+        android:layout_gravity="bottom"
+        android:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/outline_delete_24" />
+        app:menu="@menu/bottom_app_bar"
+        app:navigationIcon="@drawable/ic_baseline_more_vert_24"
+        tools:ignore="BottomAppBar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_baseline_insert_photo_24"
-        app:tint="#FFFFFF" />
+        app:tint="#FFFFFF"
+        app:layout_anchor="@id/bottomAppBar"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

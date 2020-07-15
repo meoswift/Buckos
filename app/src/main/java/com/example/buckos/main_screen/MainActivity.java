@@ -1,4 +1,4 @@
-package com.example.buckos.activities;
+package com.example.buckos.main_screen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +9,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.buckos.R;
-import com.example.buckos.fragments.AddListFragment;
-import com.example.buckos.fragments.HomeFragment;
-import com.example.buckos.fragments.UserProfileFragment;
+import com.example.buckos.main_screen.create_new_list.AddListFragment;
+import com.example.buckos.main_screen.home_feed.HomeFragment;
+import com.example.buckos.main_screen.user_profile.display_bucket_lists.UserProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 // This activity has a Bottom navigation view that allows users to navigate the app

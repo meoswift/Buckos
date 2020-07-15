@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".ParseApplication"
+        android:name=".application.ParseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,19 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ItemDetailsActivity"></activity>
+        <activity android:name=".main_screen.user_profile.display_item_details.ItemDetailsActivity"></activity>
         <activity
-            android:name=".activities.ListDetailsActivity"
+            android:name=".main_screen.user_profile.display_items_in_list.ListDetailsActivity"
             android:label="@string/title_activity_list_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.HelloActivity"
             android:label="@string/title_activity_hello"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".fragments.AddListFragment" />
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.LoginActivity">
+        <activity android:name=".main_screen.create_new_list.AddListFragment" />
+        <activity android:name=".login_registration_screen.SignUpActivity" />
+        <activity android:name=".main_screen.MainActivity" />
+        <activity android:name=".login_registration_screen.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

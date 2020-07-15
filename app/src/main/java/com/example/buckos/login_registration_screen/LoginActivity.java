@@ -1,4 +1,4 @@
-package com.example.buckos.activities;
+package com.example.buckos.login_registration_screen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buckos.R;
+import com.example.buckos.main_screen.MainActivity;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;

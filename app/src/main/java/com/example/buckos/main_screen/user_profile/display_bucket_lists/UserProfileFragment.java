@@ -1,4 +1,4 @@
-package com.example.buckos.fragments;
+package com.example.buckos.main_screen.user_profile.display_bucket_lists;
 
 import android.os.Bundle;
 
@@ -13,13 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.buckos.R;
-import com.example.buckos.adapters.BucketListsAdapter;
-import com.example.buckos.models.BucketList;
-import com.example.buckos.models.User;
+import com.example.buckos.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

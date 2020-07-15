@@ -1,6 +1,5 @@
-package com.example.buckos.adapters;
+package com.example.buckos.main_screen.user_profile.display_items_in_list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -11,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.activities.ItemDetailsActivity;
-import com.example.buckos.fragments.InProgressFragment;
-import com.example.buckos.models.Item;
+import com.example.buckos.main_screen.user_profile.display_item_details.ItemDetailsActivity;
+import com.example.buckos.main_screen.user_profile.display_items_in_list.display_incomplete_items.InProgressFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -30,9 +29,9 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
 
     private List<Item> mItemList;
     private Context mContext;
-    private Activity mActivity;
+    private Fragment mActivity;
 
-    public ListItemsAdapter(Context context, List<Item> itemList, Activity activity) {
+    public ListItemsAdapter(Context context, List<Item> itemList, Fragment activity) {
         this.mItemList = itemList;
         this.mContext = context;
         this.mActivity = activity;
@@ -65,6 +64,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private static final String DISPLAY_ITEMS = "displayItems";
         TextView mItemTitleTv;
         TextView mItemNoteTv;
         ImageView mCheckBoxIv;
@@ -98,6 +98,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
             item = mItemList.get(position);
             Intent intent = new Intent(mContext, ItemDetailsActivity.class);
             intent.putExtra("item", Parcels.wrap(item));
+            intent.putExtra("position", position);
             mActivity.startActivityForResult(intent, InProgressFragment.EDIT_ITEM_REQ);
         }
 
@@ -114,7 +115,7 @@ public class ListItemsAdapter extends RecyclerView.Adapter<ListItemsAdapter.View
                     Drawable res = mContext.getResources().getDrawable(R.drawable.ic_check_box);
                     mCheckBoxIv.setImageDrawable(res);
                     mItemList.remove(item);
-                    notifyItemRemoved(getAdapterPosition());
+                    notifyDataSetChanged();
                     Snackbar.make(itemView, "1 item archived to Done", Snackbar.LENGTH_LONG)
                             .setAction("Undo", new View.OnClickListener() {
                                 @Override

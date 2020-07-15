@@ -1,19 +1,17 @@
-package com.example.buckos.adapters;
+package com.example.buckos.main_screen.user_profile.display_bucket_lists;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.activities.ListDetailsActivity;
-import com.example.buckos.models.BucketList;
+import com.example.buckos.main_screen.user_profile.display_items_in_list.ListDetailsActivity;
 
 import org.parceler.Parcels;
 

@@ -1,4 +1,4 @@
-package com.example.buckos.fragments;
+package com.example.buckos.main_screen.create_new_list;
 
 import android.os.Bundle;
 
@@ -14,13 +14,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buckos.R;
-import com.example.buckos.models.BucketList;
+import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import java.util.List;
 
 // This fragment allows user to create a new list with Title and Description.
 public class AddListFragment extends Fragment {

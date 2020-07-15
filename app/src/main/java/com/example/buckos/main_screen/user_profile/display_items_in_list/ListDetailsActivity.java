@@ -1,19 +1,16 @@
-package com.example.buckos.activities;
+package com.example.buckos.main_screen.user_profile.display_items_in_list;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.buckos.R;
-import com.example.buckos.adapters.PagerAdapter;
-import com.example.buckos.models.BucketList;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.parceler.Parcels;
@@ -25,6 +22,7 @@ public class ListDetailsActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
+    private ImageView mBackBtnIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +33,20 @@ public class ListDetailsActivity extends AppCompatActivity {
         mListTitleTv = findViewById(R.id.listTitleTv);
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.pager);
+        mBackBtnIv = findViewById(R.id.backBtn);
 
         // Unwrap list object sent by previous fragment
         Intent intent = getIntent();
         BucketList list = Parcels.unwrap(intent.getParcelableExtra("bucketList"));
 
+        // Update list title in tool bar
+        mListTitleTv.setText(list.getName());
+
+        // Set adapter to change fragment when user swipe between two tabs
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), list);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(mPagerAdapter);
 
-        mListTitleTv.setText(list.getName());
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -62,4 +64,5 @@ public class ListDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
 }

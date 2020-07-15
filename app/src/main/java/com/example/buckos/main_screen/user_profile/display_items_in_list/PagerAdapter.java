@@ -1,4 +1,4 @@
-package com.example.buckos.adapters;
+package com.example.buckos.main_screen.user_profile.display_items_in_list;
 
 import android.os.Bundle;
 
@@ -6,14 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.buckos.fragments.DoneFragment;
-import com.example.buckos.fragments.InProgressFragment;
-import com.example.buckos.models.BucketList;
-import com.example.buckos.models.Item;
+import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
+import com.example.buckos.main_screen.user_profile.display_items_in_list.display_done_items.DoneFragment;
+import com.example.buckos.main_screen.user_profile.display_items_in_list.display_incomplete_items.InProgressFragment;
 
 import org.parceler.Parcels;
-
-import java.util.List;
 
 // This adapter updates Fragment when user swipe between Incomplete and Done tabs in List Details.
 public class PagerAdapter extends FragmentStatePagerAdapter {

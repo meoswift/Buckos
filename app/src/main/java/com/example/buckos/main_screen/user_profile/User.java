@@ -1,4 +1,4 @@
-package com.example.buckos.models;
+package com.example.buckos;
 
 import com.parse.ParseClassName;
 import com.parse.ParseUser;

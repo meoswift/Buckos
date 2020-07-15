@@ -1,21 +1,19 @@
-package com.example.buckos.models;
+package com.example.buckos.main_screen.user_profile.display_bucket_lists;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
-@ParseClassName("Item")
-@Parcel(analyze={Item.class})
-public class Item extends ParseObject {
+@ParseClassName("List")
+@Parcel(analyze={BucketList.class})
+public class BucketList extends ParseObject {
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_AUTHOR = "author";
-    public static final String KEY_COMPLETED = "completed";
-    public static final String KEY_LIST = "list";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_LIST_ID = "objectId";
 
     public String getName() {
         return getString(KEY_NAME);
@@ -29,24 +27,12 @@ public class Item extends ParseObject {
         return getParseUser(KEY_AUTHOR);
     }
 
-    public Boolean getCompleted() {
-        return getBoolean(KEY_COMPLETED);
-    }
-
     public void setName(String name) {
         put(KEY_NAME, name);
     }
 
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
-    }
-
-    public void setCompleted(Boolean completed) {
-        put(KEY_COMPLETED, completed);
-    }
-
-    public void setList(BucketList list) {
-        put(KEY_LIST, list);
     }
 
     public void setAuthor(ParseUser user) {
