@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buckos.R;
-import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
+import com.example.buckos.main_screen.user_profile.user_bucket_lists.BucketList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseUser;

@@ -17,13 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main_screen.user_profile.edit_profile.EditProfileActivity" />
-        <activity android:name=".main_screen.user_profile.display_item_details.ItemDetailsActivity" />
+        <activity android:name=".main_screen.travel_explore.save_place_to_list.NewTravelListActivity"></activity>
+        <activity android:name=".main_screen.travel_explore.save_place_to_list.SaveToListActivity" />
+        <activity android:name=".main_screen.user_profile.EditProfileActivity" />
+        <activity android:name=".main_screen.user_profile.user_bucket_lists.bucket_list_items.item_information.ItemDetailsActivity" />
         <activity
-            android:name=".main_screen.user_profile.display_list_items.ListDetailsActivity"
+            android:name=".main_screen.user_profile.user_bucket_lists.bucket_list_items.ListDetailsActivity"
             android:label="@string/title_activity_list_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".main_screen.create_new_list.AddListFragment"
+        <activity
+            android:name=".main_screen.create_new_list.AddListFragment"
             tools:ignore="Instantiatable" />
         <activity android:name=".login_registration.SignUpActivity" />
         <activity android:name=".main_screen.MainActivity" />

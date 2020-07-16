@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,8 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.buckos.R;
+import com.example.buckos.main_screen.travel_explore.list_of_places.Place;
+import com.example.buckos.main_screen.travel_explore.list_of_places.PlacesAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,7 +80,6 @@ public class TravelFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    mCityQueryEt.clearFocus();
                     imm.hideSoftInputFromWindow(mCityQueryEt.getWindowToken(), 0);
                     performSearch();
                     return true;
@@ -93,7 +93,7 @@ public class TravelFragment extends Fragment {
     private void performSearch() {
         // Format query into appropriate URI format "+"
         String query = mCityQueryEt.getText().toString();
-        String formattedQuery = "point+of+interest+in+" + query.replace(" ","+");
+        String formattedQuery = "point+of+interest+" + query.replace(" ","+");
 
         // Makes API call to get a list of places
         AsyncHttpClient client = new AsyncHttpClient();

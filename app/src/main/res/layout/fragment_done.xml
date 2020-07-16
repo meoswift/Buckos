@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_screen.user_profile.display_list_items.display_incomplete_items.InProgressFragment"
+    tools:context=".main_screen.user_profile.user_bucket_lists.bucket_list_items.InProgressFragment"
     android:id="@+id/fragment_done">
 
 
