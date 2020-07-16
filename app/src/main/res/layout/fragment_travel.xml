@@ -28,7 +28,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
         android:id="@+id/cityInputEt"
@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/searchIcon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/searchIcon"
-        app:layout_constraintTop_toTopOf="@+id/searchIcon" />
+        app:layout_constraintTop_toTopOf="@+id/searchIcon"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cityResultsRv"

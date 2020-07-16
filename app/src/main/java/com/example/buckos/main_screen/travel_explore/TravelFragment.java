@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
@@ -61,22 +62,25 @@ public class TravelFragment extends Fragment {
         mCityQueryEt = view.findViewById(R.id.cityInputEt);
         mCityResultsRv = view.findViewById(R.id.cityResultsRv);
 
+        // Set up the adapter that will display results - POIs based on of user query
         mPlaces = new ArrayList<>();
         mAdapter = new PlacesAdapter(mPlaces, getContext());
         mCityResultsRv.setAdapter(mAdapter);
         mCityResultsRv.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Make API calls to Places API and parse results
         getSearchCityResults();
     }
 
+    // Perform search when user click on Search button in keyboard
     public void getSearchCityResults() {
         mCityQueryEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                    mCityQueryEt.clearFocus();
                     imm.hideSoftInputFromWindow(mCityQueryEt.getWindowToken(), 0);
-                    mCityQueryEt.clearFocus();
                     performSearch();
                     return true;
                 }
@@ -85,11 +89,13 @@ public class TravelFragment extends Fragment {
         });
     }
 
+    // Retrieve JSON results from Places API, parse into Place list, and notify adapter.
     private void performSearch() {
+        // Format query into appropriate URI format "+"
         String query = mCityQueryEt.getText().toString();
         String formattedQuery = "point+of+interest+in+" + query.replace(" ","+");
-        Log.d("debug", formattedQuery);
 
+        // Makes API call to get a list of places
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         String api_key = getContext().getString(R.string.google_maps_api_key);
@@ -101,6 +107,7 @@ public class TravelFragment extends Fragment {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 try {
                     JSONArray results = json.jsonObject.getJSONArray("results");
+                    // Parse results array into list of Place objects
                     mPlaces.addAll(Place.jsonToList(results));
                     mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -110,7 +117,7 @@ public class TravelFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.d("debug", response);
+                Toast.makeText(getContext(), "Failure to get list of attractions.", Toast.LENGTH_SHORT).show();
             }
         });
     }

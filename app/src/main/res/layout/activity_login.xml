@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/playfair_display_bold"
-        android:text="Buck It!"
+        android:text="Buckos"
         android:textColor="@color/colorPrimary"
         android:textColorLink="#35A7DF"
         android:textSize="50sp"

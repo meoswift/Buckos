@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.buckos.R;
 import com.example.buckos.User;
 import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketList;
 import com.example.buckos.main_screen.user_profile.display_bucket_lists.BucketListsAdapter;
+import com.example.buckos.main_screen.user_profile.display_bucket_lists.SwipeLeftToDelete;
 import com.example.buckos.main_screen.user_profile.edit_profile.EditProfileActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -73,9 +76,11 @@ public class UserProfileFragment extends Fragment {
 
         // Set up adapter for RecyclerView
         mBucketLists = new ArrayList<>();
-        mAdapter = new BucketListsAdapter(getContext(), mBucketLists);
+        mAdapter = new BucketListsAdapter(getContext(), mBucketLists, view);
         mBucketListsRv.setAdapter(mAdapter);
         mBucketListsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeLeftToDelete(mAdapter, mBucketLists));
+        itemTouchHelper.attachToRecyclerView(mBucketListsRv);
 
         // Populate user information and display their lists
         populateUserProfile();
@@ -137,4 +142,5 @@ public class UserProfileFragment extends Fragment {
             mBioTv.setText(user.getBio());
         }
     }
+
 }

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.buckos">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.ParseApplication"
@@ -14,17 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main_screen.user_profile.edit_profile.EditProfileActivity"></activity>
-        <activity android:name=".main_screen.user_profile.item_details_screen.ItemDetailsActivity" />
+        <activity android:name=".main_screen.user_profile.edit_profile.EditProfileActivity" />
+        <activity android:name=".main_screen.user_profile.display_item_details.ItemDetailsActivity" />
         <activity
-            android:name=".main_screen.user_profile.display_item_details.ListDetailsActivity"
+            android:name=".main_screen.user_profile.display_list_items.ListDetailsActivity"
             android:label="@string/title_activity_list_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.HelloActivity"
-            android:label="@string/title_activity_hello"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".main_screen.create_new_list.AddListFragment" />
+        <activity android:name=".main_screen.create_new_list.AddListFragment"
+            tools:ignore="Instantiatable" />
         <activity android:name=".login_registration.SignUpActivity" />
         <activity android:name=".main_screen.MainActivity" />
         <activity android:name=".login_registration.LoginActivity">

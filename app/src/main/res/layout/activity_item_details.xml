@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_screen.user_profile.item_details_screen.ItemDetailsActivity">
+    tools:context=".main_screen.user_profile.display_item_details.ItemDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/itemDetailsTb"
@@ -101,7 +101,7 @@
         tools:ignore="BottomAppBar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/addPhotoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -114,5 +114,17 @@
         app:tint="#FFFFFF"
         app:layout_anchor="@id/bottomAppBar"
         />
+
+    <TextView
+        android:id="@+id/listStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accomplished"
+        android:textColor="#5C5B5B"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/itemDetailsTb"
+        app:layout_constraintEnd_toEndOf="@+id/itemDetailsTb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

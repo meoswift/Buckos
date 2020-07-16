@@ -1,5 +1,6 @@
 package com.example.buckos.main_screen.user_profile.display_bucket_lists;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,10 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.main_screen.user_profile.display_item_details.ListDetailsActivity;
+import com.example.buckos.main_screen.MainActivity;
+import com.example.buckos.main_screen.user_profile.display_list_items.ListDetailsActivity;
+import com.google.android.material.snackbar.Snackbar;
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
 
 import org.parceler.Parcels;
 
@@ -22,11 +28,14 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
 
     List<BucketList> mBucketLists;
     Context context;
+    View mView;
 
-    public BucketListsAdapter(Context context, List<BucketList> mBucketLists) {
+    public BucketListsAdapter(Context context, List<BucketList> mBucketLists, View view) {
         this.mBucketLists = mBucketLists;
         this.context = context;
+        this.mView = view;
     }
+
 
     @NonNull
     @Override
@@ -47,7 +56,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         return mBucketLists.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView mListTitleTv;
         TextView mListDescriptionTv;
@@ -76,4 +85,18 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             context.startActivity(intent);
         }
     }
+
+    public void deleteList(final int position) {
+        BucketList list = mBucketLists.get(position);
+        list.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                mBucketLists.remove(position);
+                notifyItemRemoved(position);
+                Snackbar snackbar = Snackbar.make(mView, "List deleted", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
+    }
+
 }
