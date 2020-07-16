@@ -87,11 +87,14 @@ public class TravelFragment extends Fragment {
 
     private void performSearch() {
         String query = mCityQueryEt.getText().toString();
+        String formattedQuery = "point+of+interest+in+" + query.replace(" ","+");
+        Log.d("debug", formattedQuery);
+
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-
-        params.put("query", "point+of+interest+in" + query);
-        params.put("key", "AIzaSyAuxd6TMwxnqTCAfFEMSKG1vcPjemiUb-0");
+        String api_key = getContext().getString(R.string.google_maps_api_key);
+        params.put("query", formattedQuery);
+        params.put("key", api_key);
 
         client.get(PLACES_URL, params, new JsonHttpResponseHandler() {
             @Override
@@ -107,7 +110,7 @@ public class TravelFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-
+                Log.d("debug", response);
             }
         });
     }

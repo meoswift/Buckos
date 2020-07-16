@@ -27,7 +27,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
     @NonNull
     @Override
     public PlacesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // create an inflater that inflates all itemViews in a movie item
+        // create an inflater that inflates all views in a Place item
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View place = inflater.inflate(R.layout.place_item, parent, false);
         return new ViewHolder(place);
