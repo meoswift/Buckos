@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 
 import com.example.buckos.R;
 import com.example.buckos.main_screen.user_profile.user_bucket_lists.BucketList;
-import com.example.buckos.main_screen.user_profile.user_bucket_lists.bucket_list_items.item_information.ItemDetailsActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

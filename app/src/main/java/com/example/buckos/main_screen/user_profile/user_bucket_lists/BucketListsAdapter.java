@@ -37,7 +37,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.display_list, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.bucket_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -61,8 +61,8 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         public ViewHolder(@NonNull View item) {
             super(item);
 
-            mListTitleTv = item.findViewById(R.id.titleItemTv);
-            mListDescriptionTv = item.findViewById(R.id.noteItemTv);
+            mListTitleTv = item.findViewById(R.id.listTitle);
+            mListDescriptionTv = item.findViewById(R.id.listDescription);
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override

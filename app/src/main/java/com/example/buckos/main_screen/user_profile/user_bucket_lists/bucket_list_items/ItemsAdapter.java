@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.main_screen.user_profile.user_bucket_lists.bucket_list_items.item_information.ItemDetailsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -39,7 +38,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @NonNull
     @Override
     public ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_layout, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -74,9 +73,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             super(itemView);
 
             // Find views
-            mItemTitleTv = itemView.findViewById(R.id.titleItemTv);
-            mItemNoteTv = itemView.findViewById(R.id.noteItemTv);
-            mCheckBoxIv = itemView.findViewById(R.id.checkBoxIv);
+            mItemTitleTv = itemView.findViewById(R.id.listTitle);
+            mItemNoteTv = itemView.findViewById(R.id.listDescription);
+            mCheckBoxIv = itemView.findViewById(R.id.checkBox);
 
             // Directs the user to details view of an item
             itemView.setOnClickListener(this);

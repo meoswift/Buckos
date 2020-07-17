@@ -46,8 +46,6 @@ public class UserProfileFragment extends Fragment {
 
     private BucketListsAdapter mAdapter;
 
-
-
     User user;
     private List<BucketList> mBucketLists;
 

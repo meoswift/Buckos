@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_screen.user_profile.user_bucket_lists.bucket_list_items.item_information.ItemDetailsActivity">
+    tools:context=".main_screen.user_profile.user_bucket_lists.bucket_list_items.ItemDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/itemDetailsTb"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.Toolbar>
 
     <ImageView
-        android:id="@+id/backBtn"
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -33,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif"
         android:text="Post"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"

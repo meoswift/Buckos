@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialiconsoutlined/bookmark_border/outline_bookmark_border_24.xml" />
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialiconsoutlined/bookmarks/outline_bookmarks_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="1179aa" />
-                            <entry key="outputName" value="ic_outline_bookmark_border_24" />
+                            <entry key="outputName" value="ic_outline_bookmarks_24" />
                           </map>
                         </option>
                       </PersistentState>

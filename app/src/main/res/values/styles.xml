@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#F9AA33</item>
+        <item name="colorPrimary">#91BED5</item>
         <item name="colorPrimaryDark">#2C000000</item>
-        <item name="colorAccent">#EFAB54</item>
+        <item name="colorAccent">#85D6FD</item>
         <item name="android:fontFamily">@font/lato</item>
     </style>
 

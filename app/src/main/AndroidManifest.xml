@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main_screen.travel_explore.save_place_to_list.NewTravelListActivity"></activity>
-        <activity android:name=".main_screen.travel_explore.save_place_to_list.SaveToListActivity" />
+        <activity android:name=".main_screen.travel_explore.save_place_to_bucket_list.NewTravelListActivity"></activity>
+        <activity android:name=".main_screen.travel_explore.save_place_to_bucket_list.SaveToListActivity" />
         <activity android:name=".main_screen.user_profile.EditProfileActivity" />
-        <activity android:name=".main_screen.user_profile.user_bucket_lists.bucket_list_items.item_information.ItemDetailsActivity" />
+        <activity android:name=".main_screen.user_profile.user_bucket_lists.bucket_list_items.ItemDetailsActivity" />
         <activity
             android:name=".main_screen.user_profile.user_bucket_lists.bucket_list_items.ListDetailsActivity"
             android:label="@string/title_activity_list_details"

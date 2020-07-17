@@ -51,6 +51,7 @@
                     android:id="@+id/editProfileBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
                     android:insetTop="8dp"
                     android:insetBottom="8dp"
                     android:text="Edit profile" />
@@ -70,6 +71,6 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

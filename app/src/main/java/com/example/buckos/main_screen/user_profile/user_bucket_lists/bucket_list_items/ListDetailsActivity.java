@@ -36,7 +36,7 @@ public class ListDetailsActivity extends AppCompatActivity {
         mListTitleTv = findViewById(R.id.listTitleTv);
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.pager);
-        mBackBtnIv = findViewById(R.id.backBtn);
+        mBackBtnIv = findViewById(R.id.backButton);
         mListDescriptionTv = findViewById(R.id.listDescription);
 
         // Unwrap list object sent by previous fragment

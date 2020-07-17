@@ -23,8 +23,8 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.buckos.R;
-import com.example.buckos.main_screen.travel_explore.list_of_places.Place;
-import com.example.buckos.main_screen.travel_explore.list_of_places.PlacesAdapter;
+import com.example.buckos.main_screen.travel_explore.list_of_places_in_city.Place;
+import com.example.buckos.main_screen.travel_explore.list_of_places_in_city.PlacesAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

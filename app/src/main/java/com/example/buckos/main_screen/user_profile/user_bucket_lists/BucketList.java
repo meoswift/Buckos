@@ -15,6 +15,8 @@ public class BucketList extends ParseObject {
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_LIST_ID = "objectId";
 
+    private boolean isSelected = false;
+
     public String getName() {
         return getString(KEY_NAME);
     }
@@ -37,5 +39,14 @@ public class BucketList extends ParseObject {
 
     public void setAuthor(ParseUser user) {
         put(KEY_AUTHOR, user);
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+
+    public boolean isSelected() {
+        return isSelected;
     }
 }

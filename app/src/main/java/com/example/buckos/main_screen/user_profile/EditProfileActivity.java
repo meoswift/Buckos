@@ -34,7 +34,7 @@ public class EditProfileActivity extends AppCompatActivity {
         mNameEt = findViewById(R.id.nameEt);
         mUsernameEt = findViewById(R.id.usernameEt);
         mBioEt = findViewById(R.id.bioEt);
-        mBackBtn = findViewById(R.id.backBtn);
+        mBackBtn = findViewById(R.id.backButton);
         mSaveBtn = findViewById(R.id.saveEditBtn);
 
         // Populate views with user info
