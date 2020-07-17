@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
+import com.example.buckos.main.profile.bucketlists.items.content.ItemDetailsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -30,9 +31,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     private Fragment mActivity;
 
     public ItemsAdapter(Context context, List<Item> itemList, Fragment activity) {
-        this.mItemList = itemList;
-        this.mContext = context;
-        this.mActivity = activity;
+        mItemList = itemList;
+        mContext = context;
+        mActivity = activity;
     }
 
     @NonNull
@@ -45,12 +46,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ItemsAdapter.ViewHolder holder, int position) {
         Item item = mItemList.get(position);
-        holder.mItemTitleTv.setText(item.getName());
-        holder.mItemNoteTv.setText(item.getDescription());
+        holder.itemTitleTv.setText(item.getName());
+
+        if(!item.getDescription().equals("")) {
+            holder.itemNoteTv.setText(item.getDescription());
+            holder.itemNoteTv.setVisibility(View.VISIBLE);
+        }
 
         // For Done items, there will be no checkbox
         if (item.getCompleted()) {
-            holder.mCheckBoxIv.setImageDrawable(null);
+            holder.checkBoxIv.setImageDrawable(null);
         }
 
     }
@@ -62,10 +67,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private static final String DISPLAY_ITEMS = "displayItems";
-        TextView mItemTitleTv;
-        TextView mItemNoteTv;
-        ImageView mCheckBoxIv;
+        TextView itemTitleTv;
+        TextView itemNoteTv;
+        ImageView checkBoxIv;
 
         Item item;
 
@@ -73,15 +77,15 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             super(itemView);
 
             // Find views
-            mItemTitleTv = itemView.findViewById(R.id.listTitle);
-            mItemNoteTv = itemView.findViewById(R.id.listDescription);
-            mCheckBoxIv = itemView.findViewById(R.id.checkBox);
+            itemTitleTv = itemView.findViewById(R.id.listTitle);
+            itemNoteTv = itemView.findViewById(R.id.listDescription);
+            checkBoxIv = itemView.findViewById(R.id.checkBox);
 
             // Directs the user to details view of an item
             itemView.setOnClickListener(this);
 
             // Mark item completed when user check the box
-            mCheckBoxIv.setOnClickListener(new View.OnClickListener() {
+            checkBoxIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     checkItemCompleted();
@@ -111,7 +115,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 @Override
                 public void done(ParseException e) {
                     Drawable res = mContext.getResources().getDrawable(R.drawable.ic_check_box);
-                    mCheckBoxIv.setImageDrawable(res);
+                    checkBoxIv.setImageDrawable(res);
                     mItemList.remove(item);
                     notifyItemRemoved(getAdapterPosition());
                     Snackbar.make(itemView, "1 item archived to Done", Snackbar.LENGTH_LONG)
@@ -132,7 +136,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 @Override
                 public void done(ParseException e) {
                     Drawable res = mContext.getResources().getDrawable(R.drawable.ic_check_box_outline);
-                    mCheckBoxIv.setImageDrawable(res);
+                    checkBoxIv.setImageDrawable(res);
                     mItemList.add(0, item);
                     notifyItemInserted(0);
                 }

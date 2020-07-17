@@ -41,12 +41,12 @@ public class UserProfileFragment extends Fragment {
     private RecyclerView mBucketListsRv;
     private TextView mDisplayNameTv;
     private TextView mBioTv;
-    private Button mEditProfileBtn;
+    private Button mEditProfileButton;
     private ProgressBar mProgressBar;
 
     private BucketListsAdapter mAdapter;
 
-    User user;
+    private User user;
     private List<BucketList> mBucketLists;
 
     @Override
@@ -65,7 +65,7 @@ public class UserProfileFragment extends Fragment {
         mDisplayNameTv = view.findViewById(R.id.displayNameTv);
         mBioTv = view.findViewById(R.id.bioTv);
         mProgressBar = view.findViewById(R.id.progressBar);
-        mEditProfileBtn = view.findViewById(R.id.editProfileBtn);
+        mEditProfileButton = view.findViewById(R.id.editProfileBtn);
 
         // Get current user to retrieve information
         user = (User) ParseUser.getCurrentUser();
@@ -118,7 +118,7 @@ public class UserProfileFragment extends Fragment {
 
     // When user clicks Edit Profile button, takes them to Edit screen
     public void handleEditProfile() {
-        mEditProfileBtn.setOnClickListener(new View.OnClickListener() {
+        mEditProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditProfileActivity.class);

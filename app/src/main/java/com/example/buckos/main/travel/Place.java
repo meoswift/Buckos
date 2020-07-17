@@ -24,8 +24,28 @@ public class Place {
     public Place(JSONObject data) throws JSONException {
         mName = data.getString("name");
         mAddressName = data.getString("formatted_address");
-        mRating = data.getDouble("rating");
-        mUserRatingsTotal = data.getInt("user_ratings_total");
+        mRating = getPlaceRating(data);
+        mUserRatingsTotal = getPlaceRatingsTotal(data);
+    }
+
+    private Double getPlaceRating(JSONObject data) {
+        try {
+            Double rating = data.getDouble("rating");
+            return rating;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
+
+    private int getPlaceRatingsTotal(JSONObject data) {
+        try {
+            int ratingTotal = data.getInt("user_ratings_total");
+            return ratingTotal;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     // create a list of Place objects by parsing the JSONArray of places

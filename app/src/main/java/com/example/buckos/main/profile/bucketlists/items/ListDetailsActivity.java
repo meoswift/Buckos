@@ -23,7 +23,7 @@ public class ListDetailsActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
-    private ImageView mBackBtnIv;
+    private ImageView mBackButtonIv;
     private TextView mListDescriptionTv;
     private BucketList list;
 
@@ -36,7 +36,7 @@ public class ListDetailsActivity extends AppCompatActivity {
         mListTitleTv = findViewById(R.id.listTitleTv);
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.pager);
-        mBackBtnIv = findViewById(R.id.backButton);
+        mBackButtonIv = findViewById(R.id.backButton);
         mListDescriptionTv = findViewById(R.id.listDescription);
 
         // Unwrap list object sent by previous fragment
@@ -81,7 +81,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
     // When user click back button on screen, takes them to previous screen
     public void handleBackPress() {
-        mBackBtnIv.setOnClickListener(new View.OnClickListener() {
+        mBackButtonIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ListDetailsActivity.super.onBackPressed();

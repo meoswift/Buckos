@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.buckos.R;
 import com.example.buckos.main.profile.bucketlists.BucketList;
+import com.example.buckos.main.profile.bucketlists.items.content.ItemDetailsActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

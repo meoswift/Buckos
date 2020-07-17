@@ -22,8 +22,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText mNameEt;
     private EditText mUsernameEt;
     private EditText mBioEt;
-    private ImageView mBackBtn;
-    private ImageView mSaveBtn;
+    private ImageView mBackButton;
+    private ImageView mSaveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,8 @@ public class EditProfileActivity extends AppCompatActivity {
         mNameEt = findViewById(R.id.nameEt);
         mUsernameEt = findViewById(R.id.usernameEt);
         mBioEt = findViewById(R.id.bioEt);
-        mBackBtn = findViewById(R.id.backButton);
-        mSaveBtn = findViewById(R.id.saveEditBtn);
+        mBackButton = findViewById(R.id.backButton);
+        mSaveButton = findViewById(R.id.saveEditBtn);
 
         // Populate views with user info
         populateUserInfo();
@@ -54,7 +54,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void dismissChangesOnBackPressed() {
-        mBackBtn.setOnClickListener(new View.OnClickListener() {
+        mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditProfileActivity.super.onBackPressed();
@@ -63,7 +63,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void saveChangesOnSavePressed() {
-        mSaveBtn.setOnClickListener(new View.OnClickListener() {
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final User user = (User) ParseUser.getCurrentUser();

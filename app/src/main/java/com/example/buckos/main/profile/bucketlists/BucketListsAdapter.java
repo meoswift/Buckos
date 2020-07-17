@@ -11,10 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
+import com.example.buckos.main.profile.bucketlists.items.Item;
 import com.example.buckos.main.profile.bucketlists.items.ListDetailsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import org.parceler.Parcels;
 
@@ -24,28 +27,32 @@ import java.util.List;
 public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.ViewHolder> {
 
     List<BucketList> mBucketLists;
-    Context context;
+    Context mContext;
     View mView;
 
-    public BucketListsAdapter(Context context, List<BucketList> mBucketLists, View view) {
-        this.mBucketLists = mBucketLists;
-        this.context = context;
-        this.mView = view;
+    public BucketListsAdapter(Context context, List<BucketList> bucketLists, View view) {
+        mBucketLists = bucketLists;
+        mContext = context;
+        mView = view;
     }
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.bucket_list_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.bucket_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BucketList list = mBucketLists.get(position);
-        holder.mListTitleTv.setText(list.getName());
-        holder.mListDescriptionTv.setText(list.getDescription());
+        holder.listTitleTv.setText(list.getName());
+
+        if(!list.getDescription().equals("")) {
+            holder.listDescriptionTv.setText(list.getDescription());
+            holder.listDescriptionTv.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -55,14 +62,14 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mListTitleTv;
-        TextView mListDescriptionTv;
+        TextView listTitleTv;
+        TextView listDescriptionTv;
 
         public ViewHolder(@NonNull View item) {
             super(item);
 
-            mListTitleTv = item.findViewById(R.id.listTitle);
-            mListDescriptionTv = item.findViewById(R.id.listDescription);
+            listTitleTv = item.findViewById(R.id.listTitle);
+            listDescriptionTv = item.findViewById(R.id.listDescription);
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,21 +84,38 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             BucketList list = mBucketLists.get(position);
 
             // When user click on a specific list, show the details of the list
-            Intent intent = new Intent(context, ListDetailsActivity.class);
+            Intent intent = new Intent(mContext, ListDetailsActivity.class);
             intent.putExtra("bucketList", Parcels.wrap(list));
-            context.startActivity(intent);
+            mContext.startActivity(intent);
         }
     }
 
+    // Delete the list when user swipe right or left
     public void deleteList(final int position) {
-        BucketList list = mBucketLists.get(position);
+        final BucketList list = mBucketLists.get(position);
         list.deleteInBackground(new DeleteCallback() {
             @Override
             public void done(ParseException e) {
+                deleteItemsInList(list);
                 mBucketLists.remove(position);
                 notifyItemRemoved(position);
                 Snackbar snackbar = Snackbar.make(mView, "List deleted", Snackbar.LENGTH_LONG);
                 snackbar.show();
+            }
+        });
+    }
+
+    // When user delete a list, delete all items in that list as well
+    private void deleteItemsInList(BucketList list) {
+        ParseQuery<Item> query = ParseQuery.getQuery(Item.class);
+        query.whereEqualTo(Item.KEY_LIST, list);
+        query.findInBackground(new FindCallback<Item>() {
+            @Override
+            public void done(List<Item> objects, ParseException e) {
+                for (int i = 0; i < objects.size(); i++) {
+                    Item item = objects.get(i);
+                    item.deleteInBackground();
+                }
             }
         });
     }

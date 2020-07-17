@@ -5,6 +5,7 @@ import android.app.Application;
 import com.example.buckos.User;
 import com.example.buckos.main.profile.bucketlists.BucketList;
 import com.example.buckos.main.profile.bucketlists.items.Item;
+import com.example.buckos.main.profile.bucketlists.items.content.Photo;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -23,6 +24,8 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(BucketList.class);
         ParseObject.registerSubclass(Item.class);
         ParseObject.registerSubclass(User.class);
+        ParseObject.registerSubclass(Photo.class);
+
 
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY

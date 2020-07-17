@@ -18,7 +18,6 @@ import com.parse.ParseUser;
 // This activity logs user in and maintain persistence
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private Button mLogInBtn;
     private EditText mUsernameEt;
     private EditText mPasswordEt;
 
@@ -28,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Find views
-        mLogInBtn = findViewById(R.id.logInBtn);
         mUsernameEt = findViewById(R.id.usernameEt);
         mPasswordEt = findViewById(R.id.passwordEt);
 

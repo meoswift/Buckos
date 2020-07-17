@@ -2,6 +2,7 @@ package com.example.buckos.main.travel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         }
 
         private void savePlaceToList() {
+            Drawable bookmarked = mContext.getResources().getDrawable(R.drawable.ic_baseline_bookmark_24);
+            bookmarkButton.setImageDrawable(bookmarked);
             Place place = mPlaces.get(getAdapterPosition());
             Intent intent = new Intent(mContext, SaveToListActivity.class);
             intent.putExtra("place", Parcels.wrap(place));

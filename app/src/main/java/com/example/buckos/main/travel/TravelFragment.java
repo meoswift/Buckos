@@ -106,7 +106,7 @@ public class TravelFragment extends Fragment {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 try {
                     JSONArray results = json.jsonObject.getJSONArray("results");
-                    Log.d("debug", String.valueOf(results.length()));
+                    Log.d("debug", results.toString());
                     // Parse results array into list of Place objects
                     mPlaces.clear();
                     mPlaces.addAll(Place.jsonToList(results));
