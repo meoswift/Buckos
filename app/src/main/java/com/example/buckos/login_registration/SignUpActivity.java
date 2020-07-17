@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
                 // User is logged in successfully, navigate to Home/Feed.
                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish(); // prevents user from going back to login screen
+                finish(); // prevents user from going back to sign up screen
             }
         });
     }

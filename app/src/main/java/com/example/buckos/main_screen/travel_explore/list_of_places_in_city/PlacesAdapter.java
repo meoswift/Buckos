@@ -82,8 +82,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         }
 
         private void savePlaceToList() {
-            Drawable bookmarked = mContext.getResources().getDrawable(R.drawable.ic_baseline_bookmark_24);
-            bookmarkButton.setImageDrawable(bookmarked);
             Place place = mPlaces.get(getAdapterPosition());
             Intent intent = new Intent(mContext, SaveToListActivity.class);
             intent.putExtra("place", Parcels.wrap(place));

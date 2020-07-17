@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialiconsoutlined/bookmarks/outline_bookmarks_24.xml" />
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/playlist_add/baseline_playlist_add_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_outline_bookmarks_24" />
+                            <entry key="color" value="1179aa" />
+                            <entry key="outputName" value="ic_baseline_playlist_add_24" />
                           </map>
                         </option>
                       </PersistentState>

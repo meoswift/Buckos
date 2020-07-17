@@ -57,14 +57,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cityInputEt" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_outline_bookmarks_24"
-        android:tint="#454545"
-        app:layout_constraintBottom_toBottomOf="@+id/exploreLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/exploreLabel" />
 </androidx.constraintlayout.widget.ConstraintLayout>

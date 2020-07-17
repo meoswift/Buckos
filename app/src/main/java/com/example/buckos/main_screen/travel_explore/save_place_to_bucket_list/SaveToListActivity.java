@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class SaveToListActivity extends AppCompatActivity {
     private ImageView mSaveButton;
     private RecyclerView mTravelListsRv;
     private ProgressBar mProgressBar;
+    private Button mCreateListButton;
 
     private List<BucketList> mTravelLists;
     private TravelListsAdapter mAdapter;
@@ -55,6 +57,7 @@ public class SaveToListActivity extends AppCompatActivity {
         mSaveButton = findViewById(R.id.saveButton);
         mTravelListsRv = findViewById(R.id.travelListsRv);
         mProgressBar = findViewById(R.id.progressBar);
+        mCreateListButton = findViewById(R.id.createListButton);
 
         // Set up adapter for travel lists
         mTravelLists = new ArrayList<>();
@@ -64,6 +67,14 @@ public class SaveToListActivity extends AppCompatActivity {
 
         queryLists();
         saveToSelectedLists();
+        createListOnClicked();
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     // Display the bucket lists that user has created
@@ -96,7 +107,7 @@ public class SaveToListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<BucketList> selectedLists = mAdapter.getSelectedLists();
-                Toast.makeText(getApplicationContext(), "Saved to lists", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Place saved", Toast.LENGTH_LONG).show();
                 // Go through selected travel lists and add place to each list
                 for (int i = 0; i < selectedLists.size(); i++) {
                     addItemToList(selectedLists.get(i));
@@ -118,6 +129,18 @@ public class SaveToListActivity extends AppCompatActivity {
         item.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                finish();
+            }
+        });
+    }
+
+    private void createListOnClicked() {
+        mCreateListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NewTravelListActivity.class);
+                intent.putExtra("place", Parcels.wrap(place));
+                startActivity(intent);
                 finish();
             }
         });

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,6 @@ public class TravelFragment extends Fragment {
         mCityResultsRv.setAdapter(mAdapter);
         mCityResultsRv.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Make API calls to Places API and parse results
         getSearchCityResults();
     }
 
@@ -93,7 +93,8 @@ public class TravelFragment extends Fragment {
     private void performSearch() {
         // Format query into appropriate URI format "+"
         String query = mCityQueryEt.getText().toString();
-        String formattedQuery = "point+of+interest+" + query.replace(" ","+");
+        String formattedQuery = "point+of+interest+in+" + query.replace(" ","+");
+        Log.d("debug", formattedQuery);
 
         // Makes API call to get a list of places
         AsyncHttpClient client = new AsyncHttpClient();
@@ -107,7 +108,9 @@ public class TravelFragment extends Fragment {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 try {
                     JSONArray results = json.jsonObject.getJSONArray("results");
+                    Log.d("debug", String.valueOf(results.length()));
                     // Parse results array into list of Place objects
+                    mPlaces.clear();
                     mPlaces.addAll(Place.jsonToList(results));
                     mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
