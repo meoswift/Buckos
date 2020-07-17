@@ -17,21 +17,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main_screen.travel_explore.save_place_to_bucket_list.NewTravelListActivity" />
-        <activity android:name=".main_screen.travel_explore.save_place_to_bucket_list.SaveToListActivity" />
-        <activity android:name=".main_screen.user_profile.EditProfileActivity" />
-        <activity android:name=".main_screen.user_profile.user_bucket_lists.bucket_list_items.ItemDetailsActivity" />
+        <activity android:name=".main.travel.placebookmark.NewTravelListActivity" />
+        <activity android:name=".main.travel.placebookmark.SaveToListActivity" />
+        <activity android:name=".main.profile.EditProfileActivity" />
+        <activity android:name=".main.profile.bucketlists.items.ItemDetailsActivity" />
         <activity
-            android:name=".main_screen.user_profile.user_bucket_lists.bucket_list_items.ListDetailsActivity"
-            android:parentActivityName=".main_screen.MainActivity"
+            android:name=".main.profile.bucketlists.items.ListDetailsActivity"
+            android:parentActivityName=".main.MainActivity"
             android:label="@string/title_activity_list_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".main_screen.create_new_list.AddListFragment"
+            android:name=".main.create.AddListFragment"
             tools:ignore="Instantiatable" />
-        <activity android:name=".login_registration.SignUpActivity" />
-        <activity android:name=".main_screen.MainActivity" />
-        <activity android:name=".login_registration.LoginActivity">
+        <activity android:name=".authentication.SignUpActivity" />
+        <activity android:name=".main.MainActivity" />
+        <activity android:name=".authentication.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

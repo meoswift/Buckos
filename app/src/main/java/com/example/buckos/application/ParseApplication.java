@@ -3,8 +3,8 @@ package com.example.buckos.application;
 import android.app.Application;
 
 import com.example.buckos.User;
-import com.example.buckos.main_screen.user_profile.user_bucket_lists.BucketList;
-import com.example.buckos.main_screen.user_profile.user_bucket_lists.bucket_list_items.Item;
+import com.example.buckos.main.profile.bucketlists.BucketList;
+import com.example.buckos.main.profile.bucketlists.items.Item;
 import com.parse.Parse;
 import com.parse.ParseObject;
 

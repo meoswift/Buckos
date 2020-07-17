@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_screen.travel_explore.save_place_to_bucket_list.SaveToListActivity">
+    tools:context=".main.travel.placebookmark.SaveToListActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_screen.create_new_list.AddListFragment">
+    tools:context=".main.create.AddListFragment">
 
     <EditText
         android:id="@+id/listTitleEt"

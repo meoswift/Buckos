@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_screen.user_profile.user_bucket_lists.bucket_list_items.ListDetailsActivity">
+    tools:context=".main.profile.bucketlists.items.ListDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarListDetail"
