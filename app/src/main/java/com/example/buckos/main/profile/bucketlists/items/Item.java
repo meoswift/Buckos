@@ -52,4 +52,14 @@ public class Item extends ParseObject {
     public void setAuthor(ParseUser user) {
         put(KEY_AUTHOR, user);
     }
+
+    public String getShortenedDescription() {
+        String description = getDescription();
+        if (description.length() > 40) {
+            return description.substring(0, 40) + "...";
+        } else {
+            return description;
+        }
+    }
+
 }

@@ -16,12 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.buckos.R;
 import com.example.buckos.main.profile.bucketlists.items.content.ItemDetailsActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 // This adapter inflates an Item object into View and display that Item in RecyclerView
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
@@ -48,9 +51,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         Item item = mItemList.get(position);
         holder.itemTitleTv.setText(item.getName());
 
-        if(!item.getDescription().equals("")) {
-            holder.itemNoteTv.setText(item.getDescription());
+        // When there is no note in an item, remove that view
+        if(!item.getShortenedDescription().equals("")) {
+            holder.itemNoteTv.setText(item.getShortenedDescription());
             holder.itemNoteTv.setVisibility(View.VISIBLE);
+        } else {
+            holder.itemNoteTv.setVisibility(View.GONE);
         }
 
         // For Done items, there will be no checkbox
@@ -143,4 +149,5 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             });
         }
     }
+
 }

@@ -111,6 +111,7 @@ public class DoneFragment extends Fragment {
             }
 
             mAdapter.notifyDataSetChanged();
+
         }
     }
 

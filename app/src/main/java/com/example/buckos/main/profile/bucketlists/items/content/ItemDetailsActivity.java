@@ -33,8 +33,10 @@ import com.example.buckos.main.profile.bucketlists.items.Item;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -89,12 +91,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mDeleteButton = findViewById(R.id.deleteButton);
         mPhotosRv = findViewById(R.id.photosRv);
 
-        // Populate title and note of an item
-        populateItemDetails();
-
         // Set up adapter for list of photos attached to an item
         mPhotosInItem = new ArrayList<>();
-        mAdapter = new PhotosAdapter(mPhotosInItem, this);
+        mAdapter = new PhotosAdapter(mPhotosInItem, this, this);
         mPhotosRv.setAdapter(mAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mPhotosRv.setLayoutManager(layoutManager);
@@ -112,6 +111,10 @@ public class ItemDetailsActivity extends AppCompatActivity {
         handleScrollViewClicked();
         // When user click add photo, they can choose photo from gallery or camera
         handleAddPhotoButtonClicked();
+
+        // Populate title, note, a photos attached in an item
+        populateItemDetails();
+        getPhotosInCurrentItem();
     }
 
     // When user navigate via hardware back press, also save changes and update
@@ -203,20 +206,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // Remove item from database and update RecyclerView
-    private void deleteItem() {
-        item.deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                Intent intent = new Intent();
-                intent.putExtra("position", itemPosition);
-                intent.putExtra("action", DELETE_ITEM);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-    }
-
     // Build a dialog that shows two option for user to pick a photo from
     private void choosePhotoOption() {
         String [] options = {"Choose image", "Take a photo"};
@@ -275,26 +264,40 @@ public class ItemDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                addNewPhoto(item);
+                mAdapter.addNewPhoto(item, photoFile);
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void addNewPhoto(Item item) {
-        final Photo photo = new Photo();
-        photo.setItem(item);
-        photo.setPhotoFile(new ParseFile(photoFile));
 
-        photo.saveInBackground(new SaveCallback() {
+    private void getPhotosInCurrentItem() {
+        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        query.whereEqualTo(Photo.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Photo>() {
             @Override
-            public void done(ParseException e) {
-                mPhotosInItem.add(photo);
+            public void done(List<Photo> objects, ParseException e) {
+                mPhotosInItem.clear();
+                mPhotosInItem.addAll(objects);
                 mAdapter.notifyDataSetChanged();
             }
         });
     }
 
+    // Remove item from database and update RecyclerView
+    public void deleteItem() {
+        item.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                Intent intent = new Intent();
+                intent.putExtra("position", itemPosition);
+                intent.putExtra("action", ItemDetailsActivity.DELETE_ITEM);
+
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+    }
 
 }

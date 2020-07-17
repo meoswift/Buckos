@@ -123,6 +123,7 @@ public class InProgressFragment extends Fragment {
 
         final Item item = new Item();
         item.setName(itemTitle);
+        item.setDescription("");
         item.setCompleted(false);
         item.setList(mBucketList);
         item.setAuthor(ParseUser.getCurrentUser());
