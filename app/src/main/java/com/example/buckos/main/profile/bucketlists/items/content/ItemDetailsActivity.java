@@ -114,7 +114,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         // Populate title, note, a photos attached in an item
         populateItemDetails();
-        getPhotosInCurrentItem();
+        mAdapter.getPhotosInCurrentItem(item);
     }
 
     // When user navigate via hardware back press, also save changes and update
@@ -272,32 +272,21 @@ public class ItemDetailsActivity extends AppCompatActivity {
     }
 
 
-    private void getPhotosInCurrentItem() {
-        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
-        query.whereEqualTo(Photo.KEY_ITEM, item);
-        query.findInBackground(new FindCallback<Photo>() {
-            @Override
-            public void done(List<Photo> objects, ParseException e) {
-                mPhotosInItem.clear();
-                mPhotosInItem.addAll(objects);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
     // Remove item from database and update RecyclerView
     public void deleteItem() {
         item.deleteInBackground(new DeleteCallback() {
             @Override
             public void done(ParseException e) {
+                mAdapter.deleteAllPhotosInItem(item);
                 Intent intent = new Intent();
                 intent.putExtra("position", itemPosition);
                 intent.putExtra("action", ItemDetailsActivity.DELETE_ITEM);
-
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
     }
+
+
 
 }

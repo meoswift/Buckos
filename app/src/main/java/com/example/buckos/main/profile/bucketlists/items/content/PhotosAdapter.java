@@ -16,8 +16,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.buckos.R;
 import com.example.buckos.main.profile.bucketlists.items.Item;
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.io.File;
@@ -79,6 +81,33 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
             public void done(ParseException e) {
                 mPhotos.add(photo);
                 notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void getPhotosInCurrentItem(Item item) {
+        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        query.whereEqualTo(Photo.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Photo>() {
+            @Override
+            public void done(List<Photo> objects, ParseException e) {
+                mPhotos.clear();
+                mPhotos.addAll(objects);
+                notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void deleteAllPhotosInItem(Item item) {
+        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        query.whereEqualTo(Photo.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Photo>() {
+            @Override
+            public void done(List<Photo> objects, ParseException e) {
+                for (int i = 0; i < objects.size(); i++) {
+                    Photo photo = objects.get(i);
+                    photo.deleteInBackground();
+                }
             }
         });
     }
