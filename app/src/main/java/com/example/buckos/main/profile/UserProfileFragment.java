@@ -90,6 +90,7 @@ public class UserProfileFragment extends Fragment {
     private void populateUserProfile() {
         mDisplayNameTv.setText(user.getName());
         mBioTv.setText(user.getBio());
+        Log.d("debug", user.getBio());
     }
 
     // Display the bucket lists that user has created
@@ -133,7 +134,7 @@ public class UserProfileFragment extends Fragment {
 
         // Display the updated information of user profile after changes
         if (resultCode == RESULT_OK && requestCode == EDIT_PROFILE_REQ) {
-            User user = Parcels.unwrap(data.getParcelableExtra("user"));
+            User user = (User) ParseUser.getCurrentUser();
             mDisplayNameTv.setText(user.getName());
             mBioTv.setText(user.getBio());
         }

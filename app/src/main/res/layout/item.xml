@@ -11,12 +11,24 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+<!--        &lt;!&ndash; Media &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/photoPreview"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:scaleType="centerCrop" />-->
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:visibility="visible">
-
 
             <TextView
                 android:id="@+id/listTitle"
@@ -53,6 +65,8 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

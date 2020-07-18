@@ -13,7 +13,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -42,6 +44,7 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     public static final String EDIT_ITEM = "editItem";
     public final String APP_TAG = "Buckos";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public final static int PICK_PHOTO_CODE = 1046;
 
     private EditText mItemTitleEt;
     private EditText mItemNoteEt;
@@ -60,7 +64,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private TextView mShareTv;
     private ImageView mDeleteButton;
     private TextView mListStatusTv;
-    private FloatingActionButton mAddPhotoButton;
+    private ImageView mAddPhotoButton;
     private NestedScrollView mNestedScrollView;
     private RecyclerView mPhotosRv;
 
@@ -91,11 +95,14 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mDeleteButton = findViewById(R.id.deleteButton);
         mPhotosRv = findViewById(R.id.photosRv);
 
+        mItemNoteEt.setSelection(mItemNoteEt.getText().length());
+
         // Set up adapter for list of photos attached to an item
         mPhotosInItem = new ArrayList<>();
-        mAdapter = new PhotosAdapter(mPhotosInItem, this, this);
+        mAdapter = new PhotosAdapter(mPhotosInItem, this);
         mPhotosRv.setAdapter(mAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false);
         mPhotosRv.setLayoutManager(layoutManager);
 
         // When user press back, save all changes and update to database
@@ -106,7 +113,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
             }
         });
         // When user click Trash icon, delete the item from list
-        handleDeleteItemClicked();
+//        handleDeleteItemClicked();
         // When user scroll through the item, they can read or edit the item on touch
         handleScrollViewClicked();
         // When user click add photo, they can choose photo from gallery or camera
@@ -114,7 +121,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         // Populate title, note, a photos attached in an item
         populateItemDetails();
-        mAdapter.getPhotosInCurrentItem(item);
+        mAdapter.displayPhotosInCurrentItem(item);
     }
 
     // When user navigate via hardware back press, also save changes and update
@@ -123,6 +130,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         saveChanges();
     }
 
+    // When new photo FAB is clicked, pop up 2 options and execute according to choice
     private void handleAddPhotoButtonClicked() {
         mAddPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +140,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // On each menu option, calls the right function to perform the task
+    // When Trash icon is clicked, delete the item
     public void handleDeleteItemClicked() {
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +149,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
             }
         });
     }
-
 
     // When scroll view is touched, determine which one is a tap, and which is a scroll
     @SuppressLint("ClickableViewAccessibility")
@@ -206,6 +213,21 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
+    // Remove item from database and update RecyclerView
+    public void deleteItem() {
+        item.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                mAdapter.deleteAllPhotosInItem(item);
+                Intent intent = new Intent();
+                intent.putExtra("position", itemPosition);
+                intent.putExtra("action", ItemDetailsActivity.DELETE_ITEM);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+    }
+
     // Build a dialog that shows two option for user to pick a photo from
     private void choosePhotoOption() {
         String [] options = {"Choose image", "Take a photo"};
@@ -215,7 +237,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0)
-                            Log.d("debug", "choose image");
+                            choosePhotoFromGallery();
                         else
                             takePhotoFromCamera();
                     }
@@ -243,6 +265,23 @@ public class ItemDetailsActivity extends AppCompatActivity {
         }
     }
 
+    // Trigger gallery selection for a photo
+    public void choosePhotoFromGallery() {
+        String photoFileName = "photo.png";
+        photoFile = getPhotoFileUri(photoFileName);
+        // Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Uri fileProvider = FileProvider.getUriForFile(this,
+                "com.codepath.fileprovider.buckos", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
     // Returns the File for a photo stored on disk given the fileName
     public File getPhotoFileUri(String fileName) {
         // Get safe storage directory for photos
@@ -259,6 +298,24 @@ public class ItemDetailsActivity extends AppCompatActivity {
         return file;
     }
 
+    public Bitmap loadFromUri(Uri photoUri) {
+        Bitmap image = null;
+        try {
+            // check version of Android on device
+            if(Build.VERSION.SDK_INT > 27){
+                // on newer versions of Android, use the new decodeBitmap method
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
+                image = ImageDecoder.decodeBitmap(source);
+            } else {
+                // support older versions of Android by using getBitmap
+                image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -266,27 +323,19 @@ public class ItemDetailsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 mAdapter.addNewPhoto(item, photoFile);
             } else { // Result was a failure
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Picture wasn't taken.", Toast.LENGTH_SHORT).show();
             }
         }
+
+//        if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+//            if (resultCode == RESULT_OK) {
+//                Uri photoUri = data.getData();
+//                photoFile = new File(photoUri.getPath());
+//                Log.d("debug", photoFile.getPath());
+//                mAdapter.addNewPhoto(item, photoFile);
+//            } else { // Result was a failure
+//                Toast.makeText(this, "Fail to choose media.", Toast.LENGTH_SHORT).show();
+//            }
+//        }
     }
-
-
-    // Remove item from database and update RecyclerView
-    public void deleteItem() {
-        item.deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                mAdapter.deleteAllPhotosInItem(item);
-                Intent intent = new Intent();
-                intent.putExtra("position", itemPosition);
-                intent.putExtra("action", ItemDetailsActivity.DELETE_ITEM);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-    }
-
-
-
 }

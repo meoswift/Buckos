@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class TravelFragment extends Fragment {
 
     private EditText mCityQueryEt;
     private RecyclerView mCityResultsRv;
+    private ImageView mTravelArt;
 
     private List<Place> mPlaces;
     private PlacesAdapter mAdapter;
@@ -61,6 +63,9 @@ public class TravelFragment extends Fragment {
         // Find views
         mCityQueryEt = view.findViewById(R.id.cityInputEt);
         mCityResultsRv = view.findViewById(R.id.cityResultsRv);
+        mTravelArt = view.findViewById(R.id.travelArt);
+
+        mCityQueryEt.requestFocus();
 
         // Set up the adapter that will display results - POIs based on of user query
         mPlaces = new ArrayList<>();
@@ -110,6 +115,7 @@ public class TravelFragment extends Fragment {
                     // Parse results array into list of Place objects
                     mPlaces.clear();
                     mPlaces.addAll(Place.jsonToList(results));
+                    mTravelArt.setVisibility(View.GONE);
                     mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();

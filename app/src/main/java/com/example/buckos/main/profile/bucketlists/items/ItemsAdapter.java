@@ -3,6 +3,7 @@ package com.example.buckos.main.profile.bucketlists.items;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.buckos.R;
 import com.example.buckos.main.profile.bucketlists.items.content.ItemDetailsActivity;
+import com.example.buckos.main.profile.bucketlists.items.content.Photo;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -32,6 +39,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     private List<Item> mItemList;
     private Context mContext;
     private Fragment mActivity;
+//    private Photo mFirstPhotoInItem = null;
 
     public ItemsAdapter(Context context, List<Item> itemList, Fragment activity) {
         mItemList = itemList;
@@ -59,9 +67,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             holder.itemNoteTv.setVisibility(View.GONE);
         }
 
-        // For Done items, there will be no checkbox
+        // For Done items, there will be no checkbox and image preview
         if (item.getCompleted()) {
             holder.checkBoxIv.setImageDrawable(null);
+//            getFirstPhotoInItem(item);
+//            Log.d("debug", mFirstPhotoInItem.toString());
+//            if (mFirstPhotoInItem != null) {
+//                Glide.with(mContext).load(mFirstPhotoInItem.getPhotoFile().getUrl())
+//                        .placeholder(R.drawable.background)
+//                        .transform(new RoundedCorners(25)).into(holder.photoPreview);
+//            }
         }
 
     }
@@ -76,6 +91,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         TextView itemTitleTv;
         TextView itemNoteTv;
         ImageView checkBoxIv;
+        ImageView photoPreview;
 
         Item item;
 
@@ -86,6 +102,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             itemTitleTv = itemView.findViewById(R.id.listTitle);
             itemNoteTv = itemView.findViewById(R.id.listDescription);
             checkBoxIv = itemView.findViewById(R.id.checkBox);
+//            photoPreview = itemView.findViewById(R.id.photoPreview);
 
             // Directs the user to details view of an item
             itemView.setOnClickListener(this);
@@ -149,5 +166,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             });
         }
     }
+
+//    public void getFirstPhotoInItem(Item item) {
+//        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+//        query.whereEqualTo(Photo.KEY_ITEM, item);
+//        query.findInBackground(new FindCallback<Photo>() {
+//            @Override
+//            public void done(List<Photo> objects, ParseException e) {
+//                if (objects.size() != 0)
+//                    mFirstPhotoInItem = objects.get(0);
+//            }
+//        });
+//    }
 
 }

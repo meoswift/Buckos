@@ -75,8 +75,6 @@ public class EditProfileActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseException e) {
                         Intent intent = new Intent();
-                        intent.putExtra("user", Parcels.wrap(user));
-                        Log.d("debug", user.getName());
                         setResult(RESULT_OK, intent);
                         finish();
                     }

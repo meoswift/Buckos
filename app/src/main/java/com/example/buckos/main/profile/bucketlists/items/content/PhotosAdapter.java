@@ -3,6 +3,7 @@ package com.example.buckos.main.profile.bucketlists.items.content;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +32,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
 
     private List<Photo> mPhotos;
     private Context mContext;
-    private Activity mActivity;
 
-    public PhotosAdapter(List<Photo> photos, Context context, Activity activity) {
+    public PhotosAdapter(List<Photo> photos, Context context) {
         mPhotos = photos;
         mContext = context;
-        mActivity = activity;
     }
 
     @NonNull
@@ -85,7 +84,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         });
     }
 
-    public void getPhotosInCurrentItem(Item item) {
+    public void displayPhotosInCurrentItem(Item item) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Photo.KEY_ITEM, item);
         query.findInBackground(new FindCallback<Photo>() {
@@ -111,4 +110,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
             }
         });
     }
+
+
+
 }

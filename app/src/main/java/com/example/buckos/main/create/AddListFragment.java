@@ -1,5 +1,6 @@
 package com.example.buckos.main.create;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -46,6 +48,8 @@ public class AddListFragment extends Fragment {
         mListDescriptionEt = view.findViewById(R.id.listDescriptionEt);
         mCreateButton = view.findViewById(R.id.createBtn);
         mBottomNavigationView = view.getRootView().findViewById(R.id.bottomNavigation);
+
+        mListDescriptionEt.requestFocus();
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override

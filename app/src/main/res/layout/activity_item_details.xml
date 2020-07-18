@@ -15,7 +15,7 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/backButton"
@@ -58,6 +58,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photosRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <EditText
                 android:id="@+id/itemTitleEt"
                 android:layout_width="match_parent"
@@ -68,7 +78,7 @@
                 android:background="#00FFFFFF"
                 android:ems="10"
                 android:hint="Item title"
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
                 android:textSize="28sp" />
 
             <EditText
@@ -79,20 +89,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:background="#00FFFFFF"
-                android:ems="10"
+                android:gravity="top|left"
                 android:hint="Add a note..."
                 android:inputType="textMultiLine"
+                android:minLines="15"
                 android:textSize="16sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/photosRv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

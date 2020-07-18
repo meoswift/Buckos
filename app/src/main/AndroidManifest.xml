@@ -20,7 +20,7 @@
         <activity android:name=".main.travel.placebookmark.NewTravelListActivity" />
         <activity android:name=".main.travel.placebookmark.SaveToListActivity" />
         <activity android:name=".main.profile.EditProfileActivity" />
-        <activity android:name=".main.profile.bucketlists.items.content.ItemDetailsActivity" />
+        <activity android:name=".main.profile.bucketlists.items.content.ItemDetailsActivity"/>
         <activity
             android:name=".main.profile.bucketlists.items.ListDetailsActivity"
             android:parentActivityName=".main.MainActivity"
