@@ -6,6 +6,7 @@ import com.example.buckos.main.buckets.userprofile.User;
 import com.example.buckos.main.buckets.BucketList;
 import com.example.buckos.main.buckets.items.Item;
 import com.example.buckos.main.buckets.items.content.Photo;
+import com.example.buckos.main.feed.Story;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -26,6 +27,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Item.class);
         ParseObject.registerSubclass(User.class);
         ParseObject.registerSubclass(Photo.class);
+        ParseObject.registerSubclass(Story.class);
 
 
         // Use for monitoring Parse OkHttp traffic

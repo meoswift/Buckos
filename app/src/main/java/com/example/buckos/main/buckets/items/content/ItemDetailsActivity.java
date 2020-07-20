@@ -22,9 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
 import com.example.buckos.main.buckets.items.Item;
+import com.example.buckos.main.feed.Story;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -35,7 +37,7 @@ import java.util.List;
 
 // This class displays the details of a bucket list item - Title and Note
 // User can also edit their note in this activity
-public class ItemDetailsActivity extends AppCompatActivity {
+public class ItemDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String DELETE_ITEM = "deleteItem";
     public static final String EDIT_ITEM = "editItem";
@@ -43,14 +45,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_PHOTO_CODE = 1046;
 
-    private EditText mItemTitleEt;
-    private EditText mItemNoteEt;
+    private EditText mItemTitleEditText;
+    private EditText mItemNoteEditText;
     private ImageView mBackButtonIv;
-    private TextView mShareTv;
+    private TextView mPostTextView;
     private ImageView mDeleteButton;
-    private TextView mListStatusTv;
+    private TextView mListStatusTextView;
     private ImageView mAddPhotoButton;
-    private NestedScrollView mNestedScrollView;
     private RecyclerView mPhotosRv;
 
     private File photoFile;
@@ -70,26 +71,28 @@ public class ItemDetailsActivity extends AppCompatActivity {
         itemPosition = intent.getExtras().getInt("position");
 
         // Find views
-        mItemTitleEt = findViewById(R.id.itemTitleEt);
-        mItemNoteEt = findViewById(R.id.itemNoteEt);
+        mItemTitleEditText = findViewById(R.id.itemTitleEt);
+        mItemNoteEditText = findViewById(R.id.itemNoteEt);
         mBackButtonIv = findViewById(R.id.backButton);
-        mShareTv = findViewById(R.id.shareTv);
-        mNestedScrollView = findViewById(R.id.nestedScroll);
-        mListStatusTv = findViewById(R.id.listStatus);
+        mPostTextView = findViewById(R.id.postTv);
+        mListStatusTextView = findViewById(R.id.listStatus);
         mAddPhotoButton = findViewById(R.id.addPhotoBtn);
         mDeleteButton = findViewById(R.id.deleteButton);
         mPhotosRv = findViewById(R.id.photosRv);
 
         setUpAdapterForPhotos();
 
-        handleBackButtonClicked();
-        handleDeleteItemClicked();
-        handleAddPhotoButtonClicked();
+        // Executes appropriate functions depends on which button clicked
+        mBackButtonIv.setOnClickListener(this);
+        mDeleteButton.setOnClickListener(this);
+        mAddPhotoButton.setOnClickListener(this);
+        mPostTextView.setOnClickListener(this);
 
         // Populate title, note, a photos attached in an item
         populateItemDetails();
         mAdapter.displayPhotosInCurrentItem(item);
     }
+
 
     // Set up adapter for list of photos attached to an item
     private void setUpAdapterForPhotos() {
@@ -107,51 +110,22 @@ public class ItemDetailsActivity extends AppCompatActivity {
         saveEditItemChanges();
     }
 
-    // When new photo FAB is clicked, pop up 2 options and execute according to choice
-    private void handleAddPhotoButtonClicked() {
-        mAddPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosePhotoOption();
-            }
-        });
-    }
-
-    private void handleDeleteItemClicked() {
-        mDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteItem();
-            }
-        });
-    }
-
-    private void handleBackButtonClicked() {
-        mBackButtonIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveEditItemChanges();
-            }
-        });
-
-    }
-
     // Populate views of an item: name, description, checkbox
     private void populateItemDetails() {
-        mItemTitleEt.setText(item.getName());
+        mItemTitleEditText.setText(item.getName());
         if (item.getDescription() != null)
-            mItemNoteEt.setText(item.getDescription());
+            mItemNoteEditText.setText(item.getDescription());
         // If item clicked on is already completed, do not show option to Share
         if (!item.getCompleted()) {
-            mShareTv.setText(null);
-            mListStatusTv.setText("In progress");
+            mPostTextView.setText(null);
+            mListStatusTextView.setText("In progress");
         }
     }
 
     // Set item's properties with changes and save in background
     private void saveEditItemChanges() {
-        item.setName(mItemTitleEt.getText().toString());
-        item.setDescription(mItemNoteEt.getText().toString());
+        item.setName(mItemTitleEditText.getText().toString());
+        item.setDescription(mItemNoteEditText.getText().toString());
 
         item.saveInBackground(new SaveCallback() {
             @Override
@@ -198,6 +172,19 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void postNewStory() {
+        // create new story instance
+        Story story = new Story();
+        // set core properties of a story
+        story.setAuthor(ParseUser.getCurrentUser());
+        story.setTitle(item.getName());
+        story.setDescription(item.getDescription());
+        story.setItem(item);
+
+        // save in database
+        story.saveInBackground();
+    }
+
     public void takePhotoFromCamera() {
         // Create a File reference for future access
         String photoFileName = "photo.png";
@@ -241,6 +228,24 @@ public class ItemDetailsActivity extends AppCompatActivity {
         return file;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.backButton:
+                saveEditItemChanges();
+                break;
+            case R.id.deleteButton:
+                deleteItem();
+                break;
+            case R.id.addPhotoBtn:
+                choosePhotoOption();
+                break;
+            case R.id.postTv:
+                postNewStory();
+                break;
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
