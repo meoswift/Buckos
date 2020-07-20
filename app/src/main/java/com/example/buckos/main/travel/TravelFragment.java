@@ -35,6 +35,8 @@ import java.util.List;
 
 import okhttp3.Headers;
 
+// Fragment that displays a list of tourist attractions based on user's query.
+// User can bookmark a place and add that place to multiple lists.
 public class TravelFragment extends Fragment {
 
     public static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";

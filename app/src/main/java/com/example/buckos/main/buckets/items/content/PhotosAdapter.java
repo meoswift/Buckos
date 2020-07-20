@@ -105,6 +105,4 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         });
     }
 
-
-
 }

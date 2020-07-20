@@ -1,5 +1,18 @@
 package com.example.buckos.main.buckets.items.content;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -7,41 +20,16 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.buckos.R;
 import com.example.buckos.main.buckets.items.Item;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,28 +80,10 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mDeleteButton = findViewById(R.id.deleteButton);
         mPhotosRv = findViewById(R.id.photosRv);
 
-        mItemNoteEt.setSelection(mItemNoteEt.getText().length());
+        setUpAdapterForPhotos();
 
-        // Set up adapter for list of photos attached to an item
-        mPhotosInItem = new ArrayList<>();
-        mAdapter = new PhotosAdapter(mPhotosInItem, this);
-        mPhotosRv.setAdapter(mAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
-                LinearLayoutManager.HORIZONTAL, false);
-        mPhotosRv.setLayoutManager(layoutManager);
-
-        // When user press back, save all changes and update to database
-        mBackButtonIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveChanges();
-            }
-        });
-        // When user click Trash icon, delete the item from list
+        handleBackButtonClicked();
         handleDeleteItemClicked();
-        // When user scroll through the item, they can read or edit the item on touch
-        // handleScrollViewClicked();
-        // When user click add photo, they can choose photo from gallery or camera
         handleAddPhotoButtonClicked();
 
         // Populate title, note, a photos attached in an item
@@ -121,10 +91,20 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mAdapter.displayPhotosInCurrentItem(item);
     }
 
+    // Set up adapter for list of photos attached to an item
+    private void setUpAdapterForPhotos() {
+        mPhotosInItem = new ArrayList<>();
+        mAdapter = new PhotosAdapter(mPhotosInItem, this);
+        mPhotosRv.setAdapter(mAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false);
+        mPhotosRv.setLayoutManager(layoutManager);
+    }
+
     // When user navigate via hardware back press, also save changes and update
     @Override
     public void onBackPressed() {
-        saveChanges();
+        saveEditItemChanges();
     }
 
     // When new photo FAB is clicked, pop up 2 options and execute according to choice
@@ -138,7 +118,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     }
 
     // When Trash icon is clicked, delete the item
-    public void handleDeleteItemClicked() {
+    private void handleDeleteItemClicked() {
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,42 +127,20 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // When scroll view is touched, determine which one is a tap, and which is a scroll
-    @SuppressLint("ClickableViewAccessibility")
-    public void handleScrollViewClicked() {
-        mNestedScrollView.setOnTouchListener(new View.OnTouchListener() {
-            private long startClickTime;
+    private void handleBackButtonClicked() {
+        mBackButtonIv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    // starts timing when user click down on screen
-                    startClickTime = System.currentTimeMillis();
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-
-                    // keyboard manager
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                    // Touch was a simple tap - focus on edit text and show keyboard
-                    if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
-                        mItemNoteEt.requestFocus();
-                        imm.showSoftInput(mItemNoteEt, 0);
-
-                    // Touch was scrolling - clear focus and hide keyboard
-                    } else {
-                        mItemTitleEt.clearFocus();
-                        mItemNoteEt.clearFocus();
-                        imm.hideSoftInputFromWindow(mNestedScrollView.getWindowToken(), 0);
-                    }
-                }
-                return false;
+            public void onClick(View v) {
+                saveEditItemChanges();
             }
         });
+
     }
 
-    // Populate views
+    // Populate views of an item: name, description, checkbox
     private void populateItemDetails() {
-        mItemTitleEt.setText(item.getName()); // set item title
-        if (item.getDescription() != null)   // set item description if available
+        mItemTitleEt.setText(item.getName());
+        if (item.getDescription() != null)
             mItemNoteEt.setText(item.getDescription());
         // If item clicked on is already completed, do not show option to Share
         if (!item.getCompleted()) {
@@ -192,8 +150,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     }
 
     // Set item's properties with changes and save in background
-    private void saveChanges() {
-
+    private void saveEditItemChanges() {
         item.setName(mItemTitleEt.getText().toString());
         item.setDescription(mItemNoteEt.getText().toString());
 
@@ -262,17 +219,11 @@ public class ItemDetailsActivity extends AppCompatActivity {
         }
     }
 
-    // Trigger gallery selection for a photo
+    // When user click Choose from Gallery, starts intent for gallery selection
     public void choosePhotoFromGallery() {
-        String photoFileName = "photo.png";
-        photoFile = getPhotoFileUri(photoFileName);
         // Create intent for picking a photo from the gallery
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        Uri fileProvider = FileProvider.getUriForFile(this,
-                "com.codepath.fileprovider.buckos", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-        // So as long as the result is not null, it's safe to use the intent.
+
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Bring up gallery to select a photo
             startActivityForResult(intent, PICK_PHOTO_CODE);
@@ -295,23 +246,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
         return file;
     }
 
-    public Bitmap loadFromUri(Uri photoUri) {
-        Bitmap image = null;
-        try {
-            // check version of Android on device
-            if(Build.VERSION.SDK_INT > 27){
-                // on newer versions of Android, use the new decodeBitmap method
-                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
-                image = ImageDecoder.decodeBitmap(source);
-            } else {
-                // support older versions of Android by using getBitmap
-                image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

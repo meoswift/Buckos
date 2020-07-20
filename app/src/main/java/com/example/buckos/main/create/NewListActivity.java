@@ -18,6 +18,8 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+// Activity that allows user to create a new list. When done, user is directed to their Buckets
+// tab that shows the new list.
 public class NewListActivity extends AppCompatActivity {
 
     private EditText mListTitleEt;

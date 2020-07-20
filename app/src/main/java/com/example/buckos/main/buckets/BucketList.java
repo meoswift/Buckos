@@ -6,6 +6,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+// This class represents a List object in the Parse database
 @ParseClassName("List")
 @Parcel(analyze={BucketList.class})
 public class BucketList extends ParseObject {

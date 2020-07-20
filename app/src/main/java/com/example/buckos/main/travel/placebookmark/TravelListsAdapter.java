@@ -17,6 +17,7 @@ import com.example.buckos.main.buckets.BucketList;
 import java.util.ArrayList;
 import java.util.List;
 
+// This adapter inflates a Bucket List item and displays that in the RecyclerView.
 public class TravelListsAdapter extends RecyclerView.Adapter<TravelListsAdapter.ViewHolder> {
 
     private List<BucketList> mTravelLists;

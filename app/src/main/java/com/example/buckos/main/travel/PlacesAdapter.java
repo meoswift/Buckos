@@ -20,6 +20,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// Adapter that inflates a Place item and displays that in the RecyclerView
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder> {
 
     private List<Place> mPlaces;

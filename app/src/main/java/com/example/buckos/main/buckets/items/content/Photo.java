@@ -7,6 +7,7 @@ import com.parse.ParseObject;
 
 import org.parceler.Parcel;
 
+// This class represents a Media object in the Parse database
 @ParseClassName("Media")
 @Parcel(analyze={Photo.class})
 public class Photo extends ParseObject {

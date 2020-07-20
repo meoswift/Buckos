@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+// This class detects a left swipe on an item and delete that item
 public class SwipeLeftToDelete extends ItemTouchHelper.SimpleCallback {
 
     private BucketListsAdapter mAdapter;

@@ -25,7 +25,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-// This adapter inflates a BucketList object into View and display in RecyclerView
+// Adapter to inflate a BucketList object into View and display in RecyclerView
 public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.ViewHolder> {
 
     List<BucketList> mBucketLists;

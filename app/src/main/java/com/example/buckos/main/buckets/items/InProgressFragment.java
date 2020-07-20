@@ -34,7 +34,8 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-// This fragment displays a list of incomplete items in a bucket list.
+// This fragment displays a list of incomplete items in a bucket list. User can add a new item
+// from this fragment.
 public class InProgressFragment extends Fragment {
     public static final int EDIT_ITEM_REQ = 123;
 
@@ -73,13 +74,10 @@ public class InProgressFragment extends Fragment {
 
         // Initialize list of itemss
         mItemsList = new ArrayList<>();
-        // Create an adapter for the list of items
+        // Set up the adapter for lists of incomplete items
         mAdapter = new ItemsAdapter(getContext(), mItemsList, this);
-        // Set adapter and linear layout for RecyclerView
         mItemsRv.setAdapter(mAdapter);
         mItemsRv.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        mAdapter.notifyDataSetChanged();
 
         queryIncompleteItemsInList();
 
@@ -119,11 +117,14 @@ public class InProgressFragment extends Fragment {
     // Function to add a new item to database based on user input
     private void addNewItem() {
         String itemTitle = mNewItemEt.getText().toString();
+
+        // If title is empty, cannot create new item
         if (itemTitle.isEmpty()) {
             Toast.makeText(getContext(), "Item cannot be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Set properties of the new item
         final Item item = new Item();
         item.setName(itemTitle);
         item.setDescription("");
@@ -131,6 +132,7 @@ public class InProgressFragment extends Fragment {
         item.setList(mBucketList);
         item.setAuthor(ParseUser.getCurrentUser());
 
+        // save new item to database and update recycler view
         item.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -140,7 +142,7 @@ public class InProgressFragment extends Fragment {
             }
         });
 
-        mNewItemEt.setText(null);
+        mNewItemEt.setText(null); // clear out add item edittext
     }
 
     @Override

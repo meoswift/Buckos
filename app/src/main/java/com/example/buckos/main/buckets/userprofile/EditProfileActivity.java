@@ -13,6 +13,8 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+// Activity that allows user to edit their username, display name, and bio. Changes will be
+// saved when they exits out of activity.
 public class EditProfileActivity extends AppCompatActivity {
 
     private EditText mNameEt;

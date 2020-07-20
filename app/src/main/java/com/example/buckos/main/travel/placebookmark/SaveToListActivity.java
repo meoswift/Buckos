@@ -28,6 +28,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+// Activity that allows user to select multiple bucket lists that they want to add a Place to
 public class SaveToListActivity extends AppCompatActivity {
 
     private ImageView mBackButton;

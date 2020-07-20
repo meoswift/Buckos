@@ -35,6 +35,8 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
+// Fragment to display current user's bucket lists. User can create new bucket list and
+// navigate to their profile in this fragment.
 public class BucketsFragment extends Fragment {
     private static final int NEW_LIST_REQUEST = 120;
 

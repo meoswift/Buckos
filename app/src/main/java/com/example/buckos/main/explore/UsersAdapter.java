@@ -16,6 +16,7 @@ import com.example.buckos.main.buckets.userprofile.User;
 
 import java.util.List;
 
+// Adapter that inflates one User item to view and display in RecyclerView
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
     private List<User> mUsersResults;

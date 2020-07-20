@@ -20,6 +20,7 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+// Activity that allows user to create a new list and add the Place they bookmarked to that list
 public class NewTravelListActivity extends AppCompatActivity {
 
     private EditText mListTitle;

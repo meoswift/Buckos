@@ -7,6 +7,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+// This class represents a Item object in the Parse database
 @ParseClassName("Item")
 @Parcel(analyze={Item.class})
 public class Item extends ParseObject {

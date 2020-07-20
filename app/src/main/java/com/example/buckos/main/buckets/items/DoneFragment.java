@@ -69,9 +69,8 @@ public class DoneFragment extends Fragment {
 
     private void queryDoneItemsInList() {
         ParseQuery<Item> query = ParseQuery.getQuery(Item.class);
-        // get all items in the current bucket list
+        // get all items in the current bucket list that are completed
         query.whereEqualTo(Item.KEY_LIST, mBucketList);
-        // get all items that are not completed
         query.whereEqualTo(Item.KEY_COMPLETED, true);
         // order items by descending time created
         query.orderByDescending(Item.KEY_CREATED_AT);

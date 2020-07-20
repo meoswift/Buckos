@@ -22,6 +22,8 @@ import com.parse.ParseUser;
 
 import static android.app.Activity.RESULT_OK;
 
+// Fragment to display current user's information: display name, bio, and posts. User can log out
+// or navigate to Edit profile screen from this fragment.
 public class ProfileFragment extends Fragment {
 
     private static final int EDIT_PROFILE_REQ = 111;

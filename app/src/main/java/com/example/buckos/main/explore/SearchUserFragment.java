@@ -31,6 +31,8 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+// Fragment that allows user to search for others with their username. A list of results will be
+// displayed depending on query.
 public class SearchUserFragment extends Fragment {
 
     private EditText mUsernameQuery;
