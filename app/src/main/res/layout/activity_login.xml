@@ -48,8 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
-            android:inputType="textPassword"
-            app:layout_constraintHorizontal_bias="0.0" />
+            android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/playfair_display_bold"
-        android:text="Buckos"
+        android:text="Buckets!"
         android:textColor="@color/colorPrimary"
         android:textColorLink="#35A7DF"
         android:textSize="50sp"
@@ -80,7 +79,7 @@
         android:onClick="onLogInClicked"
         android:text="Log In"
         android:textAllCaps="true"
-        android:textColor="#454543"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
@@ -92,7 +91,7 @@
         android:layout_marginTop="16dp"
         android:onClick="onCreateAccountClicked"
         android:text="Create an account"
-        android:textColor="#1E88E5"
+        android:textColor="#3F6F98"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logInBtn" />

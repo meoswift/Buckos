@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +20,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.buckos.R;
-import com.example.buckos.User;
+import com.example.buckos.main.buckets.userprofile.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class SearchUserFragment extends Fragment {
@@ -38,6 +40,11 @@ public class SearchUserFragment extends Fragment {
 
     public SearchUserFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -95,5 +102,25 @@ public class SearchUserFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("query", mUsernameQuery.getText().toString());
+        outState.putParcelable("results", Parcels.wrap(mUsersList));
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d("debug", "created");
+
+        if (savedInstanceState != null) {
+            Log.d("debug", "not null");
+            mUsernameQuery.setText(savedInstanceState.getString("query"));
+            mUsersList = Parcels.unwrap(savedInstanceState.getParcelable("results"));
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

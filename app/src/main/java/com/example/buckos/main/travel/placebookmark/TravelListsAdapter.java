@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.main.profile.bucketlists.BucketList;
+import com.example.buckos.main.buckets.BucketList;
 
 import java.util.ArrayList;
 import java.util.List;

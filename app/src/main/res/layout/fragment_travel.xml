@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".main.travel.TravelFragment">
 
-
     <TextView
         android:id="@+id/exploreLabel"
         android:layout_width="wrap_content"

@@ -49,7 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
-            app:layout_constraintHorizontal_bias="0.0" />
+            android:lines="5"
+            android:gravity="top|start" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,7 +126,7 @@
         android:onClick="onSignUpClicked"
         android:text="Sign Up"
         android:textAllCaps="true"
-        android:textColor="#454543"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

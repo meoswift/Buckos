@@ -30,9 +30,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/action_buckets"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_person_outline_24"
+        android:icon="@drawable/baseline_notes_24"
         android:title="Profile"
         app:showAsAction="always" />
 

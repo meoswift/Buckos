@@ -16,6 +16,7 @@
         android:text="Explore"
         android:textColor="@color/colorPrimary"
         android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +40,7 @@
             android:ems="10"
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

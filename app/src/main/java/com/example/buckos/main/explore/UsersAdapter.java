@@ -1,7 +1,6 @@
 package com.example.buckos.main.explore;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.buckos.R;
-import com.example.buckos.User;
-import com.example.buckos.main.travel.PlacesAdapter;
+import com.example.buckos.main.buckets.userprofile.User;
 
 import java.util.List;
 
@@ -40,6 +39,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = mUsersResults.get(position);
         holder.usernameTv.setText(user.getUsername());
         holder.displayNameTv.setText(user.getName());
+        Glide.with(mContext).load(mContext.getDrawable(R.drawable.background)).circleCrop().into(holder.profilePicIv);
     }
 
     @Override
@@ -52,7 +52,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         private ImageView profilePicIv;
         private TextView usernameTv;
         private TextView displayNameTv;
-        private 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

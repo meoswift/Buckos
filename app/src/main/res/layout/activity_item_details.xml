@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.profile.bucketlists.items.content.ItemDetailsActivity">
+    tools:context=".main.buckets.bucketlists.item.content.ItemDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/itemDetailsTb"
@@ -14,6 +14,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,8 +131,8 @@
         android:textColor="#5C5B5B"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/itemDetailsTb"
-        app:layout_constraintEnd_toEndOf="@+id/itemDetailsTb"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/itemDetailsTb"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

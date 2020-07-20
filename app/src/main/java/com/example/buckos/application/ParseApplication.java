@@ -2,10 +2,10 @@ package com.example.buckos.application;
 
 import android.app.Application;
 
-import com.example.buckos.User;
-import com.example.buckos.main.profile.bucketlists.BucketList;
-import com.example.buckos.main.profile.bucketlists.items.Item;
-import com.example.buckos.main.profile.bucketlists.items.content.Photo;
+import com.example.buckos.main.buckets.userprofile.User;
+import com.example.buckos.main.buckets.BucketList;
+import com.example.buckos.main.buckets.bucketlists.item.Item;
+import com.example.buckos.main.buckets.bucketlists.item.content.Photo;
 import com.parse.Parse;
 import com.parse.ParseObject;
 

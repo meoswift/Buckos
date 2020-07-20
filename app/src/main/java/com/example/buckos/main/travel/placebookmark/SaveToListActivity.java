@@ -14,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.buckos.R;
-import com.example.buckos.main.profile.bucketlists.BucketList;
-import com.example.buckos.main.profile.bucketlists.items.Item;
+import com.example.buckos.main.buckets.BucketList;
+import com.example.buckos.main.buckets.bucketlists.item.Item;
 import com.example.buckos.main.travel.Place;
 import com.parse.FindCallback;
 import com.parse.ParseException;

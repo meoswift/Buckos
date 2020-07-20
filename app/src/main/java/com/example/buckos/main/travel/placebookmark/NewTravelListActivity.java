@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.buckos.R;
-import com.example.buckos.main.profile.bucketlists.BucketList;
-import com.example.buckos.main.profile.bucketlists.items.Item;
-import com.example.buckos.main.profile.bucketlists.items.ListDetailsActivity;
+import com.example.buckos.main.buckets.BucketList;
+import com.example.buckos.main.buckets.bucketlists.item.Item;
+import com.example.buckos.main.buckets.bucketlists.item.ListDetailsActivity;
 import com.example.buckos.main.travel.Place;
 import com.parse.ParseException;
 import com.parse.ParseUser;
