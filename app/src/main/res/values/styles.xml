@@ -5,7 +5,7 @@
         <item name="colorPrimary">#91BED5</item>
         <item name="colorPrimaryDark">#2C000000</item>
         <item name="colorAccent">#85D6FD</item>
-        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/roboto</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

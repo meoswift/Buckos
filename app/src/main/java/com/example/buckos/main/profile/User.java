@@ -11,6 +11,7 @@ public class User extends ParseUser {
 
     public static final String KEY_NAME = "name";
     public static final String KEY_BIO = "bio";
+    public static final String KEY_USERNAME = "username";
 
     public void setName(String name) {
         put(KEY_NAME, name);

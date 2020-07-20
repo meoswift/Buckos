@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,11 +25,16 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class SearchUserFragment extends Fragment {
 
     private EditText mUsernameQuery;
+    private RecyclerView mUserResultsRv;
+    private List<User> mUsersList;
+    private UsersAdapter mAdapter;
 
     public SearchUserFragment() {
         // Required empty public constructor
@@ -44,7 +51,15 @@ public class SearchUserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Find views
         mUsernameQuery = view.findViewById(R.id.usernameInputEt);
+        mUserResultsRv = view.findViewById(R.id.userResultsRv);
+
+        // Set up adapter and layout manager for lists of user results
+        mUsersList = new ArrayList<>();
+        mAdapter = new UsersAdapter(mUsersList, getContext());
+        mUserResultsRv.setAdapter(mAdapter);
+        mUserResultsRv.setLayoutManager(new LinearLayoutManager(getContext()));
 
         getUsersResults();
     }
@@ -70,7 +85,14 @@ public class SearchUserFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
+                mUsersList.clear();
 
+                for (int i = 0; i < objects.size(); i++) {
+                    User user = (User) objects.get(i);
+                    mUsersList.add(user);
+                }
+
+                mAdapter.notifyDataSetChanged();
             }
         });
     }

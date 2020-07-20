@@ -8,6 +8,7 @@
         <item>@font/playfair_display</item>
         <item>@font/playfair_display_bold</item>
         <item>@font/roboto</item>
+        <item>@font/roboto_mono</item>
         <item>@font/source_sans_pro</item>
     </array>
 </resources>
