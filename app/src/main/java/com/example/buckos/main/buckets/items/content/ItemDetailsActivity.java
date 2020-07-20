@@ -117,7 +117,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // When Trash icon is clicked, delete the item
     private void handleDeleteItemClicked() {
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,20 +198,16 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 .show();
     }
 
-    // When user click on Capture button, starts an intent to open the camera
     public void takePhotoFromCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
         String photoFileName = "photo.png";
         photoFile = getPhotoFileUri(photoFileName);
-
-        // wrap File object into a content provider
-        // required for API >= 24
         Uri fileProvider = FileProvider.getUriForFile(this,
                 "com.codepath.fileprovider.buckos", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
-        // If call startActivityForResult() using an intent that no app can handle, app will crash.
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        // makes sure intent can be resolved
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
@@ -259,10 +254,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         // Use image picked from gallery
         if (requestCode == PICK_PHOTO_CODE && resultCode == RESULT_OK) {
-                Uri photoUri = data.getData();
-                photoFile = new File(photoFile.getPath() + "/photo.png");
-//                Log.d("debug", photoFile.getPath());
-                mAdapter.addNewPhoto(item, photoFile);
+            Uri photoUri = data.getData();
+            mAdapter.addNewPhoto(item, photoFile);
         } else {
             Toast.makeText(this, "Fail to choose media.", Toast.LENGTH_SHORT).show();
         }

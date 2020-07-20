@@ -25,6 +25,7 @@ import com.example.buckos.main.buckets.userprofile.User;
 import com.example.buckos.main.create.NewListActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -68,7 +69,7 @@ public class BucketsFragment extends Fragment {
 
         // Get current user to retrieve information
         user = (User) ParseUser.getCurrentUser();
-        Glide.with(getContext()).load(getContext().getDrawable(R.drawable.bucket)).circleCrop().into(mProfilePic);
+        setProfilePic();
 
         // Set up adapter for RecyclerView
         mBucketLists = new ArrayList<>();
@@ -142,5 +143,16 @@ public class BucketsFragment extends Fragment {
             mBucketLists.add(0, list);
             mAdapter.notifyItemInserted(0);
         }
+    }
+
+    // Set profile pic with either file from database or default image
+    private void setProfilePic() {
+        ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
+
+        if (image != null)
+            Glide.with(getContext()).load(image.getUrl()).circleCrop().into(mProfilePic);
+        else
+            Glide.with(getContext()).load(R.drawable.ic_launcher_background)
+                    .circleCrop().into(mProfilePic);
     }
 }

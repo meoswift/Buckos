@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.authentication.LoginActivity;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import static android.app.Activity.RESULT_OK;
@@ -95,10 +96,7 @@ public class ProfileFragment extends Fragment {
     private void populateUserProfile() {
         mDisplayNameTv.setText(user.getName());
         mBioTv.setText(user.getBio());
-        Glide.with(getContext()).load(getContext()
-                .getDrawable(R.drawable.bucket))
-                .circleCrop()
-                .into(mProfilePicIv);
+        setProfilePic();
     }
 
     @Override
@@ -110,6 +108,7 @@ public class ProfileFragment extends Fragment {
             User user = (User) ParseUser.getCurrentUser();
             mDisplayNameTv.setText(user.getName());
             mBioTv.setText(user.getBio());
+            setProfilePic();
         }
     }
 
@@ -127,6 +126,17 @@ public class ProfileFragment extends Fragment {
         }
 
         return true;
+    }
+
+    // Set profile pic with either file from database or default image
+    private void setProfilePic() {
+        ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
+
+        if (image != null)
+            Glide.with(getContext()).load(image.getUrl()).circleCrop().into(mProfilePicIv);
+        else
+            Glide.with(getContext()).load(R.drawable.ic_launcher_background)
+                    .circleCrop().into(mProfilePicIv);
     }
 
 
