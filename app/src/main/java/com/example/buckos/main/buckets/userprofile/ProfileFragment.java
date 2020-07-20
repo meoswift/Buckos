@@ -5,17 +5,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.authentication.LoginActivity;
 import com.parse.ParseUser;
 
 import static android.app.Activity.RESULT_OK;
@@ -26,7 +28,8 @@ public class ProfileFragment extends Fragment {
     private TextView mDisplayNameTv;
     private TextView mBioTv;
     private ImageView mProfilePicIv;
-    private TextView mEditProfileButton;
+    private Toolbar mProfileToolbar;
+    private ImageView mBackButton;
     private User user;
 
     public ProfileFragment() {
@@ -51,12 +54,39 @@ public class ProfileFragment extends Fragment {
         mDisplayNameTv = view.findViewById(R.id.displayNameTv);
         mBioTv = view.findViewById(R.id.bioTv);
         mProfilePicIv = view.findViewById(R.id.profilePicIv);
-        mEditProfileButton = view.findViewById(R.id.editProfileBtn);
+        mProfileToolbar = view.findViewById(R.id.profileToolbar);
+        mBackButton = view.findViewById(R.id.backButton);
 
         populateUserProfile();
+        handleProfileMenuClicked();
+        handleBackButtonClicked();
+    }
 
-        // Navigate to Edit Profile screen on button clicked
-        handleEditProfile();
+    private void handleBackButtonClicked() {
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
+    private void handleProfileMenuClicked() {
+        mProfileToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_edit) {
+                    Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                    startActivityForResult(intent, EDIT_PROFILE_REQ);
+                } else {
+                    ParseUser.logOut();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
     }
 
     // Populate views that comes with an user profile
@@ -67,17 +97,6 @@ public class ProfileFragment extends Fragment {
                 .getDrawable(R.drawable.bucket))
                 .circleCrop()
                 .into(mProfilePicIv);
-    }
-
-    // When user clicks Edit Profile button, takes them to Edit screen
-    public void handleEditProfile() {
-        mEditProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), EditProfileActivity.class);
-                startActivityForResult(intent, EDIT_PROFILE_REQ);
-            }
-        });
     }
 
     @Override
@@ -91,5 +110,22 @@ public class ProfileFragment extends Fragment {
             mBioTv.setText(user.getBio());
         }
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_edit) {
+            Intent intent = new Intent(getContext(), EditProfileActivity.class);
+            startActivityForResult(intent, EDIT_PROFILE_REQ);
+        } else {
+            ParseUser.logOut();
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+            getActivity().finish(); // prevents user from going back
+        }
+
+        return true;
+    }
+
 
 }

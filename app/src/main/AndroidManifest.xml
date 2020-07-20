@@ -17,19 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main.create.NewListActivity"></activity>
+        <activity android:name=".main.create.NewListActivity"/>
         <activity android:name=".main.travel.placebookmark.NewTravelListActivity" />
         <activity android:name=".main.travel.placebookmark.SaveToListActivity" />
         <activity android:name=".main.buckets.userprofile.EditProfileActivity" />
-        <activity android:name=".main.buckets.bucketlists.item.content.ItemDetailsActivity" />
+        <activity android:name=".main.buckets.items.content.ItemDetailsActivity"/>
         <activity
-            android:name=".main.buckets.bucketlists.item.ListDetailsActivity"
+            android:name=".main.buckets.items.ListDetailsActivity"
             android:label="@string/title_activity_list_details"
-            android:parentActivityName=".main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".main.create.AddListFragment"
-            tools:ignore="Instantiatable" />
         <activity android:name=".authentication.SignUpActivity" />
         <activity android:name=".main.MainActivity" />
         <activity android:name=".authentication.LoginActivity">

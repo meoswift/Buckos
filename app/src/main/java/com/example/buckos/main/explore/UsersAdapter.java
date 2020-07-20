@@ -39,7 +39,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = mUsersResults.get(position);
         holder.usernameTv.setText(user.getUsername());
         holder.displayNameTv.setText(user.getName());
-        Glide.with(mContext).load(mContext.getDrawable(R.drawable.background)).circleCrop().into(holder.profilePicIv);
+        Glide.with(mContext).load(mContext.getDrawable(R.drawable.bucket)).circleCrop().into(holder.profilePicIv);
     }
 
     @Override

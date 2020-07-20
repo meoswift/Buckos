@@ -17,16 +17,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:src="@drawable/ic_baseline_keyboard_backspace_24"
-        android:tint="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbarListDetail"
-        app:layout_constraintStart_toStartOf="@+id/toolbarListDetail"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/listTitleTv"
@@ -38,7 +28,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/toolbarListDetail"
         app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -89,5 +78,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:padding="16dp"
+        android:tint="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarListDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

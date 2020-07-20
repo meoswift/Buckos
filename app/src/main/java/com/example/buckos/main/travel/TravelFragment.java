@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class TravelFragment extends Fragment {
     private EditText mCityQueryEt;
     private RecyclerView mCityResultsRv;
     private ImageView mTravelArt;
+    private ProgressBar mProgressBar;
 
     private List<Place> mPlaces;
     private PlacesAdapter mAdapter;
@@ -64,6 +66,7 @@ public class TravelFragment extends Fragment {
         mCityQueryEt = view.findViewById(R.id.cityInputEt);
         mCityResultsRv = view.findViewById(R.id.cityResultsRv);
         mTravelArt = view.findViewById(R.id.travelArt);
+        mProgressBar = view.findViewById(R.id.travelProgressBar);
 
         mCityQueryEt.requestFocus();
 
@@ -84,7 +87,9 @@ public class TravelFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     imm.hideSoftInputFromWindow(mCityQueryEt.getWindowToken(), 0);
+                    mProgressBar.setVisibility(View.VISIBLE);
                     performSearch();
+                    mTravelArt.setVisibility(View.GONE);
                     return true;
                 }
                 return false;
@@ -97,7 +102,6 @@ public class TravelFragment extends Fragment {
         // Format query into appropriate URI format "+"
         String query = mCityQueryEt.getText().toString();
         String formattedQuery = "point+of+interest+in+" + query.replace(" ","+");
-        Log.d("debug", formattedQuery);
 
         // Makes API call to get a list of places
         AsyncHttpClient client = new AsyncHttpClient();
@@ -111,11 +115,10 @@ public class TravelFragment extends Fragment {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 try {
                     JSONArray results = json.jsonObject.getJSONArray("results");
-                    Log.d("debug", results.toString());
                     // Parse results array into list of Place objects
                     mPlaces.clear();
                     mPlaces.addAll(Place.jsonToList(results));
-                    mTravelArt.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.GONE);
                     mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();

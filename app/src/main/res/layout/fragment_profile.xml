@@ -7,23 +7,27 @@
 
     <TextView
         android:id="@+id/displayNameTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/lato_bold"
         android:text="Linh Tran"
         android:textColor="#000000"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profilePicIv"
-        app:layout_constraintTop_toBottomOf="@+id/appbar" />
+        app:layout_constraintTop_toBottomOf="@+id/profileToolbar" />
 
     <TextView
         android:id="@+id/bioTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Say something about yourself!"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profilePicIv"
         app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
 
@@ -34,7 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appbar"
+        app:layout_constraintTop_toBottomOf="@+id/profileToolbar"
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
@@ -98,41 +102,30 @@
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/appbar"
+        android:id="@+id/profileToolbar"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/profile_menu">
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:padding="16dp"
         android:tint="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/appbar"
+        app:layout_constraintBottom_toBottomOf="@+id/profileToolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
+        app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24"
+        android:background="?attr/selectableItemBackground"/>
 
-    <TextView
-        android:id="@+id/editProfileBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:text="Edit"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/appbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appbar"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
 
     <TextView
         android:id="@+id/textView10"
@@ -142,9 +135,9 @@
         android:text="Profile"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/appbar"
+        app:layout_constraintBottom_toBottomOf="@+id/profileToolbar"
         app:layout_constraintStart_toEndOf="@+id/backButton"
-        app:layout_constraintTop_toTopOf="@+id/appbar" />
+        app:layout_constraintTop_toTopOf="@+id/profileToolbar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

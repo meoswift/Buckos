@@ -11,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
-import com.example.buckos.main.buckets.bucketlists.item.Item;
-import com.example.buckos.main.buckets.bucketlists.item.ListDetailsActivity;
+import com.example.buckos.main.buckets.items.Item;
+import com.example.buckos.main.buckets.items.ListDetailsActivity;
+import com.example.buckos.main.buckets.items.content.Photo;
+import com.example.buckos.main.buckets.items.content.PhotosAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -113,8 +115,28 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             @Override
             public void done(List<Item> objects, ParseException e) {
                 for (int i = 0; i < objects.size(); i++) {
-                    Item item = objects.get(i);
-                    item.deleteInBackground();
+                    final Item item = objects.get(i);
+                    item.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            deleteAllPhotosInItem(item);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    // When user delete an item, delete all photos in that item
+    public void deleteAllPhotosInItem(Item item) {
+        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        query.whereEqualTo(Photo.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Photo>() {
+            @Override
+            public void done(List<Photo> objects, ParseException e) {
+                for (int i = 0; i < objects.size(); i++) {
+                    Photo photo = objects.get(i);
+                    photo.deleteInBackground();
                 }
             }
         });

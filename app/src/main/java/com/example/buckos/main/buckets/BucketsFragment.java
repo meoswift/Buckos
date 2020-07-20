@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,12 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
-import com.example.buckos.main.MainActivity;
-import com.example.buckos.main.buckets.userprofile.EditProfileActivity;
 import com.example.buckos.main.buckets.userprofile.ProfileFragment;
 import com.example.buckos.main.buckets.userprofile.User;
 import com.example.buckos.main.create.NewListActivity;

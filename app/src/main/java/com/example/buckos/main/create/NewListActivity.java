@@ -1,14 +1,10 @@
 package com.example.buckos.main.create;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,8 +12,6 @@ import android.widget.Toast;
 
 import com.example.buckos.R;
 import com.example.buckos.main.buckets.BucketList;
-import com.example.buckos.main.buckets.BucketsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;

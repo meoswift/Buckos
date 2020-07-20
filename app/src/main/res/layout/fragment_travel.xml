@@ -64,6 +64,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/cityResultsRv" />
+
+    <ProgressBar
+        android:id="@+id/travelProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cityResultsRv"
+        app:layout_constraintStart_toStartOf="@+id/cityResultsRv"
+        app:layout_constraintTop_toTopOf="@+id/cityResultsRv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

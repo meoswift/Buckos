@@ -78,4 +78,6 @@ public class LoginActivity extends AppCompatActivity {
         finish(); // prevents user from going back to login screen
     }
 
+    @Override
+    public void onBackPressed() { };
 }

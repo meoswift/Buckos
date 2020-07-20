@@ -4,14 +4,15 @@ import android.app.Application;
 
 import com.example.buckos.main.buckets.userprofile.User;
 import com.example.buckos.main.buckets.BucketList;
-import com.example.buckos.main.buckets.bucketlists.item.Item;
-import com.example.buckos.main.buckets.bucketlists.item.content.Photo;
+import com.example.buckos.main.buckets.items.Item;
+import com.example.buckos.main.buckets.items.content.Photo;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+// This class initializes connection to Parse database
 public class ParseApplication extends Application {
     @Override
     public void onCreate() {
