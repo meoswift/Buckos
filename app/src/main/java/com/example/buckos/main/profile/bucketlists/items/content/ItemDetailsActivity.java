@@ -113,9 +113,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
             }
         });
         // When user click Trash icon, delete the item from list
-//        handleDeleteItemClicked();
+        handleDeleteItemClicked();
         // When user scroll through the item, they can read or edit the item on touch
-        handleScrollViewClicked();
+        // handleScrollViewClicked();
         // When user click add photo, they can choose photo from gallery or camera
         handleAddPhotoButtonClicked();
 

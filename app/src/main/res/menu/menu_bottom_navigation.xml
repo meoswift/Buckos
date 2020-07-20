@@ -9,9 +9,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_friend"
+        android:id="@+id/action_explore"
         android:enabled="true"
-        android:icon="@drawable/outline_explore_24"
+        android:icon="@drawable/ic_baseline_search_24"
         android:title="Explore"
         app:showAsAction="always" />
 
@@ -23,7 +23,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_explore"
+        android:id="@+id/action_travel"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_public_24"
         android:title="Explore"

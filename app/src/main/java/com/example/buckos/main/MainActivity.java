@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.example.buckos.R;
 import com.example.buckos.main.create.AddListFragment;
+import com.example.buckos.main.explore.SearchUserFragment;
 import com.example.buckos.main.feed.HomeFragment;
 import com.example.buckos.main.travel.TravelFragment;
 import com.example.buckos.main.profile.UserProfileFragment;
@@ -45,9 +46,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_profile:
                         fragment = new UserProfileFragment();
                         break;
-                    case R.id.action_explore:
+                    case R.id.action_travel:
                         fragment = new TravelFragment();
                         break;
+                    case R.id.action_explore:
+                        fragment = new SearchUserFragment();
                     default:
                         break;
                 }
