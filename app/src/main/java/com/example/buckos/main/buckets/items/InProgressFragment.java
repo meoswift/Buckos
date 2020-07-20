@@ -37,7 +37,7 @@ import static android.app.Activity.RESULT_OK;
 // This fragment displays a list of incomplete items in a bucket list. User can add a new item
 // from this fragment.
 public class InProgressFragment extends Fragment {
-    public static final int EDIT_ITEM_REQ = 123;
+    public static final int MODIFY_ITEM_REQ = 123;
 
     private RecyclerView mItemsRv;
     private ItemsAdapter mAdapter;
@@ -150,7 +150,7 @@ public class InProgressFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         // When user come back from Edit/View item screen, update the content of item
-        if (resultCode == RESULT_OK && requestCode == EDIT_ITEM_REQ) {
+        if (resultCode == RESULT_OK && requestCode == MODIFY_ITEM_REQ) {
             Item item = Parcels.unwrap(data.getParcelableExtra("item"));
             String action = data.getStringExtra("action");
             int position = data.getExtras().getInt("position");

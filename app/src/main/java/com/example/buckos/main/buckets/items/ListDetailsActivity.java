@@ -8,9 +8,11 @@ import com.example.buckos.main.buckets.BucketList;
 import com.example.buckos.main.buckets.items.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -88,5 +90,13 @@ public class ListDetailsActivity extends AppCompatActivity {
                 ListDetailsActivity.super.onBackPressed();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == InProgressFragment.MODIFY_ITEM_REQ) {
+            Log.d("debug", "item");
+        }
     }
 }

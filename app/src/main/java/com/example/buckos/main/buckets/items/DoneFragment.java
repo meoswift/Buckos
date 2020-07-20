@@ -108,10 +108,15 @@ public class DoneFragment extends Fragment {
                 case ItemDetailsActivity.DELETE_ITEM:
                     mItemsList.remove(position);
                     break;
+                case ItemDetailsActivity.POST_ITEM:
+                    Intent intent = new Intent();
+                    intent.putExtra("action", "postItem");
+                    // finish ListDetailsActivity and back to BucketsFragment
+                    getActivity().setResult(RESULT_OK, intent);
+                    getActivity().finish();
             }
 
             mAdapter.notifyDataSetChanged();
-
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
@@ -31,11 +32,14 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     List<BucketList> mBucketLists;
     Context mContext;
     View mView;
+    Fragment mFragment;
 
-    public BucketListsAdapter(Context context, List<BucketList> bucketLists, View view) {
+    public BucketListsAdapter(Context context, List<BucketList> bucketLists,
+                              View view, Fragment fragment) {
         mBucketLists = bucketLists;
         mContext = context;
         mView = view;
+        mFragment = fragment;
     }
 
 
@@ -88,7 +92,9 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             // When user click on a specific list, show the details of the list
             Intent intent = new Intent(mContext, ListDetailsActivity.class);
             intent.putExtra("bucketList", Parcels.wrap(list));
-            mContext.startActivity(intent);
+
+            // request used when user click Post on an item in list
+            mFragment.startActivityForResult(intent, BucketsFragment.POST_ITEM_REQUEST);
         }
     }
 

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
+import com.example.buckos.main.MainActivity;
 import com.example.buckos.main.buckets.items.Item;
 import com.example.buckos.main.feed.Story;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -41,7 +42,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
     public static final String DELETE_ITEM = "deleteItem";
     public static final String EDIT_ITEM = "editItem";
+    public static final String POST_ITEM = "postItem";
     public final String APP_TAG = "Buckos";
+
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_PHOTO_CODE = 1046;
 
@@ -173,16 +176,22 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void postNewStory() {
-        // create new story instance
-        Story story = new Story();
-        // set core properties of a story
-        story.setAuthor(ParseUser.getCurrentUser());
-        story.setTitle(item.getName());
-        story.setDescription(item.getDescription());
-        story.setItem(item);
+//        // create new story instance
+//        Story story = new Story();
+//        // set core properties of a story
+//        story.setAuthor(ParseUser.getCurrentUser());
+//        story.setTitle(item.getName());
+//        story.setDescription(item.getDescription());
+//        story.setItem(item);
+//
+//        // save in database
+//        story.saveInBackground();
 
-        // save in database
-        story.saveInBackground();
+        // navigates user to Home Feed to see their new post
+        Intent intent = new Intent();
+        intent.putExtra("action", ItemDetailsActivity.POST_ITEM);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public void takePhotoFromCamera() {

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.buckos.R;
@@ -17,6 +18,8 @@ import com.example.buckos.main.feed.HomeFragment;
 import com.example.buckos.main.travel.TravelFragment;
 import com.example.buckos.main.buckets.BucketsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.security.interfaces.RSAKey;
 
 // This activity has a Bottom navigation view that allows users to navigate the app
 public class MainActivity extends AppCompatActivity {

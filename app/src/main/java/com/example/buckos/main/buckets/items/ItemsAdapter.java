@@ -107,7 +107,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             Intent intent = new Intent(mContext, ItemDetailsActivity.class);
             intent.putExtra("item", Parcels.wrap(item));
             intent.putExtra("position", position);
-            mActivity.startActivityForResult(intent, InProgressFragment.EDIT_ITEM_REQ);
+            mActivity.startActivityForResult(intent, InProgressFragment.MODIFY_ITEM_REQ);
         }
 
         // If an item is completed, update in database and remove from view

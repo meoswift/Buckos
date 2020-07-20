@@ -20,9 +20,11 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.main.buckets.items.InProgressFragment;
 import com.example.buckos.main.buckets.userprofile.ProfileFragment;
 import com.example.buckos.main.buckets.userprofile.User;
 import com.example.buckos.main.create.NewListActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -40,11 +42,13 @@ import static android.app.Activity.RESULT_OK;
 // navigate to their profile in this fragment.
 public class BucketsFragment extends Fragment {
     private static final int NEW_LIST_REQUEST = 120;
+    public static final int POST_ITEM_REQUEST = 222;
 
     private RecyclerView mBucketListsRv;
     private ProgressBar mProgressBar;
     private ImageView mProfilePic;
     private Button mNewListButton;
+    private BottomNavigationView mBottomNavigationView;
 
     private User user;
     private List<BucketList> mBucketLists;
@@ -66,6 +70,7 @@ public class BucketsFragment extends Fragment {
         mProgressBar = view.findViewById(R.id.progressBar);
         mProfilePic = view.findViewById(R.id.profilePic);
         mNewListButton = view.findViewById(R.id.newListButton);
+        mBottomNavigationView = view.getRootView().findViewById(R.id.bottomNavigation);
 
         // Get current user to retrieve information
         user = (User) ParseUser.getCurrentUser();
@@ -73,7 +78,7 @@ public class BucketsFragment extends Fragment {
 
         // Set up adapter for RecyclerView
         mBucketLists = new ArrayList<>();
-        mAdapter = new BucketListsAdapter(getContext(), mBucketLists, view);
+        mAdapter = new BucketListsAdapter(getContext(), mBucketLists, view, this);
         mBucketListsRv.setAdapter(mAdapter);
         mBucketListsRv.setLayoutManager(new LinearLayoutManager(getContext()));
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeLeftToDelete(mAdapter, mBucketLists));
@@ -138,11 +143,19 @@ public class BucketsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // add new bucket to list and update adapter
         if (requestCode == NEW_LIST_REQUEST && resultCode == RESULT_OK) {
             BucketList list = Parcels.unwrap(data.getParcelableExtra("list"));
             mBucketLists.add(0, list);
             mAdapter.notifyItemInserted(0);
         }
+
+        // direct user to home feed after they post a completed item
+        if (requestCode == BucketsFragment.POST_ITEM_REQUEST && resultCode == RESULT_OK) {
+            mBottomNavigationView.setSelectedItemId(R.id.action_home);
+        }
+
     }
 
     // Set profile pic with either file from database or default image
