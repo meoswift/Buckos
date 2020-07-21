@@ -1,5 +1,7 @@
 package com.example.buckos.main.feed;
 
+import android.text.format.DateUtils;
+
 import com.example.buckos.main.buckets.BucketList;
 import com.example.buckos.main.buckets.items.Item;
 import com.example.buckos.main.buckets.items.content.Photo;
@@ -73,5 +75,13 @@ public class Story extends ParseObject {
         } else {
             return description;
         }
+    }
+
+    public String getFormatedTime() {
+        long dateMillis = getCreatedAt().getTime();
+        String ago = DateUtils.getRelativeTimeSpanString(dateMillis,
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+        return ago;
     }
 }

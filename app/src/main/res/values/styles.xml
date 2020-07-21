@@ -6,7 +6,8 @@
         <item name="colorPrimaryDark">#2C000000</item>
         <item name="colorAccent">#85D6FD</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:windowContentTransitions">true</item>
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

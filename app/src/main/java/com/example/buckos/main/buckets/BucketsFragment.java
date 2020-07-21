@@ -5,16 +5,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.ChangeBounds;
-import androidx.transition.ChangeImageTransform;
-import androidx.transition.TransitionSet;
 
-import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
@@ -23,12 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
-import com.example.buckos.main.buckets.items.InProgressFragment;
 import com.example.buckos.main.buckets.userprofile.ProfileFragment;
 import com.example.buckos.main.buckets.userprofile.User;
 import com.example.buckos.main.create.NewListActivity;
@@ -72,6 +65,8 @@ public class BucketsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Displays nothing until everything is finished loading
+        postponeEnterTransition();
 
         // Find views
         mBucketListsRv = view.findViewById(R.id.rvBucketLists);
@@ -115,19 +110,15 @@ public class BucketsFragment extends Fragment {
         mProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Transition changeTransform = TransitionInflater.from(getContext()).
-                        inflateTransition(R.transition.change_profilepic);
-                Transition fade = TransitionInflater.from(getContext()).
-                        inflateTransition(android.R.transition.fade);
-
                 ProfileFragment fragment = new ProfileFragment();
-                fragment.setSharedElementEnterTransition(changeTransform);
-                fragment.setEnterTransition(fade);
 
+                setTransitionSharedElements(fragment);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.your_placeholder, fragment)
+                        .setCustomAnimations(R.anim.enter_from_right, 0, R.anim.enter_from_left, 0)
                         .addSharedElement(mProfilePic, "sharedProfilePic")
+                        .replace(R.id.your_placeholder, fragment)
                         .addToBackStack(null)
+                        .setReorderingAllowed(true)
                         .commit();
             }
         });
@@ -153,6 +144,9 @@ public class BucketsFragment extends Fragment {
                 bucketLists.addAll(objects);
                 adapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
+
+                // Display views only when all lists have finished loading
+                startPostponedEnterTransition();
             }
         });
     }
@@ -185,4 +179,14 @@ public class BucketsFragment extends Fragment {
             Glide.with(getContext()).load(R.drawable.ic_launcher_background)
                     .circleCrop().into(mProfilePic);
     }
+
+    private void setTransitionSharedElements(Fragment profileFragment) {
+        Transition changeTransform = TransitionInflater.from(getContext()).
+                inflateTransition(R.transition.change_image_transform);
+        Transition transform = TransitionInflater.from(getContext()).
+                inflateTransition(android.R.transition.no_transition);
+        profileFragment.setSharedElementEnterTransition(changeTransform);
+        profileFragment.setEnterTransition(transform);
+    }
+
 }

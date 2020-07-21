@@ -70,8 +70,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         postponeEnterTransition();
+
         // Get current user
         user = (User) ParseUser.getCurrentUser();
 
@@ -136,6 +136,8 @@ public class ProfileFragment extends Fragment {
                 story.setPhotosInStory(photos);
                 mUserStories.add(story);
                 mStoriesAdapter.notifyDataSetChanged();
+
+                // displays views when all photos and stories are done loading
                 startPostponedEnterTransition();
             }
         });

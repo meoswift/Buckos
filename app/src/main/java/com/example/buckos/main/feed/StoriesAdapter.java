@@ -54,6 +54,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.authorDisplayNameTextView.setText(author.getName());
         holder.storyTitleTextView.setText(story.getTitle());
         holder.storyDescriptionTextView.setText(story.getDescription());
+        holder.storyTimeStamp.setText(story.getFormatedTime());
         holder.setProfilePic(author);
 
         holder.setAdapterForPhotos(story);
@@ -69,6 +70,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView authorDisplayNameTextView;
         private TextView storyTitleTextView;
         private TextView storyDescriptionTextView;
+        private TextView storyTimeStamp;
+
         private RecyclerView storyPhotosRecyclerView;
         private PhotosAdapter mPhotosAdapter;
 
@@ -80,6 +83,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             storyTitleTextView = itemView.findViewById(R.id.storyTitle);
             storyDescriptionTextView = itemView.findViewById(R.id.storyDescription);
             storyPhotosRecyclerView = itemView.findViewById(R.id.storyPhotosRv);
+            storyTimeStamp = itemView.findViewById(R.id.storyTimeStamp);
         }
 
         // Set profile pic with either file from database or default image

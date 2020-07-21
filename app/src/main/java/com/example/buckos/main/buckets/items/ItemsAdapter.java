@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -109,8 +110,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             Intent intent = new Intent(mContext, ItemDetailsActivity.class);
             intent.putExtra("item", Parcels.wrap(item));
             intent.putExtra("position", position);
+            Pair titles = Pair.create((View) itemTitleTv, "itemTitle");
+            Pair notes = Pair.create((View) itemNoteTv, "itemNote");
             ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation((Activity) mContext, itemTitleTv, "itemTitle");
+                    makeSceneTransitionAnimation((Activity) mContext, titles, notes);
             mActivity.startActivityForResult(intent, InProgressFragment.MODIFY_ITEM_REQ, options.toBundle());
         }
 
