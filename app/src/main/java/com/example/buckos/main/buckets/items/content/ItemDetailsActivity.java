@@ -2,6 +2,7 @@ package com.example.buckos.main.buckets.items.content;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -96,7 +97,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         mAdapter.displayPhotosInCurrentItem(item);
     }
 
-
     // Set up adapter for list of photos attached to an item
     private void setUpAdapterForPhotos() {
         mPhotosInItem = new ArrayList<>();
@@ -107,11 +107,32 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         mPhotosRv.setLayoutManager(layoutManager);
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.backButton:
+                saveEditItemChanges();
+                break;
+            case R.id.deleteButton:
+                deleteItem();
+                break;
+            case R.id.addPhotoBtn:
+                choosePhotoOption();
+                break;
+            case R.id.postTv:
+                postNewStory();
+                break;
+        }
+    }
+
     // When user navigate via hardware back press, also save changes and update
     @Override
     public void onBackPressed() {
         saveEditItemChanges();
     }
+
 
     // Populate views of an item: name, description, checkbox
     private void populateItemDetails() {
@@ -158,6 +179,28 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    // Post story of a completed item to Home feed
+    private void postNewStory() {
+        // create new story instance
+        Story story = new Story();
+        // set core properties of a story
+        story.setAuthor(ParseUser.getCurrentUser());
+        story.setTitle(mItemTitleEditText.getText().toString());
+        story.setDescription(mItemNoteEditText.getText().toString());
+        story.setItem(item);
+
+        // save in database
+        saveEditItemChanges();
+        story.saveInBackground();
+
+        // navigates user to Home Feed to see their new post
+        Intent intent = new Intent();
+        intent.putExtra("action", ItemDetailsActivity.POST_ITEM);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+
     // Build a dialog that shows two option for user to pick a photo from
     private void choosePhotoOption() {
         String [] options = {"Choose image", "Take a photo"};
@@ -173,25 +216,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                     }
                 })
                 .show();
-    }
-
-    private void postNewStory() {
-//        // create new story instance
-//        Story story = new Story();
-//        // set core properties of a story
-//        story.setAuthor(ParseUser.getCurrentUser());
-//        story.setTitle(item.getName());
-//        story.setDescription(item.getDescription());
-//        story.setItem(item);
-//
-//        // save in database
-//        story.saveInBackground();
-
-        // navigates user to Home Feed to see their new post
-        Intent intent = new Intent();
-        intent.putExtra("action", ItemDetailsActivity.POST_ITEM);
-        setResult(RESULT_OK, intent);
-        finish();
     }
 
     public void takePhotoFromCamera() {
@@ -237,24 +261,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         return file;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.backButton:
-                saveEditItemChanges();
-                break;
-            case R.id.deleteButton:
-                deleteItem();
-                break;
-            case R.id.addPhotoBtn:
-                choosePhotoOption();
-                break;
-            case R.id.postTv:
-                postNewStory();
-                break;
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -30,6 +30,10 @@ public class Story extends ParseObject {
         return getParseUser(KEY_AUTHOR);
     }
 
+    public ParseObject getItem() {
+        return (Item) getParseObject(KEY_ITEM);
+    }
+
     public void setTitle(String name) {
         put(KEY_TITLE, name);
     }

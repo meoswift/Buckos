@@ -114,7 +114,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setName(mNameEditText.getText().toString());
                 user.setUsername(mUsernameEditText.getText().toString());
                 user.setBio(mBioEditText.getText().toString());
-                user.setProfilePic(photoFile);
+                if (photoFile != null)
+                    user.setProfilePic(photoFile);
 
                 user.saveInBackground(new SaveCallback() {
                     @Override

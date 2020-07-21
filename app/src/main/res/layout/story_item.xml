@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp">
+    android:layout_marginBottom="16dp">
 
     <ImageView
-        android:id="@+id/postAuthorIv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:id="@+id/authorProfilePic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,31 +20,31 @@
         android:id="@+id/authorDisplayName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/lato"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-light"
+        android:maxWidth="200dp"
         android:text="Linh Tran"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/postAuthorIv"
-        app:layout_constraintTop_toTopOf="@+id/postAuthorIv" />
+        app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/authorProfilePic" />
 
     <TextView
         android:id="@+id/storyTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/lato_bold"
         android:text="Post title"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postAuthorIv" />
+        app:layout_constraintTop_toBottomOf="@+id/authorProfilePic" />
 
     <TextView
         android:id="@+id/storyDescription"
@@ -70,9 +70,81 @@
         android:id="@+id/storyTimeStamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:text="8h"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/postAuthorIv"
+        app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
         app:layout_constraintTop_toBottomOf="@+id/authorDisplayName" />
+
+    <TextView
+        android:id="@+id/addedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="added a story"
+        app:layout_constraintStart_toEndOf="@+id/authorDisplayName"
+        app:layout_constraintTop_toTopOf="@+id/authorDisplayName" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/storyPhotosRv">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="500dp">
+
+            <ImageButton
+                android:id="@+id/heartButton"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+            <TextView
+                android:id="@+id/heartCountTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="30 likes"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/heartButton"
+                app:layout_constraintStart_toEndOf="@+id/heartButton"
+                app:layout_constraintTop_toTopOf="@+id/heartButton" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="500dp">
+
+            <TextView
+                android:id="@+id/commentCountTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11 comments"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="3dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

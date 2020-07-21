@@ -95,7 +95,7 @@ public class DoneFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         // When user come back from Edit/View item screen, update the content of item
-        if (resultCode == RESULT_OK && requestCode == InProgressFragment.EDIT_ITEM_REQ) {
+        if (resultCode == RESULT_OK && requestCode == InProgressFragment.MODIFY_ITEM_REQ) {
             Item item = Parcels.unwrap(data.getParcelableExtra("item"));
             String action = data.getStringExtra("action");
             int position = data.getExtras().getInt("position");
@@ -111,6 +111,7 @@ public class DoneFragment extends Fragment {
                 case ItemDetailsActivity.POST_ITEM:
                     Intent intent = new Intent();
                     intent.putExtra("action", "postItem");
+
                     // finish ListDetailsActivity and back to BucketsFragment
                     getActivity().setResult(RESULT_OK, intent);
                     getActivity().finish();
