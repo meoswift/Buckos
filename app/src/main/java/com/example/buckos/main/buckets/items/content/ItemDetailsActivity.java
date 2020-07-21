@@ -92,9 +92,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         mAddPhotoButton.setOnClickListener(this);
         mPostTextView.setOnClickListener(this);
 
-        // Populate title, note, a photos attached in an item
+        // Populate title, note, and photos attached in an item
         populateItemDetails();
-        mAdapter.displayPhotosInCurrentItem(item);
     }
 
     // Set up adapter for list of photos attached to an item
@@ -127,13 +126,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    // When user navigate via hardware back press, also save changes and update
-    @Override
-    public void onBackPressed() {
-        saveEditItemChanges();
-    }
-
-
     // Populate views of an item: name, description, checkbox
     private void populateItemDetails() {
         mItemTitleEditText.setText(item.getName());
@@ -144,6 +136,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             mPostTextView.setText(null);
             mListStatusTextView.setText("In progress");
         }
+        mAdapter.displayPhotosInCurrentItem(item);
     }
 
     // Set item's properties with changes and save in background
@@ -279,5 +272,12 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         } else {
             Toast.makeText(this, "Fail to choose media.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    // When user navigate via hardware back press, also save changes and update
+    @Override
+    public void onBackPressed() {
+        saveEditItemChanges();
     }
 }

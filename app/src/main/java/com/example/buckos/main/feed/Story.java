@@ -2,13 +2,17 @@ package com.example.buckos.main.feed;
 
 import com.example.buckos.main.buckets.BucketList;
 import com.example.buckos.main.buckets.items.Item;
+import com.example.buckos.main.buckets.items.content.Photo;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
-// This class represents a Story object in the Parse database
+import java.util.List;
+
+// This class represents a Story object in the Parse database. Each Story object has a list of
+// Photo objects.
 @ParseClassName("Story")
 @Parcel(analyze={Story.class})
 public class Story extends ParseObject {
@@ -17,6 +21,17 @@ public class Story extends ParseObject {
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_ITEM = "item";
     public static final String KEY_CREATED_AT = "createdAt";
+    private List<Photo> mPhotosInStory;
+
+    public Story() {};
+
+    public List<Photo> getPhotosInStory() {
+        return mPhotosInStory;
+    }
+
+    public void setPhotosInStory(List<Photo> photosInStory) {
+        mPhotosInStory = photosInStory;
+    }
 
     public String getTitle() {
         return getString(KEY_TITLE);

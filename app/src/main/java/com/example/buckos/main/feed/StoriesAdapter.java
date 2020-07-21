@@ -9,12 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.main.buckets.BucketListsAdapter;
 import com.example.buckos.main.buckets.items.Item;
+import com.example.buckos.main.buckets.items.content.PhotosAdapter;
 import com.example.buckos.main.buckets.userprofile.User;
 import com.parse.ParseFile;
 
@@ -49,6 +51,10 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.storyTitleTextView.setText(story.getTitle());
         holder.storyDescriptionTextView.setText(story.getDescription());
         holder.setProfilePic(author);
+
+//        Log.d("debug", )
+
+        holder.setAdapterForPhotos(story);
     }
 
     @Override
@@ -61,6 +67,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView authorDisplayNameTextView;
         private TextView storyTitleTextView;
         private TextView storyDescriptionTextView;
+        private RecyclerView storyPhotosRecyclerView;
+        private PhotosAdapter mPhotosAdapter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +77,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             authorDisplayNameTextView = itemView.findViewById(R.id.authorDisplayName);
             storyTitleTextView = itemView.findViewById(R.id.storyTitle);
             storyDescriptionTextView = itemView.findViewById(R.id.storyDescription);
+            storyPhotosRecyclerView = itemView.findViewById(R.id.storyPhotosRv);
         }
 
         // Set profile pic with either file from database or default image
@@ -79,6 +88,15 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
                 Glide.with(mContext).load(image.getUrl()).circleCrop().into(authorProfilePicImageView);
             else
                 Glide.with(mContext).load(R.drawable.bucket).circleCrop().into(authorProfilePicImageView);
+        }
+
+        public void setAdapterForPhotos(Story story) {
+            mPhotosAdapter = new PhotosAdapter(story.getPhotosInStory(), mContext);
+            storyPhotosRecyclerView.setAdapter(mPhotosAdapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext,
+                    LinearLayoutManager.HORIZONTAL, false);
+            storyPhotosRecyclerView.setLayoutManager(layoutManager);
+
         }
     }
 

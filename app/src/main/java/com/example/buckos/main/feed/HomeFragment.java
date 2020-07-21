@@ -16,7 +16,9 @@ import android.widget.ProgressBar;
 
 import com.example.buckos.R;
 import com.example.buckos.main.buckets.items.Item;
+import com.example.buckos.main.buckets.items.content.Photo;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
@@ -61,14 +63,32 @@ public class HomeFragment extends Fragment {
     private void queryStories() {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
         query.include("author");
+        query.include("item");
         query.orderByDescending(Story.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Story>() {
             @Override
-            public void done(List<Story> objects, ParseException e) {
-                mStories.addAll(objects);
-                mHomeProgressBar.setVisibility(View.GONE);
-                mAdapter.notifyDataSetChanged();
+            public void done(List<Story> stories, ParseException e) {
+                for (int i = 0; i < stories.size(); i++) {
+                    Story story = stories.get(i);
+                    Item item = (Item) story.getItem();
+                    queryPhotosInStory(story, item);
+                }
             }
         });
     }
+
+    private void queryPhotosInStory(final Story story, Item item) {
+        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        query.whereEqualTo(Story.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Photo>() {
+            @Override
+            public void done(List<Photo> photos, ParseException e) {
+                story.setPhotosInStory(photos);
+                mStories.add(story);
+                mAdapter.notifyDataSetChanged();
+                mHomeProgressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
 }

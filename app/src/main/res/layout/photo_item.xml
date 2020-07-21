@@ -15,4 +15,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars"
         android:adjustViewBounds="true"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
