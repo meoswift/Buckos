@@ -103,7 +103,7 @@ public class TravelFragment extends Fragment {
     private void performSearch() {
         // Format query into appropriate URI format "+"
         String query = mCityQueryEt.getText().toString();
-        String formattedQuery = "point+of+interest+in+" + query.replace(" ","+");
+        String formattedQuery = "point+of+interest+in+" + query.replace(" ", "+");
 
         // Makes API call to get a list of places
         AsyncHttpClient client = new AsyncHttpClient();

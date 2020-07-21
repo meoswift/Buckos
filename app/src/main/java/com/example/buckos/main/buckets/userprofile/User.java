@@ -9,7 +9,7 @@ import org.parceler.Parcel;
 import java.io.File;
 
 @ParseClassName("_User")
-@Parcel(analyze={User.class})
+@Parcel(analyze = {User.class})
 public class User extends ParseUser {
 
     public static final String KEY_NAME = "name";

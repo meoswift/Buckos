@@ -14,7 +14,7 @@ import java.util.List;
 // This class represents a Story object in the Parse database. Each Story object has a list of
 // Photo objects.
 @ParseClassName("Story")
-@Parcel(analyze={Story.class})
+@Parcel(analyze = {Story.class})
 public class Story extends ParseObject {
     public static final String KEY_TITLE = "title";
     public static final String KEY_DESCRIPTION = "description";
@@ -23,7 +23,8 @@ public class Story extends ParseObject {
     public static final String KEY_CREATED_AT = "createdAt";
     private List<Photo> mPhotosInStory;
 
-    public Story() {};
+    public Story() {
+    }
 
     public List<Photo> getPhotosInStory() {
         return mPhotosInStory;

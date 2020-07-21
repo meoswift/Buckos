@@ -1,5 +1,6 @@
-package com.example.buckos.main.buckets.bucketlists.item;
+package com.example.buckos.main.buckets.items;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +53,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         holder.itemTitleTv.setText(item.getName());
 
         // When there is no note in an item, remove that view
-        if(!item.getShortenedDescription().equals("")) {
+        if (!item.getShortenedDescription().equals("")) {
             holder.itemNoteTv.setText(item.getShortenedDescription());
             holder.itemNoteTv.setVisibility(View.VISIBLE);
         } else {
@@ -83,8 +85,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             super(itemView);
 
             // Find views
-            itemTitleTv = itemView.findViewById(R.id.listTitle);
-            itemNoteTv = itemView.findViewById(R.id.listDescription);
+            itemTitleTv = itemView.findViewById(R.id.itemTitle);
+            itemNoteTv = itemView.findViewById(R.id.itemDescription);
             checkBoxIv = itemView.findViewById(R.id.checkBox);
 
             // Directs the user to details view of an item
@@ -107,7 +109,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             Intent intent = new Intent(mContext, ItemDetailsActivity.class);
             intent.putExtra("item", Parcels.wrap(item));
             intent.putExtra("position", position);
-            mActivity.startActivityForResult(intent, InProgressFragment.MODIFY_ITEM_REQ);
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation((Activity) mContext, itemTitleTv, "itemTitle");
+            mActivity.startActivityForResult(intent, InProgressFragment.MODIFY_ITEM_REQ, options.toBundle());
         }
 
         // If an item is completed, update in database and remove from view

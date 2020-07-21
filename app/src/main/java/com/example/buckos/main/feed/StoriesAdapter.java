@@ -16,9 +16,13 @@ import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.main.buckets.BucketListsAdapter;
 import com.example.buckos.main.buckets.items.Item;
+import com.example.buckos.main.buckets.items.content.Photo;
 import com.example.buckos.main.buckets.items.content.PhotosAdapter;
 import com.example.buckos.main.buckets.userprofile.User;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 
 import org.w3c.dom.Text;
 
@@ -51,8 +55,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.storyTitleTextView.setText(story.getTitle());
         holder.storyDescriptionTextView.setText(story.getDescription());
         holder.setProfilePic(author);
-
-//        Log.d("debug", )
 
         holder.setAdapterForPhotos(story);
     }
@@ -96,7 +98,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext,
                     LinearLayoutManager.HORIZONTAL, false);
             storyPhotosRecyclerView.setLayoutManager(layoutManager);
-
         }
     }
 

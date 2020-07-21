@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp">
+    android:background="@drawable/story_separator"
+    android:paddingBottom="16dp">
 
     <ImageView
         android:id="@+id/authorProfilePic"
@@ -82,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="added a story"
+        android:text="completed an item"
         app:layout_constraintStart_toEndOf="@+id/authorDisplayName"
         app:layout_constraintTop_toTopOf="@+id/authorDisplayName" />
 

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -163,6 +164,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void done(ParseException e) {
                 mAdapter.deleteAllPhotosInItem(item);
+                deleteStoriesOfItem();
                 Intent intent = new Intent();
                 intent.putExtra("position", itemPosition);
                 intent.putExtra("action", ItemDetailsActivity.DELETE_ITEM);
@@ -170,6 +172,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 finish();
             }
         });
+    }
+
+    private void deleteStoriesOfItem() {
     }
 
     // Post story of a completed item to Home feed
@@ -196,7 +201,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
     // Build a dialog that shows two option for user to pick a photo from
     private void choosePhotoOption() {
-        String [] options = {"Choose image", "Take a photo"};
+        String[] options = {"Choose image", "Take a photo"};
         new MaterialAlertDialogBuilder(ItemDetailsActivity.this)
                 .setTitle("Add image")
                 .setItems(options, new DialogInterface.OnClickListener() {
@@ -280,4 +285,5 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     public void onBackPressed() {
         saveEditItemChanges();
     }
+
 }

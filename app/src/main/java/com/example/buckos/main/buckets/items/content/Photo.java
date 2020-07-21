@@ -9,7 +9,7 @@ import org.parceler.Parcel;
 
 // This class represents a Media object in the Parse database
 @ParseClassName("Media")
-@Parcel(analyze={Photo.class})
+@Parcel(analyze = {Photo.class})
 public class Photo extends ParseObject {
     public static final String KEY_IMAGE_FILE = "image";
     public static final String KEY_ITEM = "item";

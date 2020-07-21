@@ -5,17 +5,25 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.ChangeBounds;
+import androidx.transition.ChangeImageTransform;
+import androidx.transition.TransitionSet;
 
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
@@ -85,7 +93,7 @@ public class BucketsFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(mBucketListsRv);
 
         // Populate user information and display their lists
-        populateLists();
+        populateLists(mBucketLists, mAdapter);
         // Open user profile on profile pic clicked
         openUserProfile();
         // Open Create Bucket screen on New Bucket clicked
@@ -107,9 +115,18 @@ public class BucketsFragment extends Fragment {
         mProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Transition changeTransform = TransitionInflater.from(getContext()).
+                        inflateTransition(R.transition.change_profilepic);
+                Transition fade = TransitionInflater.from(getContext()).
+                        inflateTransition(android.R.transition.fade);
+
                 ProfileFragment fragment = new ProfileFragment();
+                fragment.setSharedElementEnterTransition(changeTransform);
+                fragment.setEnterTransition(fade);
+
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.your_placeholder, fragment)
+                        .addSharedElement(mProfilePic, "sharedProfilePic")
                         .addToBackStack(null)
                         .commit();
             }
@@ -117,7 +134,7 @@ public class BucketsFragment extends Fragment {
     }
 
     // Display the bucket lists that user has created
-    private void populateLists() {
+    public void populateLists(final List<BucketList> bucketLists, final BucketListsAdapter adapter) {
         // Specify which class to query
         ParseQuery<BucketList> query = ParseQuery.getQuery(BucketList.class);
         // get only lists that belong to current users
@@ -133,8 +150,8 @@ public class BucketsFragment extends Fragment {
                     return;
                 }
 
-                mBucketLists.addAll(objects);
-                mAdapter.notifyDataSetChanged();
+                bucketLists.addAll(objects);
+                adapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
             }
         });

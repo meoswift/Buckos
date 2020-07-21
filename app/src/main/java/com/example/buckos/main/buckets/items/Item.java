@@ -9,7 +9,7 @@ import org.parceler.Parcel;
 
 // This class represents a Item object in the Parse database
 @ParseClassName("Item")
-@Parcel(analyze={Item.class})
+@Parcel(analyze = {Item.class})
 public class Item extends ParseObject {
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";

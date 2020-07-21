@@ -13,7 +13,7 @@ public class SwipeLeftToDelete extends ItemTouchHelper.SimpleCallback {
     private List<BucketList> mLists;
 
     public SwipeLeftToDelete(BucketListsAdapter adapter, List<BucketList> lists) {
-        super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.mAdapter = adapter;
         this.mLists = lists;
     }

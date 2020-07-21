@@ -27,23 +27,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:visibility="visible">
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/listTitle"
+                android:id="@+id/itemTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="Try KitKat new flavor"
+                android:transitionName="itemTitle"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/checkBox"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/listDescription"
+                android:id="@+id/itemDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -51,7 +51,7 @@
                 android:maxLines="5"
                 app:layout_constraintEnd_toStartOf="@+id/checkBox"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/itemTitle" />
 
             <ImageView
                 android:id="@+id/checkBox"

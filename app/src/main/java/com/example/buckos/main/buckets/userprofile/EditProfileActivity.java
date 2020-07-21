@@ -147,7 +147,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     // Build a dialog that shows two option for user to pick a photo from
     private void choosePhotoOption() {
-        String [] options = {"Choose image", "Take a photo"};
+        String[] options = {"Choose image", "Take a photo"};
         new MaterialAlertDialogBuilder(EditProfileActivity.this)
                 .setTitle("Add image")
                 .setItems(options, new DialogInterface.OnClickListener() {

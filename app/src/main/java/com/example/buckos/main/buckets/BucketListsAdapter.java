@@ -55,7 +55,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         BucketList list = mBucketLists.get(position);
         holder.listTitleTv.setText(list.getName());
 
-        if(!list.getDescription().equals("")) {
+        if (!list.getDescription().equals("")) {
             holder.listDescriptionTv.setText(list.getDescription());
             holder.listDescriptionTv.setVisibility(View.VISIBLE);
         }

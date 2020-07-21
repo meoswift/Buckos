@@ -48,7 +48,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
         // Update list title in tool bar
         mListTitleTv.setText(list.getName());
-        if(!list.getDescription().equals("")) {
+        if (!list.getDescription().equals("")) {
             mListDescriptionTv.setText(list.getDescription());
             mListDescriptionTv.setVisibility(View.VISIBLE);
         }

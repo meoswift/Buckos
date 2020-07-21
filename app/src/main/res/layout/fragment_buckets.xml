@@ -47,6 +47,7 @@
         android:id="@+id/profilePic"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:transitionName="sharedProfilePic"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -60,6 +60,7 @@ public class HomeFragment extends Fragment {
         queryStories();
     }
 
+    // Get stories from all users
     private void queryStories() {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
         query.include("author");
@@ -77,6 +78,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    // For each story, get the photos included
     private void queryPhotosInStory(final Story story, Item item) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
@@ -85,8 +87,8 @@ public class HomeFragment extends Fragment {
             public void done(List<Photo> photos, ParseException e) {
                 story.setPhotosInStory(photos);
                 mStories.add(story);
-                mAdapter.notifyDataSetChanged();
                 mHomeProgressBar.setVisibility(View.GONE);
+                mAdapter.notifyDataSetChanged();
             }
         });
     }

@@ -17,7 +17,8 @@ public class Place {
     private int mUserRatingsTotal;
 
     // no-arg, empty constructor required for Parceler
-    public Place() {};
+    public Place() {
+    }
 
     // initialize a place with needed properties
     // get these properties from json object passed in
