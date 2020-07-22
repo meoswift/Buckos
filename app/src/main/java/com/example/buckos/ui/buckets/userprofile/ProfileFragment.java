@@ -107,6 +107,7 @@ public class ProfileFragment extends Fragment {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
         query.include("author");
         query.include("item");
+        query.include("list");
         query.whereEqualTo(Story.KEY_AUTHOR, user);
         query.orderByDescending(Story.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Story>() {

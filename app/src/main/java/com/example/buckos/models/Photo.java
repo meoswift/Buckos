@@ -12,6 +12,7 @@ import org.parceler.Parcel;
 public class Photo extends ParseObject {
     public static final String KEY_IMAGE_FILE = "image";
     public static final String KEY_ITEM = "item";
+    public static final String KEY_LIST = "list";
 
     public ParseFile getPhotoFile() {
         return getParseFile(KEY_IMAGE_FILE);
@@ -27,5 +28,13 @@ public class Photo extends ParseObject {
 
     public void setItem(Item item) {
         put(KEY_ITEM, item);
+    }
+
+    public BucketList getList() {
+        return (BucketList) getParseObject(KEY_LIST);
+    }
+
+    public void setList(BucketList list) {
+        put(KEY_LIST, list);
     }
 }

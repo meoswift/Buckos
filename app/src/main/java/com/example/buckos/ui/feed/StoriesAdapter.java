@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.ui.buckets.userprofile.User;
@@ -42,11 +43,13 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Story story = mStoriesList.get(position);
         User author = (User) story.getAuthor();
+        BucketList list = story.getBucketList();
 
         holder.authorDisplayNameTextView.setText(author.getName());
         holder.storyTitleTextView.setText(story.getTitle());
         holder.storyDescriptionTextView.setText(story.getDescription());
         holder.storyTimeStamp.setText(story.getFormatedTime());
+        holder.listTitleTextView.setText(list.getName());
         holder.setProfilePic(author);
 
         holder.setAdapterForPhotos(story);
@@ -63,6 +66,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView storyTitleTextView;
         private TextView storyDescriptionTextView;
         private TextView storyTimeStamp;
+        private TextView listTitleTextView;
 
         private RecyclerView storyPhotosRecyclerView;
         private PhotosAdapter mPhotosAdapter;
@@ -76,6 +80,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             storyDescriptionTextView = itemView.findViewById(R.id.storyDescription);
             storyPhotosRecyclerView = itemView.findViewById(R.id.storyPhotosRv);
             storyTimeStamp = itemView.findViewById(R.id.storyTimeStamp);
+            listTitleTextView = itemView.findViewById(R.id.listTitleTv);
         }
 
         // Set profile pic with either file from database or default image

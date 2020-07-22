@@ -67,8 +67,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
 
     public void addNewPhoto(Item item, File photoFile) {
         final Photo photo = new Photo();
+
+        // set properties - item, file, and list
         photo.setItem(item);
         photo.setPhotoFile(new ParseFile(photoFile));
+        photo.setList(item.getList());
 
         photo.saveInBackground(new SaveCallback() {
             @Override
@@ -79,6 +82,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         });
     }
 
+    // query and display all photos in current items
     public void displayPhotosInCurrentItem(Item item) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Photo.KEY_ITEM, item);
@@ -92,6 +96,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         });
     }
 
+    // delete all photos added to an item
     public void deleteAllPhotosInItem(Item item) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Photo.KEY_ITEM, item);

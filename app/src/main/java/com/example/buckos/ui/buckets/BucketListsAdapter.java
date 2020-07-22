@@ -105,6 +105,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             @Override
             public void done(ParseException e) {
                 deleteItemsInList(list);
+                deleteAllPhotosInList(list);
                 mBucketLists.remove(position);
                 notifyItemRemoved(position);
                 Snackbar snackbar = Snackbar.make(mView, "List deleted", Snackbar.LENGTH_LONG);
@@ -122,21 +123,16 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             public void done(List<Item> objects, ParseException e) {
                 for (int i = 0; i < objects.size(); i++) {
                     final Item item = objects.get(i);
-                    item.deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            deleteAllPhotosInItem(item);
-                        }
-                    });
+                    item.deleteInBackground();
                 }
             }
         });
     }
 
     // When user delete an item, delete all photos in that item
-    public void deleteAllPhotosInItem(Item item) {
+    public void deleteAllPhotosInList(BucketList list) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
-        query.whereEqualTo(Photo.KEY_ITEM, item);
+        query.whereEqualTo(Photo.KEY_LIST, list);
         query.findInBackground(new FindCallback<Photo>() {
             @Override
             public void done(List<Photo> objects, ParseException e) {
@@ -147,5 +143,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             }
         });
     }
+
+
 
 }

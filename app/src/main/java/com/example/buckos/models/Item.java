@@ -25,6 +25,10 @@ public class Item extends ParseObject {
         return getString(KEY_DESCRIPTION);
     }
 
+    public BucketList getList() {
+        return (BucketList) getParseObject(KEY_LIST);
+    }
+
     public ParseUser getAuthor() {
         return getParseUser(KEY_AUTHOR);
     }

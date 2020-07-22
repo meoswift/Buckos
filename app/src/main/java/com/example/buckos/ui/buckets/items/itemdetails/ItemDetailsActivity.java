@@ -23,9 +23,12 @@ import com.example.buckos.R;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.example.buckos.models.Story;
+import com.example.buckos.ui.buckets.items.ItemsAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -60,7 +63,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     private Item item;
     private int itemPosition;
     private List<Photo> mPhotosInItem;
-    private PhotosAdapter mAdapter;
+    private PhotosAdapter mPhotosAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +100,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     // Set up adapter for list of photos attached to an item
     private void setUpAdapterForPhotos() {
         mPhotosInItem = new ArrayList<>();
-        mAdapter = new PhotosAdapter(mPhotosInItem, this);
-        mPhotosRv.setAdapter(mAdapter);
+        mPhotosAdapter = new PhotosAdapter(mPhotosInItem, this);
+        mPhotosRv.setAdapter(mPhotosAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);
         mPhotosRv.setLayoutManager(layoutManager);
@@ -134,7 +137,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             mPostTextView.setText(null);
             mListStatusTextView.setText("In progress");
         }
-        mAdapter.displayPhotosInCurrentItem(item);
+        mPhotosAdapter.displayPhotosInCurrentItem(item);
     }
 
     // Set item's properties with changes and save in background
@@ -160,8 +163,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         item.deleteInBackground(new DeleteCallback() {
             @Override
             public void done(ParseException e) {
-                mAdapter.deleteAllPhotosInItem(item);
-                deleteStoriesOfItem();
+                mPhotosAdapter.deleteAllPhotosInItem(item);
+                deleteStoriesOfItem(item);
                 Intent intent = new Intent();
                 intent.putExtra("position", itemPosition);
                 intent.putExtra("action", ItemDetailsActivity.DELETE_ITEM);
@@ -171,21 +174,35 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    private void deleteStoriesOfItem() {
+    // Remove all stories related to this item
+    public void deleteStoriesOfItem(Item item) {
+        ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
+        query.whereEqualTo(Story.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> stories, ParseException e) {
+                for (Story story : stories) {
+                    story.deleteInBackground();
+                }
+            }
+        });
     }
 
     // Post story of a completed item to Home feed
     private void postNewStory() {
         // create new story instance
         Story story = new Story();
+
+        // save in database any changes before posting
+        saveEditItemChanges();
+
         // set core properties of a story
         story.setAuthor(ParseUser.getCurrentUser());
-        story.setTitle(mItemTitleEditText.getText().toString());
-        story.setDescription(mItemNoteEditText.getText().toString());
+        story.setTitle(item.getName());
+        story.setDescription(item.getDescription());
         story.setItem(item);
+        story.setList(item.getList());
 
-        // save in database
-        saveEditItemChanges();
         story.saveInBackground();
 
         // navigates user to Home Feed to see their new post
@@ -200,7 +217,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     private void choosePhotoOption() {
         String[] options = {"Choose image", "Take a photo"};
         new MaterialAlertDialogBuilder(ItemDetailsActivity.this)
-                .setTitle("Add image")
+                .setTitle("Add an image")
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -262,7 +279,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         // Use image taken from camera
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            mAdapter.addNewPhoto(item, photoFile);
+            mPhotosAdapter.addNewPhoto(item, photoFile);
         } else {
             Toast.makeText(this, "Picture wasn't taken.", Toast.LENGTH_SHORT).show();
         }
@@ -270,7 +287,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         // Use image picked from gallery
         if (requestCode == PICK_PHOTO_CODE && resultCode == RESULT_OK) {
             Uri photoUri = data.getData();
-            mAdapter.addNewPhoto(item, photoFile);
+//            mPhotosAdapter.addNewPhoto(item, photoFile);
         } else {
             Toast.makeText(this, "Fail to choose media.", Toast.LENGTH_SHORT).show();
         }

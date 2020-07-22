@@ -20,6 +20,7 @@ public class Story extends ParseObject {
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_ITEM = "item";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_LIST = "list";
     private List<Photo> mPhotosInStory;
 
     public Story() {
@@ -27,10 +28,6 @@ public class Story extends ParseObject {
 
     public List<Photo> getPhotosInStory() {
         return mPhotosInStory;
-    }
-
-    public void setPhotosInStory(List<Photo> photosInStory) {
-        mPhotosInStory = photosInStory;
     }
 
     public String getTitle() {
@@ -49,6 +46,14 @@ public class Story extends ParseObject {
         return (Item) getParseObject(KEY_ITEM);
     }
 
+    public BucketList getBucketList() {
+        return (BucketList) getParseObject(KEY_LIST);
+    }
+
+    public void setPhotosInStory(List<Photo> photosInStory) {
+        mPhotosInStory = photosInStory;
+    }
+
     public void setTitle(String name) {
         put(KEY_TITLE, name);
     }
@@ -63,6 +68,10 @@ public class Story extends ParseObject {
 
     public void setAuthor(ParseUser user) {
         put(KEY_AUTHOR, user);
+    }
+
+    public void setList(BucketList list) {
+        put(KEY_LIST, list);
     }
 
     public String getShortenedDescription() {
