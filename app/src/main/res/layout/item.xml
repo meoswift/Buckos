@@ -16,14 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-<!--        &lt;!&ndash; Media &ndash;&gt;-->
-<!--        <ImageView-->
-<!--            android:id="@+id/photoPreview"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="150dp"-->
-<!--            android:scaleType="centerCrop" />-->
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +55,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/listTitle"
                 app:srcCompat="@drawable/ic_check_box_outline" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

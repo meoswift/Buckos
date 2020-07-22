@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.buckos.R;
-import com.example.buckos.main.MainActivity;
+import com.example.buckos.app.MainActivity;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
