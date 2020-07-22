@@ -1,7 +1,11 @@
 package com.example.buckos.ui.buckets.items.itemdetails;
 
+import android.app.backup.FileBackupHelper;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,13 +32,19 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +55,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     public static final String DELETE_ITEM = "deleteItem";
     public static final String EDIT_ITEM = "editItem";
     public static final String POST_ITEM = "postItem";
-    public final String APP_TAG = "Buckos";
+    public static final String APP_TAG = "Buckos";
+    public static final String FILENAME = "photo.png";
+    public static final String AUTHORITY = "com.codepath.fileprovider.buckos";
 
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_PHOTO_CODE = 1046;
@@ -97,6 +109,12 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         populateItemDetails();
     }
 
+    // When user navigate via hardware back press, also save changes and update
+    @Override
+    public void onBackPressed() {
+        saveEditItemChanges();
+    }
+
     // Set up adapter for list of photos attached to an item
     private void setUpAdapterForPhotos() {
         mPhotosInItem = new ArrayList<>();
@@ -106,7 +124,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 LinearLayoutManager.HORIZONTAL, false);
         mPhotosRv.setLayoutManager(layoutManager);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -149,8 +166,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void done(ParseException e) {
                 Intent intent = new Intent();
-                intent.putExtra("item", Parcels.wrap(item));
-                intent.putExtra("position", itemPosition);
+                intent.putExtra(ItemsAdapter.KEY_ITEM, Parcels.wrap(item));
+                intent.putExtra(ItemsAdapter.KEY_POSITION, itemPosition);
                 intent.putExtra("action", EDIT_ITEM);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -166,7 +183,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 mPhotosAdapter.deleteAllPhotosInItem(item);
                 deleteStoriesOfItem(item);
                 Intent intent = new Intent();
-                intent.putExtra("position", itemPosition);
+                intent.putExtra(ItemsAdapter.KEY_POSITION, itemPosition);
                 intent.putExtra("action", ItemDetailsActivity.DELETE_ITEM);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -230,35 +247,86 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 .show();
     }
 
+    // When user click Choose from Camera, starts intent for camera
     public void takePhotoFromCamera() {
-        // Create a File reference for future access
-        String photoFileName = "photo.png";
-        photoFile = getPhotoFileUri(photoFileName);
-        Uri fileProvider = FileProvider.getUriForFile(this,
-                "com.codepath.fileprovider.buckos", photoFile);
+        photoFile = getPhotoFileUri();
+        Uri fileProvider = FileProvider.getUriForFile(this, AUTHORITY, photoFile);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
         // makes sure intent can be resolved
         if (intent.resolveActivity(getPackageManager()) != null) {
-            // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
     // When user click Choose from Gallery, starts intent for gallery selection
     public void choosePhotoFromGallery() {
-        // Create intent for picking a photo from the gallery
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         if (intent.resolveActivity(getPackageManager()) != null) {
-            // Bring up gallery to select a photo
             startActivityForResult(intent, PICK_PHOTO_CODE);
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Use image taken from camera
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK)
+                mPhotosAdapter.addNewPhoto(item, new ParseFile(photoFile));
+            else
+                Toast.makeText(this, R.string.media_fail, Toast.LENGTH_SHORT).show();
+        }
+
+        // Use image picked from gallery
+        if (requestCode == PICK_PHOTO_CODE) {
+            if (resultCode == RESULT_OK) {
+                Uri photoUri = data.getData();
+
+                // Create a ParseFile from URI and add uploaded photo to item
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(photoUri);
+                    // need to convert uri into a bytes array
+                    byte[] inputData = getBytes(inputStream);
+                    ParseFile file = new ParseFile(FILENAME, inputData);
+
+                    mPhotosAdapter.addNewPhoto(item, file);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(this, R.string.media_fail, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /** Helper functions for converting between Uri and File when uploading image
+     from camera/gallery to Parse **/
+
+    // Get bytes array from URI image upload
+    /* https://stackoverflow.com/questions/10296734/image-uri-to-bytesarray */
+    public static byte[] getBytes(InputStream iStream) {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while (true) {
+            try {
+                if ((len = iStream.read(buffer)) == -1)
+                    break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
     // Returns the File for a photo stored on disk given the fileName
-    public File getPhotoFileUri(String fileName) {
+    private File getPhotoFileUri() {
         // Get safe storage directory for photos
         File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
 
@@ -268,36 +336,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         }
 
         // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+        File file = new File(mediaStorageDir.getPath() + File.separator + FILENAME);
 
         return file;
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Use image taken from camera
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            mPhotosAdapter.addNewPhoto(item, photoFile);
-        } else {
-            Toast.makeText(this, "Picture wasn't taken.", Toast.LENGTH_SHORT).show();
-        }
-
-        // Use image picked from gallery
-        if (requestCode == PICK_PHOTO_CODE && resultCode == RESULT_OK) {
-            Uri photoUri = data.getData();
-//            mPhotosAdapter.addNewPhoto(item, photoFile);
-        } else {
-            Toast.makeText(this, "Fail to choose media.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    // When user navigate via hardware back press, also save changes and update
-    @Override
-    public void onBackPressed() {
-        saveEditItemChanges();
     }
 
 }

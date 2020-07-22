@@ -33,6 +33,9 @@ import java.util.List;
 // Adapter that inflates an Item object into View and display that Item in RecyclerView
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
+    public static final String KEY_ITEM = "item";
+    public static final String KEY_POSITION = "postition";
+
     private List<Item> mItemList;
     private Context mContext;
     private Fragment mActivity;
@@ -110,12 +113,15 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             int position = getAdapterPosition();
             item = mItemList.get(position);
             Intent intent = new Intent(mContext, ItemDetailsActivity.class);
-            intent.putExtra("item", Parcels.wrap(item));
-            intent.putExtra("position", position);
+            intent.putExtra(KEY_ITEM, Parcels.wrap(item));
+            intent.putExtra(KEY_POSITION, position);
+
+            // create shared elements pairs and animation
             Pair titles = Pair.create((View) itemTitleTextView, "itemTitle");
             Pair notes = Pair.create((View) itemNoteTextView, "itemNote");
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation((Activity) mContext, titles, notes);
+
             mActivity.startActivityForResult(intent, InProgressFragment.MODIFY_ITEM_REQ, options.toBundle());
         }
 
@@ -132,7 +138,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                     checkBoxImageView.setImageDrawable(res);
                     mItemList.remove(item);
                     notifyItemRemoved(getAdapterPosition());
-                    Snackbar.make(itemView, "1 item archived to Done", Snackbar.LENGTH_LONG)
+                    Snackbar.make(itemView, R.string.item_mark_done, Snackbar.LENGTH_LONG)
                             .setAction("Undo", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

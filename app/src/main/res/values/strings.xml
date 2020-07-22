@@ -97,4 +97,6 @@
     <string name="title_activity_list_details">ListDetailsActivity</string>
     <string name="text_label">Item completed!</string>
     <string name="pois_fail_to_query">Failure to get list of attractions.</string>
+    <string name="media_fail">Fail to add media.</string>
+    <string name="item_mark_done">1 item archived to Done</string>
 </resources>

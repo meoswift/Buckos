@@ -44,7 +44,7 @@ public class ParseApplication extends Application {
                 .applicationId("buckosParse") // should correspond to APP_ID env variable
                 .clientKey(null)  // set explicitly unless clientKey is explicitly configured on Parse server
                 .clientBuilder(builder)
-                .server("https://buckos.herokuapp.com/parse/").build());
+                .server("http://buckos.herokuapp.com/parse/").build());
     }
 
 }

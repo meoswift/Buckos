@@ -69,11 +69,14 @@ public class HomeFragment extends Fragment {
         query.findInBackground(new FindCallback<Story>() {
             @Override
             public void done(List<Story> stories, ParseException e) {
+                // in each story, get the photos attached
                 for (int i = 0; i < stories.size(); i++) {
                     Story story = stories.get(i);
                     Item item = (Item) story.getItem();
                     queryPhotosInStory(story, item);
                 }
+
+                mHomeProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -87,8 +90,8 @@ public class HomeFragment extends Fragment {
             public void done(List<Photo> photos, ParseException e) {
                 story.setPhotosInStory(photos);
                 mStories.add(story);
-                mHomeProgressBar.setVisibility(View.GONE);
                 mAdapter.notifyDataSetChanged();
+                mHomeProgressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.ui.buckets.items.itemdetails.ItemDetailsActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -87,8 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (image != null)
             Glide.with(this).load(image.getUrl()).circleCrop().into(mProfilePicImageView);
         else
-            Glide.with(this).load(R.drawable.ic_launcher_background)
-                    .circleCrop().into(mProfilePicImageView);
+            Glide.with(this).load(R.drawable.ic_launcher_background).circleCrop().into(mProfilePicImageView);
     }
 
 
@@ -146,7 +146,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void choosePhotoOption() {
         String[] options = {"Choose image", "Take a photo"};
         new MaterialAlertDialogBuilder(EditProfileActivity.this)
-                .setTitle("Add image")
+                .setTitle("Add profile image")
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -165,7 +165,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String photoFileName = "photo.png";
         photoFile = getPhotoFileUri(photoFileName);
         Uri fileProvider = FileProvider.getUriForFile(this,
-                "com.codepath.fileprovider.buckos", photoFile);
+                                                        ItemDetailsActivity.AUTHORITY, photoFile);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
@@ -179,7 +179,8 @@ public class EditProfileActivity extends AppCompatActivity {
     // Returns the File for a photo stored on disk given the fileName
     private File getPhotoFileUri(String photoFileName) {
         // Get safe storage directory for photos
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                                        APP_TAG);
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
@@ -200,11 +201,14 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Set image taken from camera to profile pic
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-            Glide.with(this).load(takenImage).circleCrop().into(mProfilePicImageView);
-        } else {
-            Toast.makeText(this, "Picture wasn't taken.", Toast.LENGTH_SHORT).show();
-        }
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                Glide.with(this).load(takenImage).circleCrop().into(mProfilePicImageView);
+            }
+            else {
+                Toast.makeText(this, R.string.media_fail, Toast.LENGTH_SHORT).show();
+            }
+
     }
 }

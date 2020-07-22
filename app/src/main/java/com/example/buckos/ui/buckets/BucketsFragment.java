@@ -83,6 +83,8 @@ public class BucketsFragment extends Fragment {
         mAdapter = new BucketListsAdapter(getContext(), mBucketLists, view, this);
         mBucketListsRecyclerView.setAdapter(mAdapter);
         mBucketListsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // set up swipe to delete a list
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeLeftToDelete(mAdapter, mBucketLists));
         itemTouchHelper.attachToRecyclerView(mBucketListsRecyclerView);
 
@@ -131,11 +133,6 @@ public class BucketsFragment extends Fragment {
         query.findInBackground(new FindCallback<BucketList>() {
             @Override
             public void done(List<BucketList> objects, ParseException e) {
-                if (e != null) {
-                    Log.d("UserProfileFragment", "Issue with querying posts" + e);
-                    return;
-                }
-
                 bucketLists.addAll(objects);
                 adapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
@@ -158,7 +155,6 @@ public class BucketsFragment extends Fragment {
         if (requestCode == BucketsFragment.POST_ITEM_REQUEST && resultCode == RESULT_OK) {
             mBottomNavigationView.setSelectedItemId(R.id.action_home);
         }
-
     }
 
     // Set profile pic with either file from database or default image
@@ -172,13 +168,5 @@ public class BucketsFragment extends Fragment {
                     .circleCrop().into(mProfilePic);
     }
 
-    private void setTransitionSharedElements(Fragment profileFragment) {
-        Transition changeTransform = TransitionInflater.from(getContext()).
-                inflateTransition(R.transition.change_image_transform);
-        Transition transform = TransitionInflater.from(getContext()).
-                inflateTransition(android.R.transition.no_transition);
-        profileFragment.setSharedElementEnterTransition(changeTransform);
-        profileFragment.setEnterTransition(transform);
-    }
 
 }

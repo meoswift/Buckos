@@ -6,9 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,9 +92,9 @@ public class DoneFragment extends Fragment {
 
         // When user come back from Edit/View item screen, update the content of item
         if (resultCode == RESULT_OK && requestCode == InProgressFragment.MODIFY_ITEM_REQ) {
-            Item item = Parcels.unwrap(data.getParcelableExtra("item"));
+            Item item = Parcels.unwrap(data.getParcelableExtra(ItemsAdapter.KEY_ITEM));
             String action = data.getStringExtra("action");
-            int position = data.getExtras().getInt("position");
+            int position = data.getExtras().getInt(ItemsAdapter.KEY_POSITION);
 
             // Update RecyclerView based on whether user edited or deleted the item
             switch (action) {
@@ -104,7 +106,6 @@ public class DoneFragment extends Fragment {
                     break;
                 case ItemDetailsActivity.POST_ITEM:
                     Intent intent = new Intent();
-                    intent.putExtra("action", "postItem");
 
                     // finish ListDetailsActivity and back to BucketsFragment
                     getActivity().setResult(RESULT_OK, intent);

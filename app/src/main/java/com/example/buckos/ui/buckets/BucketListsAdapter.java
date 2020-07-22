@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Item;
+import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.ListDetailsActivity;
 import com.example.buckos.models.Photo;
 import com.google.android.material.snackbar.Snackbar;
@@ -104,8 +105,12 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         list.deleteInBackground(new DeleteCallback() {
             @Override
             public void done(ParseException e) {
+
+                // when deleting  a list, we have to delete
+                // items in list, photos in list, and stories in list
                 deleteItemsInList(list);
                 deleteAllPhotosInList(list);
+                deleteAllStoriesInList(list);
                 mBucketLists.remove(position);
                 notifyItemRemoved(position);
                 Snackbar snackbar = Snackbar.make(mView, "List deleted", Snackbar.LENGTH_LONG);
@@ -130,15 +135,29 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     }
 
     // When user delete an item, delete all photos in that item
-    public void deleteAllPhotosInList(BucketList list) {
+    private void deleteAllPhotosInList(BucketList list) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Photo.KEY_LIST, list);
         query.findInBackground(new FindCallback<Photo>() {
             @Override
-            public void done(List<Photo> objects, ParseException e) {
-                for (int i = 0; i < objects.size(); i++) {
-                    Photo photo = objects.get(i);
+            public void done(List<Photo> photos, ParseException e) {
+                for (int i = 0; i < photos.size(); i++) {
+                    Photo photo = photos.get(i);
                     photo.deleteInBackground();
+                }
+            }
+        });
+    }
+
+    private void deleteAllStoriesInList(BucketList list) {
+        ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
+        query.whereEqualTo(Photo.KEY_LIST, list);
+        query.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> stories, ParseException e) {
+                for (int i = 0; i < stories.size(); i++) {
+                    Story story = stories.get(i);
+                    story.deleteInBackground();
                 }
             }
         });

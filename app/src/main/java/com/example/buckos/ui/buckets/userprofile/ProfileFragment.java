@@ -78,7 +78,6 @@ public class ProfileFragment extends Fragment {
         mBackButton = view.findViewById(R.id.backButton);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
 
-
         populateUserProfile();
         handleProfileMenuClicked();
         handleBackButtonClicked();
