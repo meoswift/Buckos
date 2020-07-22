@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
+import com.example.buckos.models.Item;
 import com.example.buckos.models.Place;
 import com.example.buckos.ui.travel.placebookmark.SaveToListActivity;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -86,8 +88,15 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             Drawable bookmarked = mContext.getResources().getDrawable(R.drawable.ic_baseline_bookmark_24);
             bookmarkButton.setImageDrawable(bookmarked);
             Place place = mPlaces.get(getAdapterPosition());
+
+            Item item = new Item();
+            item.setName(place.getName());
+            item.setCompleted(false);
+            item.setAuthor(ParseUser.getCurrentUser());
+            item.setDescription(place.getAddressName());
+
             Intent intent = new Intent(mContext, SaveToListActivity.class);
-            intent.putExtra("place", Parcels.wrap(place));
+            intent.putExtra("item", Parcels.wrap(item));
             mContext.startActivity(intent);
         }
     }

@@ -8,10 +8,11 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.buckos.R;
-import com.example.buckos.ui.create.NewListActivity;
+import com.example.buckos.ui.create.CreatePostBottomSheet;
 import com.example.buckos.ui.explore.SearchUserFragment;
 import com.example.buckos.ui.feed.HomeFragment;
 import com.example.buckos.ui.travel.TravelFragment;
@@ -20,7 +21,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 // This activity has a Bottom navigation view that allows users to navigate the app
 public class MainActivity extends AppCompatActivity {
-    private static final int NEW_LIST_REQUEST = 145;
     private BottomNavigationView mBottomNavigationView;
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new HomeFragment();
                         break;
                     case R.id.action_add:
-                        Intent intent = new Intent(getApplicationContext(), NewListActivity.class);
-                        startActivityForResult(intent, NEW_LIST_REQUEST);
+                        CreatePostBottomSheet createPostBottomSheet = CreatePostBottomSheet.newInstance();
+                        createPostBottomSheet.show(getSupportFragmentManager(), "bottom_sheet");
                         break;
                     case R.id.action_buckets:
                         fragment = new BucketsFragment();
@@ -74,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == NEW_LIST_REQUEST) {
-            fragment = new BucketsFragment();
-            fragmentManager.beginTransaction().replace(R.id.your_placeholder, fragment).commit();
-        }
+
     }
 }

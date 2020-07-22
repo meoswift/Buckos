@@ -18,12 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Item;
-import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.ItemDetailsActivity;
 import com.google.android.material.snackbar.Snackbar;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;

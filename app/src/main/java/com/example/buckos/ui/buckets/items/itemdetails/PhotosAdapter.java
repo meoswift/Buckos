@@ -1,7 +1,6 @@
 package com.example.buckos.ui.buckets.items.itemdetails;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,11 @@ import com.example.buckos.R;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import java.io.File;
 import java.util.List;
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder> {

@@ -39,7 +39,7 @@ public class SaveToListActivity extends AppCompatActivity {
 
     private List<BucketList> mTravelLists;
     private TravelListsAdapter mAdapter;
-    private Place place;
+    private Item item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class SaveToListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_save_to_list);
 
         Intent intent = getIntent();
-        place = Parcels.unwrap(intent.getParcelableExtra("place"));
+        item = Parcels.unwrap(intent.getParcelableExtra("item"));
 
         // Find views
         mBackButton = findViewById(R.id.backButton);
@@ -104,7 +104,7 @@ public class SaveToListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<BucketList> selectedLists = mAdapter.getSelectedLists();
-                Toast.makeText(getApplicationContext(), "Place saved", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Saved to list", Toast.LENGTH_LONG).show();
                 // Go through selected travel lists and add place to each list
                 for (int i = 0; i < selectedLists.size(); i++) {
                     addItemToList(selectedLists.get(i));
@@ -115,13 +115,8 @@ public class SaveToListActivity extends AppCompatActivity {
 
     // Create a new instance of Item for each list and add that item to the list
     private void addItemToList(BucketList list) {
-        final Item item = new Item();
-        // Set core properties
-        item.setName(place.getName());
-        item.setCompleted(false);
-        item.setAuthor(ParseUser.getCurrentUser());
-        item.setDescription(place.getAddressName());
         item.setList(list);
+
         // Save to database
         item.saveInBackground(new SaveCallback() {
             @Override
@@ -136,7 +131,7 @@ public class SaveToListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewTravelListActivity.class);
-                intent.putExtra("place", Parcels.wrap(place));
+                intent.putExtra("item", Parcels.wrap(item));
                 startActivity(intent);
             }
         });

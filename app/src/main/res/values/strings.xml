@@ -99,4 +99,8 @@
     <string name="pois_fail_to_query">Failure to get list of attractions.</string>
     <string name="media_fail">Fail to add media.</string>
     <string name="item_mark_done">1 item archived to Done</string>
+    <string name="bottom_sheet_option_camera">Use Camera</string>
+    <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
+    <string name="bottom_sheet_option_heading">Add Photo</string>
+    <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
 </resources>

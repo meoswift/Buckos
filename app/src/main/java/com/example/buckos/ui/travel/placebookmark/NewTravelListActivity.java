@@ -28,7 +28,7 @@ public class NewTravelListActivity extends AppCompatActivity {
     private TextView mCreateButton;
     private ImageView mBackButton;
 
-    private Place mPlace;
+    private Item mItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class NewTravelListActivity extends AppCompatActivity {
         mBackButton = findViewById(R.id.backButton);
 
         Intent intent = getIntent();
-        mPlace = Parcels.unwrap(intent.getParcelableExtra("place"));
+        mItem = Parcels.unwrap(intent.getParcelableExtra("item"));
 
         // Create new list and add item to list on Create clicked
         handleOnCreateClicked();
@@ -77,14 +77,8 @@ public class NewTravelListActivity extends AppCompatActivity {
     }
 
     private void addPlaceToNewList(BucketList list) {
-        Item item = new Item();
-        // Set core properties
-        item.setName(mPlace.getName());
-        item.setCompleted(false);
-        item.setAuthor(ParseUser.getCurrentUser());
-        item.setDescription(mPlace.getAddressName());
-        item.setList(list);
+        mItem.setList(list);
         // Save to database
-        item.saveInBackground();
+        mItem.saveInBackground();
     }
 }

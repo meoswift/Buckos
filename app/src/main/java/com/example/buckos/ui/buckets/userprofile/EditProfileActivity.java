@@ -195,6 +195,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     private void choosePhotoFromGallery() {
+
     }
 
     @Override
@@ -205,10 +206,9 @@ public class EditProfileActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 Glide.with(this).load(takenImage).circleCrop().into(mProfilePicImageView);
-            }
-            else {
+            } else {
                 Toast.makeText(this, R.string.media_fail, Toast.LENGTH_SHORT).show();
             }
-
+        }
     }
 }

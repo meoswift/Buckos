@@ -17,11 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.create.NewListActivity"/>
+        <activity android:name=".ui.create.NewItemActivity"></activity>
+        <activity android:name=".ui.create.NewListActivity" />
         <activity android:name=".ui.travel.placebookmark.NewTravelListActivity" />
         <activity android:name=".ui.travel.placebookmark.SaveToListActivity" />
         <activity android:name=".ui.buckets.userprofile.EditProfileActivity" />
-        <activity android:name=".ui.buckets.items.itemdetails.ItemDetailsActivity"/>
+        <activity android:name=".ui.buckets.items.itemdetails.ItemDetailsActivity" />
         <activity
             android:name=".ui.buckets.items.ListDetailsActivity"
             android:label="@string/title_activity_list_details"
