@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.buckos.R;
-import com.example.buckos.app.MainActivity;
+import com.example.buckos.main.MainActivity;
+import com.example.buckos.main.buckets.userprofile.User;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -31,7 +33,6 @@ public class SignUpActivity extends AppCompatActivity {
         mPasswordEt = findViewById(R.id.passwordEt);
         mDisplayNameEt = findViewById(R.id.displayNameEt);
         mBioEt = findViewById(R.id.bioEt);
-
     }
 
     // When user click sign up, create a new user in database
@@ -45,13 +46,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     // Create new account using given credentials
     private void createAccount(String username, String password, String displayName, String bio) {
+
         // Create the ParseUser
-        ParseUser user = new ParseUser();
+        User user = ParseObject.create(User.class);
         // Set core properties
         user.setUsername(username);
         user.setPassword(password);
-        user.put("name", displayName);
-        user.put("bio", bio);
+        user.setName(displayName);
+        user.setBio(bio);
 
         // Invoke signUpInBackground
         user.signUpInBackground(new SignUpCallback() {

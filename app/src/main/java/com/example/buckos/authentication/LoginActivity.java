@@ -9,16 +9,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buckos.R;
-import com.example.buckos.app.MainActivity;
+import com.example.buckos.main.MainActivity;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
 // This activity logs user in and maintain persistence
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
-    private EditText mUsernameEt;
-    private EditText mPasswordEt;
+    private EditText mUsernameEditText;
+    private EditText mPasswordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Find views
-        mUsernameEt = findViewById(R.id.usernameEt);
-        mPasswordEt = findViewById(R.id.passwordEt);
+        mUsernameEditText = findViewById(R.id.usernameEt);
+        mPasswordEditText = findViewById(R.id.passwordEt);
 
         // If a current is already logged in, we will not ask them to login again
         // Instead, direct them to HomeActivity and skip Login screen.
@@ -36,14 +35,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Find views
-        mUsernameEt = findViewById(R.id.usernameEt);
-        mPasswordEt = findViewById(R.id.passwordEt);
+        mUsernameEditText = findViewById(R.id.usernameEt);
+        mPasswordEditText = findViewById(R.id.passwordEt);
     }
 
     // On click listener for login button
     public void onLogInClicked(View view) {
-        String username = mUsernameEt.getText().toString();
-        String password = mPasswordEt.getText().toString();
+        String username = mUsernameEditText.getText().toString();
+        String password = mPasswordEditText.getText().toString();
         loginUser(username, password);
     }
 
