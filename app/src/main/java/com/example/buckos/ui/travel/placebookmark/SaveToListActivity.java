@@ -39,6 +39,7 @@ public class SaveToListActivity extends AppCompatActivity {
 
     private List<BucketList> mTravelLists;
     private TravelListsAdapter mAdapter;
+    private Place place;
     private Item item;
 
     @Override
@@ -104,7 +105,7 @@ public class SaveToListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<BucketList> selectedLists = mAdapter.getSelectedLists();
-                Toast.makeText(getApplicationContext(), "Saved to list", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Item saved", Toast.LENGTH_LONG).show();
                 // Go through selected travel lists and add place to each list
                 for (int i = 0; i < selectedLists.size(); i++) {
                     addItemToList(selectedLists.get(i));
@@ -115,10 +116,15 @@ public class SaveToListActivity extends AppCompatActivity {
 
     // Create a new instance of Item for each list and add that item to the list
     private void addItemToList(BucketList list) {
-        item.setList(list);
-
+        final Item newItem = new Item();
+        // Set core properties
+        newItem.setName(item.getName());
+        newItem.setCompleted(false);
+        newItem.setAuthor(ParseUser.getCurrentUser());
+        newItem.setDescription(item.getDescription());
+        newItem.setList(list);
         // Save to database
-        item.saveInBackground(new SaveCallback() {
+        newItem.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 finish();
@@ -133,6 +139,7 @@ public class SaveToListActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), NewTravelListActivity.class);
                 intent.putExtra("item", Parcels.wrap(item));
                 startActivity(intent);
+                finish();
             }
         });
     }

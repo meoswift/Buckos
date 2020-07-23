@@ -17,6 +17,7 @@ import com.example.buckos.ui.MainActivity;
 import com.example.buckos.ui.buckets.BucketsFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class CreatePostBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
@@ -57,7 +58,7 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
         switch (v.getId()) {
             case R.id.bucketTextView:
                 Intent intentNewList = new Intent(getContext(), NewListActivity.class);
-                startActivityForResult(intentNewList, MainActivity.NEW_LIST_REQUEST);
+                startActivityForResult(intentNewList, NEW_LIST_REQUEST);
                 break;
             case R.id.itemTextView:
                 Intent intentNewItem = new Intent(getContext(), NewItemActivity.class);
@@ -69,13 +70,17 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NEW_LIST_REQUEST && resultCode == RESULT_OK) {
-            Fragment fragment = new BucketsFragment();
-            getParentFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
-            this.dismiss();
+        if (requestCode == NEW_LIST_REQUEST) {
+            if (resultCode == RESULT_CANCELED)
+                this.dismiss();
+            else if (resultCode == RESULT_OK) {
+                Fragment fragment = new BucketsFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
+                this.dismiss();
+            }
         }
 
-        if (requestCode == NEW_ITEM_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == NEW_ITEM_REQUEST) {
             this.dismiss();
         }
 

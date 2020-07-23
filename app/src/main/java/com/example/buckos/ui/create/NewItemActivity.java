@@ -49,7 +49,9 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
                 createNewItem();
                 break;
             case R.id.closeBtn:
-                super.onBackPressed();
+                Intent intent = new Intent();
+                setResult(RESULT_CANCELED, intent);
+                finish();
                 break;
         }
     }

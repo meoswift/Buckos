@@ -77,6 +77,7 @@ public class NewTravelListActivity extends AppCompatActivity {
     }
 
     private void addPlaceToNewList(BucketList list) {
+
         mItem.setList(list);
         // Save to database
         mItem.saveInBackground();

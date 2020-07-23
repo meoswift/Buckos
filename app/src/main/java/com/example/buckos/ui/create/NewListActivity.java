@@ -50,7 +50,9 @@ public class NewListActivity extends AppCompatActivity {
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewListActivity.super.onBackPressed();
+                Intent intent = new Intent();
+                setResult(RESULT_CANCELED, intent);
+                finish();
             }
         });
     }
