@@ -61,6 +61,8 @@ public class SearchUserFragment extends Fragment {
         mUsernameQuery = view.findViewById(R.id.usernameInputEt);
         mUserResultsRecyclerView = view.findViewById(R.id.userResultsRv);
 
+        mUsernameQuery.requestFocus();
+
         // Set up adapter and layout manager for lists of user results
         mUsersList = new ArrayList<>();
         mAdapter = new UsersAdapter(mUsersList, getContext());

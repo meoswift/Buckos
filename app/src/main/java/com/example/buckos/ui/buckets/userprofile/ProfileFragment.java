@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -47,6 +48,8 @@ public class ProfileFragment extends Fragment {
     private ImageView mBackButton;
     private StoriesAdapter mStoriesAdapter;
     private RecyclerView mUserStoriesRecyclerView;
+    private SwipeRefreshLayout swipeContainer;
+    private Story story;
 
     private User user;
     private List<Story> mUserStories;
@@ -77,10 +80,25 @@ public class ProfileFragment extends Fragment {
         mProfileToolbar = view.findViewById(R.id.profileToolbar);
         mBackButton = view.findViewById(R.id.backButton);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
+        swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
 
+        setPullToRefreshContainer();
         populateUserProfile();
         handleProfileMenuClicked();
         handleBackButtonClicked();
+    }
+
+    private void setPullToRefreshContainer() {
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                queryStoriesFromUser();
+            }
+        });
     }
 
     // Populate views that comes with an user profile
@@ -112,28 +130,36 @@ public class ProfileFragment extends Fragment {
         query.findInBackground(new FindCallback<Story>() {
             @Override
             public void done(List<Story> stories, ParseException e) {
-                for (int i = 0; i < stories.size(); i++) {
-                    Story story = stories.get(i);
-                    Item item = (Item) story.getItem();
-                    queryPhotosInStory(story, item);
-                }
+                mUserStories.clear();
+                mUserStories.addAll(stories);
+                mStoriesAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+//                for (int i = 0; i < stories.size(); i++) {
+//                    story = stories.get(i);
+//                    Item item = (Item) story.getItem();
+//                    mUserStories.add(story);
+//                    mStoriesAdapter.notifyDataSetChanged();
+//                    swipeContainer.setRefreshing(false);
+//                }
             }
         });
     }
 
-    // For each story, get the photos included
-    private void queryPhotosInStory(final Story story, Item item) {
-        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
-        query.whereEqualTo(Story.KEY_ITEM, item);
-        query.findInBackground(new FindCallback<Photo>() {
-            @Override
-            public void done(List<Photo> photos, ParseException e) {
-                story.setPhotosInStory(photos);
-                mUserStories.add(story);
-                mStoriesAdapter.notifyDataSetChanged();
-            }
-        });
-    }
+//    // For each story, get the photos included
+//    private void queryPhotosInStory(Item item) {
+//        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+//        query.whereEqualTo(Story.KEY_ITEM, item);
+//        query.findInBackground(new FindCallback<Photo>() {
+//            @Override
+//            public void done(List<Photo> photos, ParseException e) {
+//                story.setPhotosInStory(photos);
+//                mUserStories.add(story);
+//                mStoriesAdapter.notifyDataSetChanged();
+//                // call setRefreshing(false) to signal refresh has finished
+//                swipeContainer.setRefreshing(false);
+//            }
+//        });
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

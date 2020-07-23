@@ -74,5 +74,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_outline_bookmark_border_24" />
+        app:srcCompat="@drawable/outline_bookmark" />
 </androidx.constraintlayout.widget.ConstraintLayout>

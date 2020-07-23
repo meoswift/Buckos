@@ -3,12 +3,14 @@ package com.example.buckos.ui.travel;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +46,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlacesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final PlacesAdapter.ViewHolder holder, final int position) {
         Place place = mPlaces.get(position);
         holder.placeNameTv.setText(place.getName());
         holder.placeAddressTv.setText(place.getAddressName());
@@ -57,6 +59,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
     public int getItemCount() {
         return mPlaces.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView placeNameTv;
@@ -84,20 +87,26 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             });
         }
 
+        // Bookmark place - User can add to multiple lists or add to a new one
         private void savePlaceToList() {
-            Drawable bookmarked = mContext.getResources().getDrawable(R.drawable.ic_baseline_bookmark_24);
-            bookmarkButton.setImageDrawable(bookmarked);
             Place place = mPlaces.get(getAdapterPosition());
+            place.setBookmarked(!place.isBookmarked());
 
-            Item item = new Item();
-            item.setName(place.getName());
-            item.setCompleted(false);
-            item.setAuthor(ParseUser.getCurrentUser());
-            item.setDescription(place.getAddressName());
+            final Drawable bookmarked = mContext.getDrawable(R.drawable.baseline_bookmark);
+            if (place.isBookmarked()) {
+                bookmarkButton.setImageDrawable(bookmarked);
+                Item item = new Item();
+                item.setName(place.getName());
+                item.setCompleted(false);
+                item.setAuthor(ParseUser.getCurrentUser());
+                item.setDescription(place.getAddressName());
 
-            Intent intent = new Intent(mContext, SaveToListActivity.class);
-            intent.putExtra("item", Parcels.wrap(item));
-            mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, SaveToListActivity.class);
+                intent.putExtra("item", Parcels.wrap(item));
+                mContext.startActivity(intent);
+            } else {
+                Toast.makeText(mContext, "Place already saved!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

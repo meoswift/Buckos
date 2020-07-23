@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -51,6 +52,7 @@ public class BucketsFragment extends Fragment {
     private ImageView mProfilePic;
     private Button mNewListButton;
     private BottomNavigationView mBottomNavigationView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private User user;
     private List<BucketList> mBucketLists;
@@ -73,6 +75,7 @@ public class BucketsFragment extends Fragment {
         mProfilePic = view.findViewById(R.id.profilePic);
         mNewListButton = view.findViewById(R.id.newListButton);
         mBottomNavigationView = view.getRootView().findViewById(R.id.bottomNavigation);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         // Get current user to retrieve information
         user = (User) ParseUser.getCurrentUser();
@@ -88,8 +91,10 @@ public class BucketsFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeLeftToDelete(mAdapter, mBucketLists));
         itemTouchHelper.attachToRecyclerView(mBucketListsRecyclerView);
 
+        // set up refresher for entire view
+        setPullToRefreshContainer();
         // Populate user information and display their lists
-        populateLists(mBucketLists, mAdapter);
+        populateLists();
         // Open user profile on profile pic clicked
         openUserProfile();
         // Open Create Bucket screen on New Bucket clicked
@@ -121,8 +126,22 @@ public class BucketsFragment extends Fragment {
         });
     }
 
+    private void setPullToRefreshContainer() {
+        // Setup refresh listener which triggers new data loading
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                populateLists();
+            }
+        });
+
+    }
+
     // Display the bucket lists that user has created
-    public void populateLists(final List<BucketList> bucketLists, final BucketListsAdapter adapter) {
+    public void populateLists() {
         // Specify which class to query
         ParseQuery<BucketList> query = ParseQuery.getQuery(BucketList.class);
         // get only lists that belong to current users
@@ -133,9 +152,13 @@ public class BucketsFragment extends Fragment {
         query.findInBackground(new FindCallback<BucketList>() {
             @Override
             public void done(List<BucketList> objects, ParseException e) {
-                bucketLists.addAll(objects);
-                adapter.notifyDataSetChanged();
+                mBucketLists.clear();
+                mBucketLists.addAll(objects);
+                mAdapter.notifyDataSetChanged();
+
+                // when done loading, hide progress bar and refresher
                 mProgressBar.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

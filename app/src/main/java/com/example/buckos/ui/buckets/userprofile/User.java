@@ -32,8 +32,8 @@ public class User extends ParseUser {
         return getString(KEY_BIO);
     }
 
-    public void setProfilePic(File photoFile) {
-        put(User.KEY_PROFILE_PIC, new ParseFile(photoFile));
+    public void setProfilePic(ParseFile photoFile) {
+        put(User.KEY_PROFILE_PIC, photoFile);
     }
 
     public ParseFile getProfilePic() {

@@ -69,7 +69,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                mPagerAdapter.notifyDataSetChanged();
             }
 
             @Override

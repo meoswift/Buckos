@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -23,12 +24,17 @@ import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.ui.buckets.items.itemdetails.ItemDetailsActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 // Activity that allows user to edit their username, display name, and bio. Changes will be
 // saved when they exits out of activity.
@@ -37,6 +43,8 @@ public class EditProfileActivity extends AppCompatActivity {
     public final String APP_TAG = "Buckos";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_PHOTO_CODE = 1046;
+    public static final String FILENAME = "photo.png";
+    public static final String AUTHORITY = "com.codepath.fileprovider.buckos";
 
     private EditText mNameEditText;
     private EditText mUsernameEditText;
@@ -46,6 +54,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextView mChangeProfileTextView;
     private ImageView mProfilePicImageView;
     private File photoFile;
+    private ParseFile profilePicFile;
     private User mUser;
 
     @Override
@@ -111,8 +120,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setName(mNameEditText.getText().toString());
                 user.setUsername(mUsernameEditText.getText().toString());
                 user.setBio(mBioEditText.getText().toString());
-                if (photoFile != null)
-                    user.setProfilePic(photoFile);
+                if (profilePicFile != null)
+                    user.setProfilePic(profilePicFile);
 
                 user.saveInBackground(new SaveCallback() {
                     @Override
@@ -162,10 +171,8 @@ public class EditProfileActivity extends AppCompatActivity {
     // Starts an intent to open the camera and save image
     private void takePhotoFromCamera() {
         // Create a File reference for future access
-        String photoFileName = "photo.png";
-        photoFile = getPhotoFileUri(photoFileName);
-        Uri fileProvider = FileProvider.getUriForFile(this,
-                                                        ItemDetailsActivity.AUTHORITY, photoFile);
+        photoFile = getPhotoFileUri(FILENAME);
+        Uri fileProvider = FileProvider.getUriForFile(this, AUTHORITY, photoFile);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
@@ -176,11 +183,59 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
+
+    private void choosePhotoFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        // Set image taken from camera to profile pic
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                Glide.with(this).load(takenImage).circleCrop().into(mProfilePicImageView);
+                profilePicFile = new ParseFile(photoFile);
+            } else {
+                Toast.makeText(this, R.string.media_fail, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (requestCode == PICK_PHOTO_CODE) {
+            if (resultCode == RESULT_OK) {
+                Uri photoUri = data.getData();
+
+                // Create a ParseFile from URI and add uploaded photo to item
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(photoUri);
+                    // need to convert uri into a bytes array
+                    byte[] inputData = getBytes(inputStream);
+                    Glide.with(this).load(photoUri).circleCrop().into(mProfilePicImageView);
+                    profilePicFile = new ParseFile(FILENAME, inputData);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(this, R.string.media_fail, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /** Helper functions for uploading image files from Camera/Gallery to Parse **/
+
     // Returns the File for a photo stored on disk given the fileName
     private File getPhotoFileUri(String photoFileName) {
         // Get safe storage directory for photos
         File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                                        APP_TAG);
+                APP_TAG);
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
@@ -193,22 +248,25 @@ public class EditProfileActivity extends AppCompatActivity {
         return file;
     }
 
+    // Get bytes array from URI image upload
+    /* https://stackoverflow.com/questions/10296734/image-uri-to-bytesarray */
+    public static byte[] getBytes(InputStream iStream) {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
 
-    private void choosePhotoFromGallery() {
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Set image taken from camera to profile pic
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                Glide.with(this).load(takenImage).circleCrop().into(mProfilePicImageView);
-            } else {
-                Toast.makeText(this, R.string.media_fail, Toast.LENGTH_SHORT).show();
+        int len = 0;
+        while (true) {
+            try {
+                if ((len = iStream.read(buffer)) == -1)
+                    break;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            byteBuffer.write(buffer, 0, len);
         }
+        return byteBuffer.toByteArray();
     }
+
+
 }

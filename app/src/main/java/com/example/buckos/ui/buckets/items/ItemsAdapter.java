@@ -135,13 +135,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                     checkBoxImageView.setImageDrawable(res);
                     mItemList.remove(item);
                     notifyItemRemoved(getAdapterPosition());
-                    Snackbar.make(itemView, R.string.item_mark_done, Snackbar.LENGTH_LONG)
-                            .setAction("Undo", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    onUndoClicked(item);
-                                }
-                            }).show();
+                    Snackbar.make(itemView, R.string.item_mark_done, Snackbar.LENGTH_SHORT).show();
                 }
             });
         }

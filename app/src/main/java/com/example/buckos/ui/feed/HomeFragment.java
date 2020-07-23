@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment {
     private StoriesAdapter mAdapter;
     private List<Story> mStories;
     private ProgressBar mHomeProgressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -49,14 +51,30 @@ public class HomeFragment extends Fragment {
 
         mStoriesRecyclerView = view.findViewById(R.id.storiesRv);
         mHomeProgressBar = view.findViewById(R.id.homeProgressBar);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         mStories = new ArrayList<>();
         mAdapter = new StoriesAdapter(mStories, getContext());
         mStoriesRecyclerView.setAdapter(mAdapter);
         mStoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // set up refresher for layout
+        setPullToRefreshContainer();
         // get all stories from dtb and display to feed
         queryStories();
+    }
+
+    private void setPullToRefreshContainer() {
+        // Setup refresh listener which triggers new data loading
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                queryStories();
+            }
+        });
     }
 
     // Get stories from all users
@@ -69,14 +87,13 @@ public class HomeFragment extends Fragment {
         query.findInBackground(new FindCallback<Story>() {
             @Override
             public void done(List<Story> stories, ParseException e) {
+                mStories.clear();
                 // in each story, get the photos attached
                 for (int i = 0; i < stories.size(); i++) {
                     Story story = stories.get(i);
                     Item item = (Item) story.getItem();
                     queryPhotosInStory(story, item);
                 }
-
-                mHomeProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -92,6 +109,7 @@ public class HomeFragment extends Fragment {
                 mStories.add(story);
                 mAdapter.notifyDataSetChanged();
                 mHomeProgressBar.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

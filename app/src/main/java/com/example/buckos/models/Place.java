@@ -15,6 +15,7 @@ public class Place {
     private String mAddressName;
     private Double mRating;
     private int mUserRatingsTotal;
+    private boolean isBookmarked;
 
     // no-arg, empty constructor required for Parceler
     public Place() {
@@ -27,6 +28,7 @@ public class Place {
         mAddressName = data.getString("formatted_address");
         mRating = getPlaceRating(data);
         mUserRatingsTotal = getPlaceRatingsTotal(data);
+        isBookmarked = false;
     }
 
     private Double getPlaceRating(JSONObject data) {
@@ -64,6 +66,14 @@ public class Place {
 
     public String getName() {
         return mName;
+    }
+
+    public boolean isBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        isBookmarked = bookmarked;
     }
 
     public String getAddressName() {

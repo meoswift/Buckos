@@ -77,6 +77,7 @@ public class TravelFragment extends Fragment {
         mAdapter = new PlacesAdapter(mPlaces, getContext());
         mCityResultsRecyclerView.setAdapter(mAdapter);
         mCityResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mCityResultsRecyclerView.setItemViewCacheSize(20);
 
         getSearchCityResults();
     }

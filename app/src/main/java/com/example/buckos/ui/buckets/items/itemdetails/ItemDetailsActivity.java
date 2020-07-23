@@ -203,19 +203,38 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     // Post story of a completed item to Home feed
     private void postNewStory() {
         // create new story instance
-        Story story = new Story();
+        final Story story = new Story();
 
         // save in database any changes before posting
         saveEditItemChanges();
 
-        // set core properties of a story
-        story.setAuthor(ParseUser.getCurrentUser());
-        story.setTitle(item.getName());
-        story.setDescription(item.getDescription());
-        story.setItem(item);
-        story.setList(item.getList());
+        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        query.whereEqualTo(Photo.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Photo>() {
+            @Override
+            public void done(List<Photo> photos, ParseException e) {
 
-        story.saveInBackground();
+                // set core properties of a story
+                story.setAuthor(ParseUser.getCurrentUser());
+                story.setTitle(item.getName());
+                story.setDescription(item.getDescription());
+                story.setItem(item);
+                story.setList(item.getList());
+                story.setPhotosInStory(photos);
+
+                story.saveInBackground();
+
+            }
+        });
+
+//        // set core properties of a story
+//        story.setAuthor(ParseUser.getCurrentUser());
+//        story.setTitle(item.getName());
+//        story.setDescription(item.getDescription());
+//        story.setItem(item);
+//        story.setList(item.getList());
+//
+//        story.saveInBackground();
 
         // navigates user to Home Feed to see their new post
         Intent intent = new Intent();
@@ -257,8 +276,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
     // When user click Choose from Gallery, starts intent for gallery selection
     public void choosePhotoFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, PICK_PHOTO_CODE);
         }

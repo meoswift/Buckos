@@ -17,6 +17,7 @@ import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Place;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -39,7 +40,6 @@ public class SaveToListActivity extends AppCompatActivity {
 
     private List<BucketList> mTravelLists;
     private TravelListsAdapter mAdapter;
-    private Place place;
     private Item item;
 
     @Override
@@ -105,11 +105,12 @@ public class SaveToListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<BucketList> selectedLists = mAdapter.getSelectedLists();
-                Toast.makeText(getApplicationContext(), "Item saved", Toast.LENGTH_LONG).show();
                 // Go through selected travel lists and add place to each list
                 for (int i = 0; i < selectedLists.size(); i++) {
                     addItemToList(selectedLists.get(i));
                 }
+                Toast.makeText(SaveToListActivity.this, "Saved to Buckets",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

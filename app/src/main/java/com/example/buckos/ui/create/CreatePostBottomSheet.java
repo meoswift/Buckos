@@ -16,6 +16,7 @@ import com.example.buckos.R;
 import com.example.buckos.ui.MainActivity;
 import com.example.buckos.ui.buckets.BucketsFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;

@@ -18,6 +18,7 @@ import com.example.buckos.ui.feed.HomeFragment;
 import com.example.buckos.ui.travel.TravelFragment;
 import com.example.buckos.ui.buckets.BucketsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 // This activity has a Bottom navigation view that allows users to navigate the app
 public class MainActivity extends AppCompatActivity {
@@ -74,6 +75,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 }
