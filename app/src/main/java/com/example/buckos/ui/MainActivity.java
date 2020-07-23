@@ -63,7 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 // Replace the contents of the container with the new fragment and update in view
                 if (fragment != null) {
-                    fragmentManager.beginTransaction().replace(R.id.your_placeholder, fragment).commit();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.your_placeholder, fragment)
+                            .addToBackStack(null)
+                            .commit();
                 }
                 return true;
             }

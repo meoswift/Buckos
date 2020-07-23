@@ -2,6 +2,13 @@ package com.example.buckos.ui.buckets.userprofile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,25 +18,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
-import com.example.buckos.models.User;
-import com.example.buckos.ui.authentication.LoginActivity;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
-import com.example.buckos.ui.feed.StoriesAdapter;
 import com.example.buckos.models.Story;
+import com.example.buckos.models.User;
+import com.example.buckos.ui.authentication.LoginActivity;
+import com.example.buckos.ui.feed.StoriesAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
 
 // Fragment to display current user's information: display name, bio, and posts. User can log out
 // or navigate to Edit profile screen from this fragment.
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private static final int EDIT_PROFILE_REQ = 111;
     private TextView mDisplayNameTextView;
@@ -49,11 +50,13 @@ public class ProfileFragment extends Fragment {
     private ImageView mBackButton;
     private RecyclerView mUserStoriesRecyclerView;
     private SwipeRefreshLayout swipeContainer;
+    private LinearLayout mFollowingLabel;
+    private TextView mFollowingTextView;
 
     private User user;
     private List<Story> mUserStories;
     private StoriesAdapter mStoriesAdapter;
-
+    private ParseRelation<User> mFollowingUsers;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -71,8 +74,9 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Get current user
+        // Get current user & following list
         user = (User) ParseUser.getCurrentUser();
+        mFollowingUsers = user.getFollowingUsers();
 
         // Find views
         mDisplayNameTextView = view.findViewById(R.id.displayNameTv);
@@ -82,7 +86,10 @@ public class ProfileFragment extends Fragment {
         mBackButton = view.findViewById(R.id.backButton);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
+        mFollowingLabel = view.findViewById(R.id.following);
+        mFollowingTextView = view.findViewById(R.id.followingCountTv);
 
+        // pull to refresh
         setPullToRefreshContainer();
 
         // populate info and user stories
@@ -91,8 +98,8 @@ public class ProfileFragment extends Fragment {
         // 2 options: edit profile - log out
         handleProfileMenuClicked();
 
-        // back pressed
-        handleBackButtonClicked();
+        mBackButton.setOnClickListener(this);
+        mFollowingLabel.setOnClickListener(this);
     }
 
     private void setPullToRefreshContainer() {
@@ -112,6 +119,7 @@ public class ProfileFragment extends Fragment {
     private void populateUserProfile() {
         mDisplayNameTextView.setText(user.getName());
         mBioTextView.setText(user.getBio());
+        setFollowingCount();
         setProfilePic();
 
         setAdapterForUserStories();
@@ -163,19 +171,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Display the updated information of user profile after changes
-        if (resultCode == RESULT_OK && requestCode == EDIT_PROFILE_REQ) {
-            User user = (User) ParseUser.getCurrentUser();
-            mDisplayNameTextView.setText(user.getName());
-            mBioTextView.setText(user.getBio());
-            setProfilePic();
-        }
-    }
-
     // Set profile pic with either file from database or default image
     private void setProfilePic() {
         ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
@@ -187,12 +182,12 @@ public class ProfileFragment extends Fragment {
                     .circleCrop().into(mProfilePicImageView);
     }
 
-
-    private void handleBackButtonClicked() {
-        mBackButton.setOnClickListener(new View.OnClickListener() {
+    private void setFollowingCount() {
+        ParseQuery<User> query = mFollowingUsers.getQuery();
+        query.findInBackground(new FindCallback<User>() {
             @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
+            public void done(List<User> users, ParseException e) {
+                mFollowingTextView.setText(String.valueOf(users.size()));
             }
         });
     }
@@ -215,4 +210,32 @@ public class ProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Display the updated information of user profile after changes
+        if (resultCode == RESULT_OK && requestCode == EDIT_PROFILE_REQ) {
+            User user = (User) ParseUser.getCurrentUser();
+            mDisplayNameTextView.setText(user.getName());
+            mBioTextView.setText(user.getBio());
+            setProfilePic();
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backButton:
+                getActivity().onBackPressed();
+                break;
+            case R.id.following:
+                Fragment followingFragment = new FollowingFragment();
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.your_placeholder, followingFragment)
+                        .addToBackStack(null)
+                        .commit();
+        }
+    }
 }

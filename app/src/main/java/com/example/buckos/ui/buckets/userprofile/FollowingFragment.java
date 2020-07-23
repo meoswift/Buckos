@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.User;
@@ -24,9 +27,10 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FollowingFragment extends Fragment {
+public class FollowingFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView mFollowingUsersRecyclerView;
+    private ImageButton mBackButton;
 
     private List<User> mFollowingUsersList;
     private UsersAdapter mUsersAdapter;
@@ -49,7 +53,8 @@ public class FollowingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Find views
-        mFollowingUsersList = view.findViewById(R.id.followingUsersRv);
+        mFollowingUsersRecyclerView = view.findViewById(R.id.followingUsersRv);
+        mBackButton = view.findViewById(R.id.backButton);
 
         // Initialize current user and following list
         mUser = (User) ParseUser.getCurrentUser();
@@ -62,6 +67,8 @@ public class FollowingFragment extends Fragment {
         mFollowingUsersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         queryFollowingUsers();
+
+        mBackButton.setOnClickListener(this);
     }
 
 
@@ -74,5 +81,12 @@ public class FollowingFragment extends Fragment {
                 mUsersAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.backButton)
+            getParentFragmentManager().popBackStack();
     }
 }
