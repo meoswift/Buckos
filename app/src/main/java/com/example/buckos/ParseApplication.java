@@ -5,7 +5,7 @@ import android.app.Application;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
-import com.example.buckos.ui.buckets.userprofile.User;
+import com.example.buckos.models.User;
 import com.example.buckos.models.Story;
 import com.parse.Parse;
 import com.parse.ParseObject;

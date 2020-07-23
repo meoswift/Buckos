@@ -16,7 +16,7 @@ import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
-import com.example.buckos.ui.buckets.userprofile.User;
+import com.example.buckos.models.User;
 import com.parse.ParseFile;
 
 import java.util.List;

@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -22,9 +21,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
-import com.example.buckos.ui.buckets.items.itemdetails.ItemDetailsActivity;
+import com.example.buckos.models.User;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.models.User;
 import com.example.buckos.ui.authentication.LoginActivity;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
@@ -46,13 +47,13 @@ public class ProfileFragment extends Fragment {
     private ImageView mProfilePicImageView;
     private Toolbar mProfileToolbar;
     private ImageView mBackButton;
-    private StoriesAdapter mStoriesAdapter;
     private RecyclerView mUserStoriesRecyclerView;
     private SwipeRefreshLayout swipeContainer;
-    private Story story;
 
     private User user;
     private List<Story> mUserStories;
+    private StoriesAdapter mStoriesAdapter;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -83,8 +84,14 @@ public class ProfileFragment extends Fragment {
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
 
         setPullToRefreshContainer();
+
+        // populate info and user stories
         populateUserProfile();
+
+        // 2 options: edit profile - log out
         handleProfileMenuClicked();
+
+        // back pressed
         handleBackButtonClicked();
     }
 
@@ -107,10 +114,10 @@ public class ProfileFragment extends Fragment {
         mBioTextView.setText(user.getBio());
         setProfilePic();
 
-        displayUserStories();
+        setAdapterForUserStories();
     }
 
-    private void displayUserStories() {
+    private void setAdapterForUserStories() {
         mUserStories = new ArrayList<>();
         mStoriesAdapter = new StoriesAdapter(mUserStories, getContext());
         mUserStoriesRecyclerView.setAdapter(mStoriesAdapter);
@@ -131,35 +138,30 @@ public class ProfileFragment extends Fragment {
             @Override
             public void done(List<Story> stories, ParseException e) {
                 mUserStories.clear();
-                mUserStories.addAll(stories);
-                mStoriesAdapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
-//                for (int i = 0; i < stories.size(); i++) {
-//                    story = stories.get(i);
-//                    Item item = (Item) story.getItem();
-//                    mUserStories.add(story);
-//                    mStoriesAdapter.notifyDataSetChanged();
-//                    swipeContainer.setRefreshing(false);
-//                }
+                for (int i = 0; i < stories.size(); i++) {
+                    Story story = stories.get(i);
+                    Item item = (Item) story.getItem();
+                    queryPhotosInStory(story, item);
+                }
             }
         });
     }
 
-//    // For each story, get the photos included
-//    private void queryPhotosInStory(Item item) {
-//        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
-//        query.whereEqualTo(Story.KEY_ITEM, item);
-//        query.findInBackground(new FindCallback<Photo>() {
-//            @Override
-//            public void done(List<Photo> photos, ParseException e) {
-//                story.setPhotosInStory(photos);
-//                mUserStories.add(story);
-//                mStoriesAdapter.notifyDataSetChanged();
-//                // call setRefreshing(false) to signal refresh has finished
-//                swipeContainer.setRefreshing(false);
-//            }
-//        });
-//    }
+    // For each story, get the photos included
+    private void queryPhotosInStory(final Story story, Item item) {
+        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        query.whereEqualTo(Story.KEY_ITEM, item);
+        query.findInBackground(new FindCallback<Photo>() {
+            @Override
+            public void done(List<Photo> photos, ParseException e) {
+                story.setPhotosInStory(photos);
+                mUserStories.add(story);
+                mStoriesAdapter.notifyDataSetChanged();
+                // call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+            }
+        });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

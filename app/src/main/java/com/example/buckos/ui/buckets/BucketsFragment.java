@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.ui.buckets.userprofile.ProfileFragment;
-import com.example.buckos.ui.buckets.userprofile.User;
+import com.example.buckos.models.User;
 import com.example.buckos.ui.create.NewListActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;

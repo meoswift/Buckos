@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.buckos.R;
-import com.example.buckos.ui.buckets.userprofile.User;
+import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

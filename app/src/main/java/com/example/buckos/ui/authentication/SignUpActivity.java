@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.example.buckos.R;
 import com.example.buckos.ui.MainActivity;
-import com.example.buckos.ui.buckets.userprofile.User;
+import com.example.buckos.models.User;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SignUpCallback;
