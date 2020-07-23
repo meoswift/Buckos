@@ -1,5 +1,6 @@
 package com.example.buckos.ui.feed;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Item;
@@ -21,6 +23,8 @@ import com.example.buckos.models.Story;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,5 +117,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
 }

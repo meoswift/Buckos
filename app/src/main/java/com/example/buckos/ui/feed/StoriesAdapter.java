@@ -1,6 +1,7 @@
 package com.example.buckos.ui.feed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.models.User;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -60,13 +63,14 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         return mStoriesList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView authorProfilePicImageView;
         private TextView authorDisplayNameTextView;
         private TextView storyTitleTextView;
         private TextView storyDescriptionTextView;
         private TextView storyTimeStamp;
         private TextView listTitleTextView;
+        private TextView commentsCountTextView;
 
         private RecyclerView storyPhotosRecyclerView;
         private PhotosAdapter mPhotosAdapter;
@@ -81,6 +85,9 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             storyPhotosRecyclerView = itemView.findViewById(R.id.storyPhotosRv);
             storyTimeStamp = itemView.findViewById(R.id.storyTimeStamp);
             listTitleTextView = itemView.findViewById(R.id.listTitleTv);
+            commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
+
+            commentsCountTextView.setOnClickListener(this);
         }
 
         // Set profile pic with either file from database or default image
@@ -99,6 +106,18 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext,
                     LinearLayoutManager.HORIZONTAL, false);
             storyPhotosRecyclerView.setLayoutManager(layoutManager);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if (v.getId() == R.id.commentCountTv) {
+                Story story = mStoriesList.get(getAdapterPosition());
+
+                Intent intent = new Intent(mContext, CommentsActivity.class);
+                intent.putExtra("story", Parcels.wrap(story));
+                mContext.startActivity(intent);
+            }
         }
     }
 

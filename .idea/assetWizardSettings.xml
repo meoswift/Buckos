@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/library_books/baseline_library_books_24.xml" />
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/favorite/baseline_favorite_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,7 +33,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_library_books_24" />
+                            <entry key="outputName" value="ic_baseline_favorite_24" />
                           </map>
                         </option>
                       </PersistentState>

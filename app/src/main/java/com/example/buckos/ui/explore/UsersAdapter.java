@@ -1,7 +1,6 @@
 package com.example.buckos.ui.explore;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -78,7 +76,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             super(itemView);
 
             profilePicImageView = itemView.findViewById(R.id.profilePicIv);
-            usernameTextView = itemView.findViewById(R.id.usernameTv);
+            usernameTextView = itemView.findViewById(R.id.nameTv);
             displayNameTextView = itemView.findViewById(R.id.displayNameTv);
             followButton = itemView.findViewById(R.id.followButton);
 
