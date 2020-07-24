@@ -6,7 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,9 +27,9 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
     private static final int NEW_ITEM_REQUEST = 1011;
     private static final int NEW_LIST_REQUEST = 1000;
 
-    private TextView mBucketTextView;
-    private TextView mItemTextView;
-    private TextView mStoryTextView;
+    private LinearLayout mBucketLinearLayout;
+    private LinearLayout mItemLinearLayout;
+    private LinearLayout mStoryLinearLayout;
 
     public static CreatePostBottomSheet newInstance() {
         return new CreatePostBottomSheet();
@@ -45,23 +46,23 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mBucketTextView = view.findViewById(R.id.bucketTextView);
-        mItemTextView = view.findViewById(R.id.itemTextView);
-        mStoryTextView = view.findViewById(R.id.storyTextView);
+        mBucketLinearLayout = view.findViewById(R.id.bucketLinearLayout);
+        mItemLinearLayout = view.findViewById(R.id.itemLinearLayout);
+        mStoryLinearLayout = view.findViewById(R.id.storyLinearLayout);
 
-        mBucketTextView.setOnClickListener(this);
-        mItemTextView.setOnClickListener(this);
-        mStoryTextView.setOnClickListener(this);
+        mBucketLinearLayout.setOnClickListener(this);
+        mItemLinearLayout.setOnClickListener(this);
+        mStoryLinearLayout.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bucketTextView:
+            case R.id.bucketLinearLayout:
                 Intent intentNewList = new Intent(getContext(), NewListActivity.class);
                 startActivityForResult(intentNewList, NEW_LIST_REQUEST);
                 break;
-            case R.id.itemTextView:
+            case R.id.itemLinearLayout:
                 Intent intentNewItem = new Intent(getContext(), NewItemActivity.class);
                 startActivityForResult(intentNewItem, NEW_ITEM_REQUEST);
                 break;

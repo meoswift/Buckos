@@ -109,7 +109,7 @@ public class ListDetailsActivity extends AppCompatActivity {
         mBackButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ListDetailsActivity.super.onBackPressed();
+                finish();
             }
         });
     }

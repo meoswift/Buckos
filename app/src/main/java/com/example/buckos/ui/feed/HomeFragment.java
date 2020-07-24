@@ -85,9 +85,11 @@ public class HomeFragment extends Fragment {
     // Get stories from all users
     private void queryStories() {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
-        query.include("author");
-        query.include("item");
-        query.include("list");
+        // include objects related to a story
+        query.include(Story.KEY_AUTHOR);
+        query.include(Story.KEY_ITEM);
+        query.include(Story.KEY_LIST);
+        // order by time created
         query.orderByDescending(Story.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Story>() {
             @Override

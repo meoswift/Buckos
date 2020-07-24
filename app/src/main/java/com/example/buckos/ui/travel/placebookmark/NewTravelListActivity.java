@@ -26,7 +26,6 @@ public class NewTravelListActivity extends AppCompatActivity {
     private EditText mListTitle;
     private EditText mListDescription;
     private TextView mCreateButton;
-    private ImageView mBackButton;
 
     private Item mItem;
 
@@ -38,7 +37,7 @@ public class NewTravelListActivity extends AppCompatActivity {
         mListTitle = findViewById(R.id.listNameEt);
         mListDescription = findViewById(R.id.listDescriptionEt);
         mCreateButton = findViewById(R.id.createButton);
-        mBackButton = findViewById(R.id.backButton);
+        ImageView mBackButton = findViewById(R.id.backButton);
 
         Intent intent = getIntent();
         mItem = Parcels.unwrap(intent.getParcelableExtra("item"));

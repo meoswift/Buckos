@@ -70,10 +70,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView storyDescriptionTextView;
         private TextView storyTimeStamp;
         private TextView listTitleTextView;
-        private TextView commentsCountTextView;
 
         private RecyclerView storyPhotosRecyclerView;
-        private PhotosAdapter mPhotosAdapter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -85,7 +83,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             storyPhotosRecyclerView = itemView.findViewById(R.id.storyPhotosRv);
             storyTimeStamp = itemView.findViewById(R.id.storyTimeStamp);
             listTitleTextView = itemView.findViewById(R.id.listTitleTv);
-            commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
+            TextView commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
 
             commentsCountTextView.setOnClickListener(this);
         }
@@ -101,7 +99,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         }
 
         public void setAdapterForPhotos(Story story) {
-            mPhotosAdapter = new PhotosAdapter(story.getPhotosInStory(), mContext);
+            PhotosAdapter mPhotosAdapter = new PhotosAdapter(story.getPhotosInStory(), mContext);
             storyPhotosRecyclerView.setAdapter(mPhotosAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext,
                     LinearLayoutManager.HORIZONTAL, false);

@@ -32,9 +32,7 @@ import java.util.List;
 // Activity that allows user to select multiple bucket lists that they want to add a Place to
 public class SaveToListActivity extends AppCompatActivity {
 
-    private ImageView mBackButton;
     private ImageView mSaveButton;
-    private RecyclerView mTravelListsRv;
     private ProgressBar mProgressBar;
     private Button mCreateListButton;
 
@@ -51,9 +49,9 @@ public class SaveToListActivity extends AppCompatActivity {
         item = Parcels.unwrap(intent.getParcelableExtra("item"));
 
         // Find views
-        mBackButton = findViewById(R.id.backButton);
+        ImageView mBackButton = findViewById(R.id.backButton);
         mSaveButton = findViewById(R.id.saveButton);
-        mTravelListsRv = findViewById(R.id.travelListsRv);
+        RecyclerView mTravelListsRv = findViewById(R.id.travelListsRv);
         mProgressBar = findViewById(R.id.progressBar);
         mCreateListButton = findViewById(R.id.createListButton);
 

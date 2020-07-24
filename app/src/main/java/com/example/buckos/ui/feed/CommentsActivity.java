@@ -28,12 +28,10 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+// Activity that displays a list of comments in a Story, and allow user to add a comment
 public class CommentsActivity extends AppCompatActivity {
 
-    private ImageButton mPostButton;
     private EditText mAddCommentEditText;
-    private RecyclerView mCommentsRecyclerView;
-    private ImageButton mBackButton;
 
     private Story mStory;
     private User mUser;
@@ -46,10 +44,10 @@ public class CommentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comments);
 
         // Find views
-        mPostButton = findViewById(R.id.postButton);
-        mBackButton = findViewById(R.id.backButton);
+        ImageButton mPostButton = findViewById(R.id.postButton);
+        ImageButton mBackButton = findViewById(R.id.backButton);
         mAddCommentEditText = findViewById(R.id.addCommentEt);
-        mCommentsRecyclerView = findViewById(R.id.commentsRv);
+        RecyclerView mCommentsRecyclerView = findViewById(R.id.commentsRv);
 
         // Retrieve the post object that comment will be added to
         Intent intent = getIntent();

@@ -137,9 +137,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     // Get stories from all users
     private void queryStoriesFromUser() {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
-        query.include("author");
-        query.include("item");
-        query.include("list");
+        // include objects related to a story
+        query.include(Story.KEY_AUTHOR);
+        query.include(Story.KEY_ITEM);
+        query.include(Story.KEY_LIST);
+        // where author is current user and order by time created
         query.whereEqualTo(Story.KEY_AUTHOR, user);
         query.orderByDescending(Story.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Story>() {

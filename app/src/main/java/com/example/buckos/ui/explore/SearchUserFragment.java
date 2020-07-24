@@ -33,7 +33,6 @@ import java.util.List;
 public class SearchUserFragment extends Fragment {
 
     private EditText mUsernameQuery;
-    private RecyclerView mUserResultsRecyclerView;
     private List<User> mUsersList;
     private UsersAdapter mAdapter;
 
@@ -59,7 +58,7 @@ public class SearchUserFragment extends Fragment {
 
         // Find views
         mUsernameQuery = view.findViewById(R.id.usernameInputEt);
-        mUserResultsRecyclerView = view.findViewById(R.id.userResultsRv);
+        RecyclerView mUserResultsRecyclerView = view.findViewById(R.id.userResultsRv);
 
         mUsernameQuery.requestFocus();
 
@@ -104,4 +103,6 @@ public class SearchUserFragment extends Fragment {
             }
         });
     }
+
+
 }
