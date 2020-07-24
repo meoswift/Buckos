@@ -2,12 +2,14 @@ package com.example.buckos.ui.buckets.items.itemdetails;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +68,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     private TextView mListStatusTextView;
     private ImageView mAddPhotoButton;
     private RecyclerView mPhotosRv;
+    private ConstraintLayout mItemDetailsLayout;
 
     private File photoFile;
     private Item item;
@@ -91,6 +95,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         mAddPhotoButton = findViewById(R.id.addPhotoBtn);
         mDeleteButton = findViewById(R.id.deleteButton);
         mPhotosRv = findViewById(R.id.photosRv);
+        mItemDetailsLayout = findViewById(R.id.itemDetailsView);
 
         setUpAdapterForPhotos();
 
@@ -102,6 +107,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
         // Populate title, note, and photos attached in an item
         populateItemDetails();
+
+        // When user click on text, shows keyboard and cursor
+        // When keyboard is closed, clear focus and cursor
+        toggleItemEditTextView();
+
     }
 
     // When user navigate via hardware back press, also save changes and update
@@ -336,5 +346,28 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
         return file;
     }
+
+
+    // function to clear focus when keyboard is not shown - read only
+    // show focus when user click on text
+    private void toggleItemEditTextView() {
+        mItemDetailsLayout.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                mItemDetailsLayout.getWindowVisibleDisplayFrame(r);
+                int screenHeight = mItemDetailsLayout.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+                if (keypadHeight > screenHeight * 0.15) {
+                    // Nothing
+                } else {
+                    mItemNoteEditText.clearFocus();
+                    mItemTitleEditText.clearFocus();
+                }
+            }
+        });
+    }
+
 
 }

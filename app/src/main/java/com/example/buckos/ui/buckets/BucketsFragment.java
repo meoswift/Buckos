@@ -69,7 +69,7 @@ public class BucketsFragment extends Fragment {
         // Find views
         mBucketListsRecyclerView = view.findViewById(R.id.rvBucketLists);
         mProgressBar = view.findViewById(R.id.progressBar);
-        mProfilePic = view.findViewById(R.id.profilePic);
+        mProfilePic = view.findViewById(R.id.authorProfilePic);
         mNewListButton = view.findViewById(R.id.newListButton);
         mBottomNavigationView = view.getRootView().findViewById(R.id.bottomNavigation);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);

@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.buckos.R;
@@ -33,12 +33,12 @@ public class CommentsActivity extends AppCompatActivity {
     private ImageButton mPostButton;
     private EditText mAddCommentEditText;
     private RecyclerView mCommentsRecyclerView;
-    private CommentsAdapter mCommentsAdapter;
     private ImageButton mBackButton;
 
     private Story mStory;
     private User mUser;
     private List<Comment> mCommentsList;
+    private CommentsAdapter mCommentsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,7 @@ public class CommentsActivity extends AppCompatActivity {
         mPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("debug", "hello!");
                 createComment(mAddCommentEditText.getText().toString());
             }
         });
@@ -78,26 +79,27 @@ public class CommentsActivity extends AppCompatActivity {
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("debug", "hello");
                 CommentsActivity.super.onBackPressed();
             }
         });
+
+
     }
 
     // Get all Comment objects in a post and add to local comments list
     private void queryComments() {
         // Specify which class to query
-        ParseQuery query = ParseQuery.getQuery(Comment.class);
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
         // include the user object related to the story
         query.include(Comment.KEY_AUTHOR);
+        query.whereEqualTo(Comment.KEY_STORY, mStory);
         // order the posts from newest to oldest
         query.orderByDescending(Comment.KEY_CREATED_AT);
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Comment>() {
             public void done(List<Comment> comments, ParseException e) {
-                // clear out old items before fetching new ones on refresh
-                mCommentsList.clear();
                 mCommentsList.addAll(comments);
-                // notify the adapter than new items have been added
                 mCommentsAdapter.notifyDataSetChanged();
             }
         });
@@ -127,12 +129,8 @@ public class CommentsActivity extends AppCompatActivity {
                             "Issue publishing comment!", Toast.LENGTH_SHORT).show();
                 }
 
-                mCommentsList.add(comment);
-                mStory.saveInBackground();
-
                 mCommentsList.add(0, comment);
                 mCommentsAdapter.notifyDataSetChanged();
-
             }
         });
 

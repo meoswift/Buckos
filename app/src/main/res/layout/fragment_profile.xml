@@ -81,7 +81,7 @@
                         android:textColor="#000000"
                         android:textSize="24sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/profilePicIv"
+                        app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -92,11 +92,11 @@
                         android:layout_marginEnd="16dp"
                         android:text="Say something about yourself!"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/profilePicIv"
+                        app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
                         app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
 
                     <ImageView
-                        android:id="@+id/profilePicIv"
+                        android:id="@+id/authorProfilePic"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_marginStart="16dp"
@@ -113,7 +113,7 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/profilePicIv">
+                        app:layout_constraintTop_toBottomOf="@+id/authorProfilePic">
 
 
                         <LinearLayout

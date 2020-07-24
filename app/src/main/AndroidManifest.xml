@@ -18,8 +18,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.feed.CommentsActivity"></activity>
-        <activity android:name=".ui.create.NewItemActivity" />
-        <activity android:name=".ui.create.NewListActivity" />
+        <activity
+            android:name=".ui.create.NewItemActivity"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name=".ui.create.NewListActivity"
+            android:windowSoftInputMode="stateVisible" />
         <activity android:name=".ui.travel.placebookmark.NewTravelListActivity" />
         <activity android:name=".ui.travel.placebookmark.SaveToListActivity" />
         <activity android:name=".ui.buckets.userprofile.EditProfileActivity" />

@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/profilePicIv"
+        android:id="@+id/authorProfilePic"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
@@ -124,7 +124,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicIv" />
+        app:layout_constraintTop_toBottomOf="@+id/authorProfilePic" />
 
     <ImageButton
         android:id="@+id/backButton"

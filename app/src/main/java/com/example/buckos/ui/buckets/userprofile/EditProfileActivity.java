@@ -67,7 +67,7 @@ public class EditProfileActivity extends AppCompatActivity {
         mBackButton = findViewById(R.id.backButton);
         mSaveButton = findViewById(R.id.saveEditBtn);
         mChangeProfileTextView = findViewById(R.id.changeProfilePicTv);
-        mProfilePicImageView = findViewById(R.id.profilePicIv);
+        mProfilePicImageView = findViewById(R.id.authorProfilePic);
 
         // Populate views with user info
         mUser = (User) ParseUser.getCurrentUser();

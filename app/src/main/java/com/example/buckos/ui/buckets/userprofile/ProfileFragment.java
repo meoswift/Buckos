@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // Find views
         mDisplayNameTextView = view.findViewById(R.id.displayNameTv);
         mBioTextView = view.findViewById(R.id.bioTv);
-        mProfilePicImageView = view.findViewById(R.id.profilePicIv);
+        mProfilePicImageView = view.findViewById(R.id.authorProfilePic);
         mProfileToolbar = view.findViewById(R.id.profileToolbar);
         mBackButton = view.findViewById(R.id.backButton);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
@@ -149,6 +149,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 for (int i = 0; i < stories.size(); i++) {
                     Story story = stories.get(i);
                     Item item = (Item) story.getItem();
+                    mUserStories.add(story);
                     queryPhotosInStory(story, item);
                 }
             }
@@ -163,7 +164,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void done(List<Photo> photos, ParseException e) {
                 story.setPhotosInStory(photos);
-                mUserStories.add(story);
                 mStoriesAdapter.notifyDataSetChanged();
                 // call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);

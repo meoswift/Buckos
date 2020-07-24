@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Item;
 import com.example.buckos.ui.buckets.items.itemdetails.ItemDetailsActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -30,6 +32,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -156,11 +160,11 @@ public class InProgressFragment extends Fragment {
                     break;
                 case ItemDetailsActivity.DELETE_ITEM:
                     mItemsList.remove(position);
+                    Snackbar.make(this.getView(), R.string.item_delete, Snackbar.LENGTH_SHORT).show();
                     break;
             }
 
             mAdapter.notifyDataSetChanged();
         }
     }
-
 }

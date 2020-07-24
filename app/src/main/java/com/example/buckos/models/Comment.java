@@ -39,4 +39,12 @@ public class Comment extends ParseObject {
     public void setStory(Story story) {
         put(KEY_STORY, story);
     }
+
+    public String getFormatedTime() {
+        long dateMillis = getCreatedAt().getTime();
+        String ago = DateUtils.getRelativeTimeSpanString(dateMillis,
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+        return ago;
+    }
 }

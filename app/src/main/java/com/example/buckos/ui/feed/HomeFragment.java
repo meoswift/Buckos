@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +97,7 @@ public class HomeFragment extends Fragment {
                 for (int i = 0; i < stories.size(); i++) {
                     Story story = stories.get(i);
                     Item item = (Item) story.getItem();
+                    mStories.add(story);
                     queryPhotosInStory(story, item);
                 }
             }
@@ -110,7 +112,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void done(List<Photo> photos, ParseException e) {
                 story.setPhotosInStory(photos);
-                mStories.add(story);
                 mAdapter.notifyDataSetChanged();
                 mHomeProgressBar.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);

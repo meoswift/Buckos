@@ -55,7 +55,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.listTitleTextView.setText(list.getName());
         holder.setProfilePic(author);
 
-        holder.setAdapterForPhotos(story);
+        if (story.getPhotosInStory() != null )
+            holder.setAdapterForPhotos(story);
     }
 
     @Override
