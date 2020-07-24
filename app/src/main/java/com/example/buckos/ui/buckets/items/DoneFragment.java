@@ -65,7 +65,6 @@ public class DoneFragment extends Fragment {
         mItemsRecyclerView.setAdapter(mAdapter);
         mItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mAdapter.notifyDataSetChanged();
         queryDoneItemsInList();
     }
 
@@ -75,7 +74,7 @@ public class DoneFragment extends Fragment {
         query.whereEqualTo(Item.KEY_LIST, mBucketList);
         query.whereEqualTo(Item.KEY_COMPLETED, true);
         // order items by descending time created
-        query.orderByDescending(Item.KEY_CREATED_AT);
+        query.orderByDescending(Item.KEY_TIME_COMPLETED);
         // start async function to get Item objects
         query.findInBackground(new FindCallback<Item>() {
             @Override

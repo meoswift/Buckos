@@ -6,6 +6,8 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 // This class represents a Item object in the Parse database
 @ParseClassName("Item")
 @Parcel(analyze = {Item.class})
@@ -16,6 +18,7 @@ public class Item extends ParseObject {
     public static final String KEY_COMPLETED = "completed";
     public static final String KEY_LIST = "list";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_TIME_COMPLETED = "timeCompleted";
 
     public String getName() {
         return getString(KEY_NAME);
@@ -29,12 +32,12 @@ public class Item extends ParseObject {
         return (BucketList) getParseObject(KEY_LIST);
     }
 
-    public ParseUser getAuthor() {
-        return getParseUser(KEY_AUTHOR);
-    }
-
     public Boolean getCompleted() {
         return getBoolean(KEY_COMPLETED);
+    }
+
+    public void setTimeCompleted(Date completed) {
+        put(KEY_TIME_COMPLETED, completed);
     }
 
     public void setName(String name) {
@@ -65,5 +68,7 @@ public class Item extends ParseObject {
             return description;
         }
     }
+
+
 
 }

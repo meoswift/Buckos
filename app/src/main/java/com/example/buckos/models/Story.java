@@ -8,6 +8,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // This class represents a Story object in the Parse database. Each Story object has a list of
@@ -24,6 +25,7 @@ public class Story extends ParseObject {
     private List<Photo> mPhotosInStory;
 
     public Story() {
+        mPhotosInStory = new ArrayList<>();
     }
 
     public List<Photo> getPhotosInStory() {

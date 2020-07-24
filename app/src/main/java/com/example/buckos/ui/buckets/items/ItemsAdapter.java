@@ -25,6 +25,7 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.Date;
 import java.util.List;
 
 // Adapter that inflates an Item object into View and display that Item in RecyclerView
@@ -80,7 +81,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         TextView itemTitleTextView;
         TextView itemNoteTextView;
         ImageView checkBoxImageView;
-        ImageView photoPreview;
 
         Item item;
 
@@ -128,6 +128,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             int position = getAdapterPosition();
             item = mItemList.get(position);
             item.setCompleted(true);
+            item.setTimeCompleted(new Date());
             item.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {

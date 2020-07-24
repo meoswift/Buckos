@@ -100,6 +100,10 @@ public class HomeFragment extends Fragment {
                     mStories.add(story);
                     queryPhotosInStory(story, item);
                 }
+
+                // If there are no posts, also remove progress bar & refresher
+                mHomeProgressBar.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
