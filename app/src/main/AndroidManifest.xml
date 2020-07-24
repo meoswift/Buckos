@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.feed.CommentsActivity"></activity>
+        <activity android:name=".ui.explore.DiscoverActivity"></activity>
+        <activity android:name=".ui.feed.CommentsActivity" />
         <activity
             android:name=".ui.create.NewItemActivity"
             android:windowSoftInputMode="stateVisible" />

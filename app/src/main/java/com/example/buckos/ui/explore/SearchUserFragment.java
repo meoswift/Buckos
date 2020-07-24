@@ -1,6 +1,7 @@
 package com.example.buckos.ui.explore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,8 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,24 +61,34 @@ public class SearchUserFragment extends Fragment {
 
         // Find views
         mUsernameQuery = view.findViewById(R.id.usernameInputEt);
-        RecyclerView mUserResultsRecyclerView = view.findViewById(R.id.userResultsRv);
+        RecyclerView userResultsRecyclerView = view.findViewById(R.id.userResultsRv);
+        TextView suggestionsTextView = view.findViewById(R.id.suggestionsTextView);
 
-        mUsernameQuery.requestFocus();
+        mUsernameQuery.requestFocus(); // hints user
 
         // Set up adapter and layout manager for lists of user results
         mUsersList = new ArrayList<>();
         mAdapter = new UsersAdapter(mUsersList, getContext());
-        mUserResultsRecyclerView.setAdapter(mAdapter);
-        mUserResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        userResultsRecyclerView.setAdapter(mAdapter);
+        userResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         getUsersResults();
+
+        suggestionsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), DiscoverActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getUsersResults() {
         mUsernameQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)
+                        getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     imm.hideSoftInputFromWindow(mUsernameQuery.getWindowToken(), 0);
                     performSearch();
@@ -103,6 +116,8 @@ public class SearchUserFragment extends Fragment {
             }
         });
     }
+
+
 
 
 }
