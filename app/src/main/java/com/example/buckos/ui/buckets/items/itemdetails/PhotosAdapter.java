@@ -27,6 +27,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     private List<Photo> mPhotos;
     private Context mContext;
 
+    public PhotosAdapter() {}
+
     public PhotosAdapter(List<Photo> photos, Context context) {
         mPhotos = photos;
         mContext = context;
@@ -45,7 +47,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         ParseFile image = photo.getPhotoFile();
         if (image != null) {
             Glide.with(mContext).load(image.getUrl())
-                    .transform(new RoundedCorners(25)).into(holder.photoImageView);
+                    .placeholder(R.drawable.loading)
+                    .into(holder.photoImageView);
         }
     }
 

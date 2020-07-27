@@ -59,14 +59,14 @@ public class DiscoverActivity extends AppCompatActivity {
             @Override
             public void done(List<User> friends, ParseException e) {
                 for (User friend : friends) {
-                    querUserFollowingList(friend);
+                    queryUserFollowingList(friend);
                 }
             }
         });
     }
 
     // Get Following list of current user's friend
-    private void querUserFollowingList(final User friend) {
+    private void queryUserFollowingList(final User friend) {
         ParseRelation<User> followingList = friend.getFollowingUsers();
 
         // get all users that followed user is following

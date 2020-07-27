@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.buckos.R;
 import com.example.buckos.ui.MainActivity;
 import com.example.buckos.ui.buckets.BucketsFragment;
+import com.example.buckos.ui.feed.HomeFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -26,6 +27,7 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
 
     private static final int NEW_ITEM_REQUEST = 1011;
     private static final int NEW_LIST_REQUEST = 1000;
+    private static final int NEW_STORY_REQUEST = 1555;
 
     private LinearLayout mBucketLinearLayout;
     private LinearLayout mItemLinearLayout;
@@ -58,13 +60,17 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.storyLinearLayout:
+                Intent newStoryIntent = new Intent(getContext(), NewStoryActivity.class);
+                startActivityForResult(newStoryIntent, NEW_STORY_REQUEST);
+                break;
             case R.id.bucketLinearLayout:
-                Intent intentNewList = new Intent(getContext(), NewListActivity.class);
-                startActivityForResult(intentNewList, NEW_LIST_REQUEST);
+                Intent newListIntent = new Intent(getContext(), NewListActivity.class);
+                startActivityForResult(newListIntent, NEW_LIST_REQUEST);
                 break;
             case R.id.itemLinearLayout:
-                Intent intentNewItem = new Intent(getContext(), NewItemActivity.class);
-                startActivityForResult(intentNewItem, NEW_ITEM_REQUEST);
+                Intent newItemIntent = new Intent(getContext(), NewItemActivity.class);
+                startActivityForResult(newItemIntent, NEW_ITEM_REQUEST);
                 break;
         }
     }
@@ -72,18 +78,25 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        this.dismiss();
+
+        // Create new list
         if (requestCode == NEW_LIST_REQUEST) {
-            if (resultCode == RESULT_CANCELED)
-                this.dismiss();
-            else if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 Fragment fragment = new BucketsFragment();
                 getParentFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
-                this.dismiss();
             }
         }
 
-        if (requestCode == NEW_ITEM_REQUEST) {
-            this.dismiss();
+        // Create new item
+        if (requestCode == NEW_ITEM_REQUEST) { }
+
+        // Create new story
+        if (requestCode == NEW_STORY_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Fragment fragment = new HomeFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
+            }
         }
 
     }

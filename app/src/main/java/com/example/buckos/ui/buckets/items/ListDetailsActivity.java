@@ -18,7 +18,6 @@ import org.parceler.Parcels;
 // Activity that displays the list of completed and incomplete items in a specific list
 public class ListDetailsActivity extends AppCompatActivity {
 
-    private TextView mListTitleTextView;
     private TabLayout mTabLayout;
     private ImageView mBackButtonImageView;
     private TextView mListDescriptionTextView;
@@ -26,13 +25,14 @@ public class ListDetailsActivity extends AppCompatActivity {
     private Fragment mFragment;
     private Bundle mBundle;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_details);
 
         // Find views
-        mListTitleTextView = findViewById(R.id.listTitleTv);
+        TextView listTitleTextView = findViewById(R.id.listTitleTv);
         mTabLayout = findViewById(R.id.tab_layout);
         mBackButtonImageView = findViewById(R.id.backButton);
         mListDescriptionTextView = findViewById(R.id.listDescription);

@@ -41,7 +41,14 @@ public class TravelListsAdapter extends RecyclerView.Adapter<TravelListsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BucketList list = mTravelLists.get(position);
         holder.travelListTitle.setText(list.getName());
-        holder.travelListDescription.setText(list.getDescription());
+
+        if (!list.getDescription().equals("")) {
+            holder.travelListDescription.setVisibility(View.VISIBLE);
+            holder.travelListDescription.setText(list.getDescription());
+        } else {
+            holder.travelListDescription.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

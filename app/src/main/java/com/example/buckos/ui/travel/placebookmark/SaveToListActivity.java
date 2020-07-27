@@ -103,6 +103,10 @@ public class SaveToListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<BucketList> selectedLists = mAdapter.getSelectedLists();
+                if (selectedLists.size() == 0) {
+                    Toast.makeText(SaveToListActivity.this, "Please select a Bucket!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // Go through selected travel lists and add place to each list
                 for (int i = 0; i < selectedLists.size(); i++) {
                     addItemToList(selectedLists.get(i));

@@ -26,7 +26,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif"
         android:text="Post"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#1E88E5"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/itemDetailsTb"
