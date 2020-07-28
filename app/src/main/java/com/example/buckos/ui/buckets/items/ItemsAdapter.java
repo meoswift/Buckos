@@ -32,7 +32,7 @@ import java.util.List;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
     public static final String KEY_ITEM = "item";
-    public static final String KEY_POSITION = "postition";
+    public static final String KEY_POSITION = "position";
 
     private List<Item> mItemList;
     private Context mContext;

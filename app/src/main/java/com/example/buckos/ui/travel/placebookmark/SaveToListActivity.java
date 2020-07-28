@@ -1,5 +1,6 @@
 package com.example.buckos.ui.travel.placebookmark;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,7 @@ import java.util.List;
 // Activity that allows user to select multiple bucket lists that they want to add a Place to
 public class SaveToListActivity extends AppCompatActivity {
 
+    private static final int NEW_TRAVEL_LIST = 90;
     private ImageView mSaveButton;
     private ProgressBar mProgressBar;
     private Button mCreateListButton;
@@ -68,6 +70,7 @@ public class SaveToListActivity extends AppCompatActivity {
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });

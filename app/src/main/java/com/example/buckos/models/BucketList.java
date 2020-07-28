@@ -14,6 +14,7 @@ public class BucketList extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_CATEGORY = "category";
 
     private boolean isSelected = false;
 
@@ -25,8 +26,8 @@ public class BucketList extends ParseObject {
         return getString(KEY_DESCRIPTION);
     }
 
-    public ParseUser getAuthor() {
-        return getParseUser(KEY_AUTHOR);
+    public Category getCategory() {
+        return (Category) getParseObject(KEY_CATEGORY);
     }
 
     public void setName(String name) {
@@ -47,5 +48,18 @@ public class BucketList extends ParseObject {
 
     public boolean isSelected() {
         return isSelected;
+    }
+
+    public void setCategory(Category category) {
+        put(KEY_CATEGORY, category);
+    }
+
+    public String getShortenedTitle() {
+        String description = getName();
+        if (description.length() > 25) {
+            return description.substring(0, 25) + "...";
+        } else {
+            return description;
+        }
     }
 }

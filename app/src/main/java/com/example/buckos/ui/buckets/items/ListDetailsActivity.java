@@ -38,6 +38,7 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
         TextView listDescriptionTextView = findViewById(R.id.listDescription);
         ImageButton backButton = findViewById(R.id.backButton);
         ImageButton editListButton = findViewById(R.id.editListButton);
+        TextView categoryTagTextView = findViewById(R.id.categoryTag);
 
         // Unwrap list object sent by previous fragment
         Intent intent = getIntent();
@@ -48,12 +49,14 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
         mBundle.putParcelable("bucketList", Parcels.wrap(mBucketList));
         mFragment.setArguments(mBundle);
 
-        // Update list title in tool bar
-        listTitleTextView.setText(mBucketList.getName());
+        // Populate list information
+        listTitleTextView.setText(mBucketList.getShortenedTitle());
         if (!mBucketList.getDescription().equals("")) {
             listDescriptionTextView.setText(mBucketList.getDescription());
             listDescriptionTextView.setVisibility(View.VISIBLE);
         }
+        categoryTagTextView.setText(mBucketList.getCategory().getCategoryName());
+
 
         backButton.setOnClickListener(this);
         editListButton.setOnClickListener(this);

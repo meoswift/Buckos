@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
+import com.example.buckos.models.Category;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.ListDetailsActivity;
@@ -54,12 +55,15 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BucketList list = mBucketLists.get(position);
+        Category category = list.getCategory();
         holder.listTitleTextView.setText(list.getName());
 
         if (!list.getDescription().equals("")) {
             holder.listDescriptionTextView.setText(list.getDescription());
             holder.listDescriptionTextView.setVisibility(View.VISIBLE);
         }
+
+        holder.categoryTagTextView.setText(category.getCategoryName());
     }
 
     @Override
@@ -71,12 +75,14 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
 
         TextView listTitleTextView;
         TextView listDescriptionTextView;
+        TextView categoryTagTextView;
 
         public ViewHolder(@NonNull View item) {
             super(item);
 
             listTitleTextView = item.findViewById(R.id.listTitle);
             listDescriptionTextView = item.findViewById(R.id.listDescription);
+            categoryTagTextView = item.findViewById(R.id.categoryTag);
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override

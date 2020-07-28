@@ -10,10 +10,10 @@
         android:id="@+id/toolbar6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,18 +21,20 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:backgroundTint="#FFFFFF"
+        android:tint="@color/design_default_color_on_secondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24"
-        android:padding="16dp"
-        android:backgroundTint="@color/colorWhite"
-        android:tint="@color/design_default_color_on_secondary"
-        android:background="?android:attr/selectableItemBackground"/>
+        app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
 
     <TextView
         android:id="@+id/editListLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Edit list"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -44,12 +46,14 @@
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:tint="#1E88E5"
+        android:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_check_24"
-        android:tint="#1E88E5"
-        android:background="?android:attr/selectableItemBackground" />
+        app:srcCompat="@drawable/ic_baseline_check_24" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
@@ -107,31 +111,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="LIST TYPE"
-        android:textColor="#000000"
+        android:text="LIST CATEGORY"
+        android:textColor="#86000000"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="7dp"
-        android:text="Category"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/categorySpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:entries="@array/categories_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

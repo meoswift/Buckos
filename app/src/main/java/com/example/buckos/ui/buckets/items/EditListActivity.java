@@ -5,15 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
+import com.example.buckos.models.Category;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // Activity that allows user to edit the content of a list and set a category to the list
 public class EditListActivity extends AppCompatActivity implements View.OnClickListener {
@@ -21,6 +29,7 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
     private BucketList mBucketList;
     private EditText mListTitleEditText;
     private EditText mListDescriptionEditText;
+    private Spinner mCategorySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +39,10 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
         // Find views
         mListTitleEditText = findViewById(R.id.listNameEt);
         mListDescriptionEditText = findViewById(R.id.listDescriptionEt);
+
         ImageButton backButton = findViewById(R.id.backButton);
         ImageButton saveButton = findViewById(R.id.saveButton);
+        mCategorySpinner = findViewById(R.id.categorySpinner);
 
         // Populate views
         Intent intent = getIntent();
@@ -40,9 +51,28 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
         mListTitleEditText.setText(mBucketList.getName());
         mListDescriptionEditText.setText(mBucketList.getDescription());
 
+        // set up category spinner
+        queryCategories();
+
         // Handle close or save button clicked
         backButton.setOnClickListener(this);
         saveButton.setOnClickListener(this);
+    }
+
+    // get all categories from dtb and populate spinner
+    private void queryCategories() {
+        ParseQuery<Category> query = ParseQuery.getQuery(Category.class);
+        query.findInBackground(new FindCallback<Category>() {
+            @Override
+            public void done(List<Category> categories, ParseException e) {
+                ArrayList<Category> mCategoryList = new ArrayList<>(categories);
+
+                // set up adapter for spinner
+                ArrayAdapter<Category> adapter = new ArrayAdapter<>(getApplicationContext(),
+                        android.R.layout.simple_spinner_dropdown_item, mCategoryList);
+                mCategorySpinner.setAdapter(adapter);
+            }
+        });
     }
 
 
@@ -61,6 +91,7 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
     private void saveListChanges() {
         mBucketList.setName(mListTitleEditText.getText().toString());
         mBucketList.setDescription(mListDescriptionEditText.getText().toString());
+        mBucketList.setCategory((Category) mCategorySpinner.getSelectedItem());
 
         mBucketList.saveInBackground(new SaveCallback() {
             @Override

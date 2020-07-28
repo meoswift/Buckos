@@ -3,6 +3,7 @@ package com.example.buckos;
 import android.app.Application;
 
 import com.example.buckos.models.BucketList;
+import com.example.buckos.models.Category;
 import com.example.buckos.models.Comment;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
@@ -30,6 +31,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Photo.class);
         ParseObject.registerSubclass(Story.class);
         ParseObject.registerSubclass(Comment.class);
+        ParseObject.registerSubclass(Category.class);
 
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY

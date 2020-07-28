@@ -26,6 +26,7 @@ import com.example.buckos.R;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.example.buckos.models.Story;
+import com.example.buckos.ui.buckets.PhotoHandler;
 import com.example.buckos.ui.buckets.items.ItemsAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.DeleteCallback;
@@ -53,28 +54,24 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     public static final String DELETE_ITEM = "deleteItem";
     public static final String EDIT_ITEM = "editItem";
     public static final String POST_ITEM = "postItem";
-    public static final String APP_TAG = "Buckos";
+
     public static final String FILENAME = "photo.png";
     public static final String AUTHORITY = "com.codepath.fileprovider.buckos";
-
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_PHOTO_CODE = 1046;
 
     private EditText mItemTitleEditText;
     private EditText mItemNoteEditText;
-    private ImageView mBackButtonImageView;
     private TextView mPostTextView;
-    private ImageView mDeleteButton;
     private TextView mListStatusTextView;
-    private ImageView mAddPhotoButton;
     private RecyclerView mPhotosRv;
     private ConstraintLayout mItemDetailsLayout;
 
     private File photoFile;
     private Item item;
     private int itemPosition;
-    private List<Photo> mPhotosInItem;
     private PhotosAdapter mPhotosAdapter;
+    private PhotoHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,26 +80,29 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
         // Get the item object that user clicked on and the position of that item in RV
         Intent intent = getIntent();
-        item = Parcels.unwrap(intent.getParcelableExtra("item"));
-        itemPosition = intent.getExtras().getInt("position");
+        item = Parcels.unwrap(intent.getParcelableExtra(ItemsAdapter.KEY_ITEM));
+        itemPosition = intent.getExtras().getInt(ItemsAdapter.KEY_POSITION);
 
         // Find views
         mItemTitleEditText = findViewById(R.id.itemTitleEt);
         mItemNoteEditText = findViewById(R.id.itemNoteEt);
-        mBackButtonImageView = findViewById(R.id.backButton);
+        ImageView backButtonImageView = findViewById(R.id.backButton);
         mPostTextView = findViewById(R.id.postTv);
         mListStatusTextView = findViewById(R.id.listStatus);
-        mAddPhotoButton = findViewById(R.id.addPhotoBtn);
-        mDeleteButton = findViewById(R.id.deleteButton);
+        ImageView addPhotoButton = findViewById(R.id.addPhotoBtn);
+        ImageView deleteButton = findViewById(R.id.deleteButton);
         mPhotosRv = findViewById(R.id.photosRv);
         mItemDetailsLayout = findViewById(R.id.itemDetailsView);
 
         setUpAdapterForPhotos();
 
+        // Photo handler to upload photos
+        handler  = new PhotoHandler(getApplicationContext(), this);
+
         // Executes appropriate functions depends on which button clicked
-        mBackButtonImageView.setOnClickListener(this);
-        mDeleteButton.setOnClickListener(this);
-        mAddPhotoButton.setOnClickListener(this);
+        backButtonImageView.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
+        addPhotoButton.setOnClickListener(this);
         mPostTextView.setOnClickListener(this);
 
         // Populate title, note, and photos attached in an item
@@ -122,8 +122,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
     // Set up adapter for list of photos attached to an item
     private void setUpAdapterForPhotos() {
-        mPhotosInItem = new ArrayList<>();
-        mPhotosAdapter = new PhotosAdapter(mPhotosInItem, this);
+        List<Photo> photosInItem = new ArrayList<>();
+        mPhotosAdapter = new PhotosAdapter(photosInItem, this);
         mPhotosRv.setAdapter(mPhotosAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);
@@ -254,7 +254,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
     // When user click Choose from Camera, starts intent for camera
     public void takePhotoFromCamera() {
-        photoFile = getPhotoFileUri();
+        photoFile = handler.getPhotoFileUri(FILENAME);
         Uri fileProvider = FileProvider.getUriForFile(this, AUTHORITY, photoFile);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -295,7 +295,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 try {
                     InputStream inputStream = getContentResolver().openInputStream(photoUri);
                     // need to convert uri into a bytes array
-                    byte[] inputData = getBytes(inputStream);
+                    byte[] inputData = handler.getBytes(inputStream);
                     ParseFile file = new ParseFile(FILENAME, inputData);
 
                     mPhotosAdapter.addNewPhoto(item, file);
@@ -307,48 +307,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
-
-    /** Helper functions for converting between Uri and File when uploading image
-     from camera/gallery to Parse
-     TODO: PhotoHandler for these functions
-     **/
-
-    // Get bytes array from URI image upload
-    /* https://stackoverflow.com/questions/10296734/image-uri-to-bytesarray */
-    public static byte[] getBytes(InputStream iStream) {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        int len = 0;
-        while (true) {
-            try {
-                if ((len = iStream.read(buffer)) == -1)
-                    break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
-    }
-
-    // Returns the File for a photo stored on disk given the fileName
-    private File getPhotoFileUri() {
-        // Get safe storage directory for photos
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.d(APP_TAG, "Failed to create!");
-        }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + FILENAME);
-
-        return file;
-    }
-
 
     // function to clear focus when keyboard is not shown - read only
     // show focus when user click on text

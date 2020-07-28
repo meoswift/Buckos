@@ -10,7 +10,6 @@
         android:id="@+id/toolbar3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +52,7 @@
         android:background="#00B8B7B7"
         android:ems="10"
         android:hint="List name"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +68,9 @@
         android:background="#00FFFFFF"
         android:ems="10"
         android:hint="Add a description to this list"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:gravity="top|start"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,5 +87,25 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar3"
         app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
 
+    <TextView
+        android:id="@+id/categoryChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Choose a category"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listDescriptionEt" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryChoose" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

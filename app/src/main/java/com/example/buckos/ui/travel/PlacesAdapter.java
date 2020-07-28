@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buckos.R;
@@ -30,6 +31,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
     private List<Place> mPlaces;
     private Context mContext;
+    private Fragment mFragment;
 
     public PlacesAdapter(List<Place> places, Context context) {
         mPlaces = places;
@@ -103,7 +105,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
                 Intent intent = new Intent(mContext, SaveToListActivity.class);
                 intent.putExtra("item", Parcels.wrap(item));
-                mContext.startActivity(intent);
+                mFragment.startActivityForResult(intent, SAVE_TO_LIST);
             } else {
                 Toast.makeText(mContext, "Place already saved!", Toast.LENGTH_SHORT).show();
             }
