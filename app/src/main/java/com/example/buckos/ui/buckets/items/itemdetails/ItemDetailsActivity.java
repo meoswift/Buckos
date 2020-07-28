@@ -309,7 +309,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     }
 
     /** Helper functions for converting between Uri and File when uploading image
-     from camera/gallery to Parse **/
+     from camera/gallery to Parse
+     TODO: PhotoHandler for these functions
+     **/
 
     // Get bytes array from URI image upload
     /* https://stackoverflow.com/questions/10296734/image-uri-to-bytesarray */

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.User;
+import com.example.buckos.ui.buckets.PhotoHandler;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -36,9 +37,8 @@ import java.io.InputStream;
 
 // Activity that allows user to edit their username, display name, and bio. Changes will be
 // saved when they exits out of activity.
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
-    public final String APP_TAG = "Buckos";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_PHOTO_CODE = 1046;
     public static final String FILENAME = "photo.png";
@@ -47,13 +47,12 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText mNameEditText;
     private EditText mUsernameEditText;
     private EditText mBioEditText;
-    private ImageView mBackButton;
-    private ImageView mSaveButton;
-    private TextView mChangeProfileTextView;
     private ImageView mProfilePicImageView;
     private File photoFile;
+
     private ParseFile profilePicFile;
     private User mUser;
+    private PhotoHandler photoHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,21 +63,23 @@ public class EditProfileActivity extends AppCompatActivity {
         mNameEditText = findViewById(R.id.nameEt);
         mUsernameEditText = findViewById(R.id.usernameEt);
         mBioEditText = findViewById(R.id.bioEt);
-        mBackButton = findViewById(R.id.backButton);
-        mSaveButton = findViewById(R.id.saveEditBtn);
-        mChangeProfileTextView = findViewById(R.id.changeProfilePicTv);
+
+        ImageView backButton = findViewById(R.id.backButton);
+        ImageView saveButton = findViewById(R.id.saveEditBtn);
+        TextView changeProfileTextView = findViewById(R.id.changeProfilePicTv);
         mProfilePicImageView = findViewById(R.id.authorProfilePic);
 
         // Populate views with user info
         mUser = (User) ParseUser.getCurrentUser();
         populateUserInfo();
 
-        // Handle back button clicked - changes not saved
-        dismissChangesOnBackPressed();
-        // Handle save button clicked - update changes
-        saveChangesOnSavePressed();
-        // Opens camera - save new photo as profile pic
-        handleChangeProfilePicClicked();
+        photoHandler = new PhotoHandler(getApplicationContext(), this);
+
+        backButton.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+        changeProfileTextView.setOnClickListener(this);
+        mProfilePicImageView.setOnClickListener(this);
+
     }
 
     private void populateUserInfo() {
@@ -93,58 +94,28 @@ public class EditProfileActivity extends AppCompatActivity {
         ParseFile image = (ParseFile) mUser.get(User.KEY_PROFILE_PIC);
 
         if (image != null)
-            Glide.with(this).load(image.getUrl()).circleCrop().into(mProfilePicImageView);
+            Glide.with(this).load(image.getUrl())
+                    .circleCrop().into(mProfilePicImageView);
         else
-            Glide.with(this).load(R.drawable.ic_launcher_background).circleCrop().into(mProfilePicImageView);
-    }
-
-
-    // Close edit profile screen
-    public void dismissChangesOnBackPressed() {
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditProfileActivity.super.onBackPressed();
-            }
-        });
+            Glide.with(this).load(R.drawable.ic_launcher_background)
+                    .circleCrop().into(mProfilePicImageView);
     }
 
     // Save all changes and update user profile
     public void saveChangesOnSavePressed() {
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final User user = (User) ParseUser.getCurrentUser();
-                user.setName(mNameEditText.getText().toString());
-                user.setUsername(mUsernameEditText.getText().toString());
-                user.setBio(mBioEditText.getText().toString());
-                if (profilePicFile != null)
-                    user.setProfilePic(profilePicFile);
+        final User user = (User) ParseUser.getCurrentUser();
+        user.setName(mNameEditText.getText().toString());
+        user.setUsername(mUsernameEditText.getText().toString());
+        user.setBio(mBioEditText.getText().toString());
+        if (profilePicFile != null)
+            user.setProfilePic(profilePicFile);
 
-                user.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                });
-            }
-        });
-    }
-
-    private void handleChangeProfilePicClicked() {
-        mChangeProfileTextView.setOnClickListener(new View.OnClickListener() {
+        user.saveInBackground(new SaveCallback() {
             @Override
-            public void onClick(View v) {
-                choosePhotoOption();
-            }
-        });
-
-        mProfilePicImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosePhotoOption();
+            public void done(ParseException e) {
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
@@ -169,7 +140,7 @@ public class EditProfileActivity extends AppCompatActivity {
     // Starts an intent to open the camera and save image
     private void takePhotoFromCamera() {
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(FILENAME);
+        photoFile = photoHandler.getPhotoFileUri(FILENAME);
         Uri fileProvider = FileProvider.getUriForFile(this, AUTHORITY, photoFile);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -214,7 +185,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 try {
                     InputStream inputStream = getContentResolver().openInputStream(photoUri);
                     // need to convert uri into a bytes array
-                    byte[] inputData = getBytes(inputStream);
+                    byte[] inputData = photoHandler.getBytes(inputStream);
                     Glide.with(this).load(photoUri).circleCrop().into(mProfilePicImageView);
                     profilePicFile = new ParseFile(FILENAME, inputData);
 
@@ -227,44 +198,22 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    /** Helper functions for uploading image files from Camera/Gallery to Parse **/
-
-    // Returns the File for a photo stored on disk given the fileName
-    private File getPhotoFileUri(String photoFileName) {
-        // Get safe storage directory for photos
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                APP_TAG);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.d(APP_TAG, "Failed to create!");
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            // Handle back button clicked - changes not saved
+            case R.id.backButton:
+                EditProfileActivity.super.onBackPressed();
+                break;
+            // Handle save button clicked - update changes
+            case R.id.saveEditBtn:
+                saveChangesOnSavePressed();
+                break;
+            // Opens camera or gallery - save new photo as profile pic
+            case R.id.changeProfilePicTv:
+            case R.id.authorProfilePic:
+                choosePhotoOption();
+                break;
         }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + photoFileName);
-
-        return file;
     }
-
-    // Get bytes array from URI image upload
-    /* https://stackoverflow.com/questions/10296734/image-uri-to-bytesarray */
-    public static byte[] getBytes(InputStream iStream) {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        int len = 0;
-        while (true) {
-            try {
-                if ((len = iStream.read(buffer)) == -1)
-                    break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
-    }
-
-
 }
