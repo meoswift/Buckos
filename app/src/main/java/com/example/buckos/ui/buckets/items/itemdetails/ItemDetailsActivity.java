@@ -224,6 +224,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         story.setDescription(item.getDescription());
         story.setItem(item);
         story.setList(item.getList());
+        story.setCategory(item.getCategory());
 
         story.saveInBackground();
 

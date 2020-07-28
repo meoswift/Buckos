@@ -129,6 +129,7 @@ public class InProgressFragment extends Fragment {
         item.setCompleted(false);
         item.setList(mBucketList);
         item.setAuthor(ParseUser.getCurrentUser());
+        item.setCategory(mBucketList.getCategory());
 
         // save new item to database and update recycler view
         item.saveInBackground(new SaveCallback() {

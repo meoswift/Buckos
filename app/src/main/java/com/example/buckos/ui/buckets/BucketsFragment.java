@@ -44,7 +44,6 @@ public class BucketsFragment extends Fragment {
     private static final int NEW_LIST_REQUEST = 120;
     public static final int POST_ITEM_REQUEST = 222;
 
-    private RecyclerView mBucketListsRecyclerView;
     private ProgressBar mProgressBar;
     private ImageView mProfilePic;
     private Button mNewListButton;
@@ -67,7 +66,7 @@ public class BucketsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Find views
-        mBucketListsRecyclerView = view.findViewById(R.id.rvBucketLists);
+        RecyclerView bucketListsRecyclerView = view.findViewById(R.id.rvBucketLists);
         mProgressBar = view.findViewById(R.id.progressBar);
         mProfilePic = view.findViewById(R.id.authorProfilePic);
         mNewListButton = view.findViewById(R.id.newListButton);
@@ -81,12 +80,12 @@ public class BucketsFragment extends Fragment {
         // Set up adapter for RecyclerView
         mBucketLists = new ArrayList<>();
         mAdapter = new BucketListsAdapter(getContext(), mBucketLists, view, this);
-        mBucketListsRecyclerView.setAdapter(mAdapter);
-        mBucketListsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        bucketListsRecyclerView.setAdapter(mAdapter);
+        bucketListsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // set up swipe to delete a list
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeLeftToDelete(mAdapter, mBucketLists));
-        itemTouchHelper.attachToRecyclerView(mBucketListsRecyclerView);
+        itemTouchHelper.attachToRecyclerView(bucketListsRecyclerView);
 
         // set up refresher for entire view
         setPullToRefreshContainer();

@@ -81,6 +81,7 @@ public class NewTravelListActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseException e) {
                         mItem.setList(list);
+                        mItem.setCategory(list.getCategory());
                         mItem.saveInBackground();
 
                         Intent intent = new Intent(getApplicationContext(), ListDetailsActivity.class);

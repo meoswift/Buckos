@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
+import com.example.buckos.models.Category;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.models.User;
@@ -47,12 +48,14 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         Story story = mStoriesList.get(position);
         User author = (User) story.getAuthor();
         BucketList list = story.getBucketList();
+        Category category = story.getCategory();
 
         holder.authorDisplayNameTextView.setText(author.getName());
         holder.storyTitleTextView.setText(story.getTitle());
         holder.storyDescriptionTextView.setText(story.getDescription());
         holder.storyTimeStamp.setText(story.getFormatedTime());
         holder.listTitleTextView.setText(list.getName());
+        holder.categoryTagTextView.setText(category.getCategoryName());
         holder.setProfilePic(author);
 
         holder.setAdapterForPhotos(story);
@@ -70,6 +73,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView storyDescriptionTextView;
         private TextView storyTimeStamp;
         private TextView listTitleTextView;
+        private TextView categoryTagTextView;
 
         private RecyclerView storyPhotosRecyclerView;
 
@@ -83,6 +87,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             storyPhotosRecyclerView = itemView.findViewById(R.id.storyPhotosRv);
             storyTimeStamp = itemView.findViewById(R.id.storyTimeStamp);
             listTitleTextView = itemView.findViewById(R.id.listTitleTv);
+            categoryTagTextView = itemView.findViewById(R.id.categoryTag);
+
             TextView commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
 
             commentsCountTextView.setOnClickListener(this);

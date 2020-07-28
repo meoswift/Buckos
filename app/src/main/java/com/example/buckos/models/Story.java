@@ -22,6 +22,8 @@ public class Story extends ParseObject {
     public static final String KEY_ITEM = "item";
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_LIST = "list";
+    public static final String KEY_CATEGORY = "category";
+
     private List<Photo> mPhotosInStory;
 
     public Story() {
@@ -52,6 +54,10 @@ public class Story extends ParseObject {
         return (BucketList) getParseObject(KEY_LIST);
     }
 
+    public Category getCategory() {
+        return (Category) getParseObject(KEY_CATEGORY);
+    }
+
     public void setPhotosInStory(List<Photo> photosInStory) {
         mPhotosInStory = photosInStory;
     }
@@ -74,6 +80,10 @@ public class Story extends ParseObject {
 
     public void setList(BucketList list) {
         put(KEY_LIST, list);
+    }
+
+    public void setCategory(Category category) {
+        put(KEY_CATEGORY, category);
     }
 
     public String getShortenedDescription() {

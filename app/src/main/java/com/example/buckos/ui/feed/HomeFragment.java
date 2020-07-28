@@ -89,6 +89,7 @@ public class HomeFragment extends Fragment {
         query.include(Story.KEY_AUTHOR);
         query.include(Story.KEY_ITEM);
         query.include(Story.KEY_LIST);
+        query.include(Story.KEY_CATEGORY);
         // order by time created
         query.orderByDescending(Story.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Story>() {

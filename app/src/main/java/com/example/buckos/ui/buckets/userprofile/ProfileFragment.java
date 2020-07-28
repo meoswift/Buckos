@@ -141,6 +141,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         query.include(Story.KEY_AUTHOR);
         query.include(Story.KEY_ITEM);
         query.include(Story.KEY_LIST);
+        query.include(Story.KEY_CATEGORY);
         // where author is current user and order by time created
         query.whereEqualTo(Story.KEY_AUTHOR, user);
         query.orderByDescending(Story.KEY_CREATED_AT);

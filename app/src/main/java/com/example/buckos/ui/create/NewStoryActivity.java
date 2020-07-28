@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -31,9 +32,6 @@ import java.util.List;
 // User can select one story suggestion at a time
 public class NewStoryActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageButton closeButton;
-    private TextView postButton;
-
     private StorySuggestionsAdapter mAdapter;
     private List<Item> mStorySuggestions;
 
@@ -43,8 +41,8 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_new_story);
 
         // Find views
-        closeButton = findViewById(R.id.closeButton);
-        postButton = findViewById(R.id.postButton);
+        ImageButton closeButton = findViewById(R.id.closeButton);
+        TextView postButton = findViewById(R.id.postButton);
 
         // set up adapter
         mStorySuggestions = new ArrayList<>();
@@ -72,11 +70,11 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
         query.findInBackground(new FindCallback<Item>() {
             @Override
             public void done(List<Item> items, ParseException e) {
-                mStorySuggestions.clear();
                 // in each story, get the photos attached
                 for (int i = 0; i < items.size(); i++) {
                     Item story = items.get(i);
                     mStorySuggestions.add(story);
+                    Log.d("debug", story.getName());
                     mAdapter.notifyDataSetChanged();
                 }
             }

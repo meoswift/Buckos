@@ -19,6 +19,7 @@ public class Item extends ParseObject {
     public static final String KEY_LIST = "list";
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_TIME_COMPLETED = "timeCompleted";
+    public static final String KEY_CATEGORY = "category";
 
     public String getName() {
         return getString(KEY_NAME);
@@ -34,6 +35,10 @@ public class Item extends ParseObject {
 
     public Boolean getCompleted() {
         return getBoolean(KEY_COMPLETED);
+    }
+
+    public Category getCategory() {
+        return (Category) getParseObject(KEY_CATEGORY);
     }
 
     public void setTimeCompleted(Date completed) {
@@ -58,6 +63,10 @@ public class Item extends ParseObject {
 
     public void setAuthor(ParseUser user) {
         put(KEY_AUTHOR, user);
+    }
+
+    public void setCategory(Category category) {
+        put(KEY_CATEGORY, category);
     }
 
     public String getShortenedDescription() {

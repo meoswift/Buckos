@@ -130,6 +130,7 @@ public class SaveToListActivity extends AppCompatActivity {
         newItem.setAuthor(ParseUser.getCurrentUser());
         newItem.setDescription(item.getDescription());
         newItem.setList(list);
+        newItem.setCategory(list.getCategory());
         // Save to database
         newItem.saveInBackground(new SaveCallback() {
             @Override
