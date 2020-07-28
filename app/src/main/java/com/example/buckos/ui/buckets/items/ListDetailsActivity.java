@@ -26,6 +26,9 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
     private Fragment mFragment;
     private Bundle mBundle;
     private BucketList mBucketList;
+    private TextView mListTitleTextView;
+    private TextView mListDescriptionTextView;
+    private TextView mCategoryTagTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +37,11 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
 
         // Find views
         mTabLayout = findViewById(R.id.tab_layout);
-        TextView listTitleTextView = findViewById(R.id.listTitleTv);
-        TextView listDescriptionTextView = findViewById(R.id.listDescription);
+        mListTitleTextView = findViewById(R.id.listTitleTv);
+        mListDescriptionTextView = findViewById(R.id.listDescription);
+        mCategoryTagTextView = findViewById(R.id.categoryTag);
         ImageButton backButton = findViewById(R.id.backButton);
         ImageButton editListButton = findViewById(R.id.editListButton);
-        TextView categoryTagTextView = findViewById(R.id.categoryTag);
 
         // Unwrap list object sent by previous fragment
         Intent intent = getIntent();
@@ -50,13 +53,7 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
         mFragment.setArguments(mBundle);
 
         // Populate list information
-        listTitleTextView.setText(mBucketList.getShortenedTitle());
-        if (!mBucketList.getDescription().equals("")) {
-            listDescriptionTextView.setText(mBucketList.getDescription());
-            listDescriptionTextView.setVisibility(View.VISIBLE);
-        }
-        categoryTagTextView.setText(mBucketList.getCategory().getCategoryName());
-
+        populateListViews();
 
         backButton.setOnClickListener(this);
         editListButton.setOnClickListener(this);
@@ -126,15 +123,18 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_LIST_REQUEST && resultCode == RESULT_OK) {
             mBucketList = Parcels.unwrap(data.getParcelableExtra("list"));
-            TextView listTitleTextView = findViewById(R.id.listTitleTv);
-            TextView listDescriptionTextView = findViewById(R.id.listDescription);
 
             // populate views based on changes
-            listTitleTextView.setText(mBucketList.getName());
-            if (!mBucketList.getDescription().equals("")) {
-                listDescriptionTextView.setText(mBucketList.getDescription());
-                listDescriptionTextView.setVisibility(View.VISIBLE);
-            }
+            populateListViews();
         }
+    }
+
+    private void populateListViews() {
+        mListTitleTextView.setText(mBucketList.getShortenedTitle());
+        if (!mBucketList.getDescription().equals("")) {
+            mListDescriptionTextView.setText(mBucketList.getDescription());
+            mListDescriptionTextView.setVisibility(View.VISIBLE);
+        }
+        mCategoryTagTextView.setText(mBucketList.getCategory().getCategoryName());
     }
 }

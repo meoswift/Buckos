@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -71,6 +72,9 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
                 ArrayAdapter<Category> adapter = new ArrayAdapter<>(getApplicationContext(),
                         android.R.layout.simple_spinner_dropdown_item, mCategoryList);
                 mCategorySpinner.setAdapter(adapter);
+
+                // default selection is selected category
+                mCategorySpinner.setSelection(getSelectedCategory(mCategoryList));
             }
         });
     }
@@ -103,4 +107,17 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+
+    // get the position of selected category in spinner
+    private int getSelectedCategory(List<Category> categories) {
+        String seletedCategoryId = mBucketList.getCategory().getObjectId();
+
+        for (Category category : categories) {
+            if (category.getObjectId().equals(seletedCategoryId))
+                return categories.indexOf(category);
+        }
+
+        return -1;
+    }
+
 }

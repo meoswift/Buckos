@@ -29,13 +29,15 @@ import java.util.List;
 // Adapter that inflates a Place item and displays that in the RecyclerView
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder> {
 
+    public static final int SAVE_TO_LIST = 70;
     private List<Place> mPlaces;
     private Context mContext;
     private Fragment mFragment;
 
-    public PlacesAdapter(List<Place> places, Context context) {
+    public PlacesAdapter(List<Place> places, Context context, Fragment fragment) {
         mPlaces = places;
         mContext = context;
+        mFragment = fragment;
     }
 
     @NonNull
@@ -55,6 +57,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         holder.ratingBar.setRating(place.getRating());
         holder.userRating.setText(String.valueOf(place.getRating()));
         holder.userRatingCount.setText(place.getUserRatingsTotal());
+        holder.bookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.savePlaceToList();
+            }
+        });
     }
 
     @Override
@@ -80,13 +88,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             userRating = itemView.findViewById(R.id.userRating);
             userRatingCount = itemView.findViewById(R.id.userRatingCount);
             bookmarkButton = itemView.findViewById(R.id.bookmarkButton);
-
-            bookmarkButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    savePlaceToList();
-                }
-            });
         }
 
         // Bookmark place - User can add to multiple lists or add to a new one

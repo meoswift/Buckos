@@ -47,7 +47,7 @@ public class SaveToListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_to_list);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         item = Parcels.unwrap(intent.getParcelableExtra("item"));
 
         // Find views
@@ -70,7 +70,8 @@ public class SaveToListActivity extends AppCompatActivity {
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED);
+                Intent intent = new Intent();
+                setResult(RESULT_CANCELED, intent);
                 finish();
             }
         });

@@ -37,6 +37,8 @@ import java.util.List;
 
 import okhttp3.Headers;
 
+import static android.telephony.MbmsDownloadSession.RESULT_CANCELLED;
+
 // Fragment that displays a list of tourist attractions based on user's query.
 // User can bookmark a place and add that place to multiple lists.
 public class TravelFragment extends Fragment {
@@ -76,7 +78,7 @@ public class TravelFragment extends Fragment {
 
         // Set up the adapter that will display results - POIs based on of user query
         mPlaces = new ArrayList<>();
-        mAdapter = new PlacesAdapter(mPlaces, getContext());
+        mAdapter = new PlacesAdapter(mPlaces, getContext(), this);
         mCityResultsRecyclerView.setAdapter(mAdapter);
         mCityResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mCityResultsRecyclerView.setItemViewCacheSize(20);
@@ -140,6 +142,7 @@ public class TravelFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("debug", String.valueOf(resultCode));
+        if (requestCode == PlacesAdapter.SAVE_TO_LIST && requestCode == RESULT_CANCELLED)
+            mAdapter.notifyDataSetChanged();
     }
 }

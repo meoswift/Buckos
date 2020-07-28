@@ -43,8 +43,8 @@ public class NewListActivity extends AppCompatActivity {
 
         mListTitleEditText = findViewById(R.id.listTitleEt);
         mListDescriptionEditText = findViewById(R.id.listDescriptionEt);
-        mCreateButton = findViewById(R.id.createBtn);
-        mCloseButton = findViewById(R.id.closeBtn);
+        mCreateButton = findViewById(R.id.createButton);
+        mCloseButton = findViewById(R.id.closeButton);
         mCategorySpinner = findViewById(R.id.categorySpinner);
 
         // Show cursor at description to hint user
