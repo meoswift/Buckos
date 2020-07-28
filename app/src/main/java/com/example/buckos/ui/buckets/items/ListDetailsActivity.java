@@ -3,9 +3,11 @@ package com.example.buckos.ui.buckets.items;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -16,15 +18,14 @@ import com.google.android.material.tabs.TabLayout;
 import org.parceler.Parcels;
 
 // Activity that displays the list of completed and incomplete items in a specific list
-public class ListDetailsActivity extends AppCompatActivity {
+public class ListDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int EDIT_LIST_REQUEST = 345;
     private TabLayout mTabLayout;
-    private ImageView mBackButtonImageView;
-    private TextView mListDescriptionTextView;
-    private BucketList mBucketList;
+
     private Fragment mFragment;
     private Bundle mBundle;
-
+    private BucketList mBucketList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,11 @@ public class ListDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_details);
 
         // Find views
-        TextView listTitleTextView = findViewById(R.id.listTitleTv);
         mTabLayout = findViewById(R.id.tab_layout);
-        mBackButtonImageView = findViewById(R.id.backButton);
-        mListDescriptionTextView = findViewById(R.id.listDescription);
+        TextView listTitleTextView = findViewById(R.id.listTitleTv);
+        TextView listDescriptionTextView = findViewById(R.id.listDescription);
+        ImageButton backButton = findViewById(R.id.backButton);
+        ImageButton editListButton = findViewById(R.id.editListButton);
 
         // Unwrap list object sent by previous fragment
         Intent intent = getIntent();
@@ -47,13 +49,14 @@ public class ListDetailsActivity extends AppCompatActivity {
         mFragment.setArguments(mBundle);
 
         // Update list title in tool bar
-        mListTitleTextView.setText(mBucketList.getName());
+        listTitleTextView.setText(mBucketList.getName());
         if (!mBucketList.getDescription().equals("")) {
-            mListDescriptionTextView.setText(mBucketList.getDescription());
-            mListDescriptionTextView.setVisibility(View.VISIBLE);
+            listDescriptionTextView.setText(mBucketList.getDescription());
+            listDescriptionTextView.setVisibility(View.VISIBLE);
         }
 
-        handleBackPress(); // on back button clicked
+        backButton.setOnClickListener(this);
+        editListButton.setOnClickListener(this);
 
         updateTabWithFragment(); // display In Progress when created
 
@@ -94,7 +97,6 @@ public class ListDetailsActivity extends AppCompatActivity {
         });
     }
 
-
     // Function to replace layout with the Tab selected
     private void updateTabWithFragment() {
         getSupportFragmentManager().beginTransaction()
@@ -103,15 +105,33 @@ public class ListDetailsActivity extends AppCompatActivity {
                 .commit();
     }
 
-
-    // When user click back button on screen, takes them to previous screen
-    public void handleBackPress() {
-        mBackButtonImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backButton:
                 finish();
-            }
-        });
+                break;
+            case R.id.editListButton:
+                Intent intent = new Intent(this, EditListActivity.class);
+                intent.putExtra("list", Parcels.wrap(mBucketList));
+                startActivityForResult(intent, EDIT_LIST_REQUEST);
+        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_LIST_REQUEST && resultCode == RESULT_OK) {
+            mBucketList = Parcels.unwrap(data.getParcelableExtra("list"));
+            TextView listTitleTextView = findViewById(R.id.listTitleTv);
+            TextView listDescriptionTextView = findViewById(R.id.listDescription);
+
+            // populate views based on changes
+            listTitleTextView.setText(mBucketList.getName());
+            if (!mBucketList.getDescription().equals("")) {
+                listDescriptionTextView.setText(mBucketList.getDescription());
+                listDescriptionTextView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 }
