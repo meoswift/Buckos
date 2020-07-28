@@ -16,11 +16,13 @@ import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
 import com.example.buckos.models.Item;
+import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.items.ListDetailsActivity;
 import com.example.buckos.models.Place;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -72,10 +74,19 @@ public class NewTravelListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final BucketList list = new BucketList();
+                User user = (User) ParseUser.getCurrentUser();
+                ParseRelation<Category> userInterests = user.getInterests();
+                Category selectedCategory = (Category) mCategorySpinner.getSelectedItem();
+
+                // set list's core properties
                 list.setName(mListTitle.getText().toString());
                 list.setDescription(mListDescription.getText().toString());
                 list.setAuthor(ParseUser.getCurrentUser());
-                list.setCategory((Category) mCategorySpinner.getSelectedItem());
+                list.setCategory(selectedCategory);
+
+                // new category list, new user interest
+                userInterests.add(selectedCategory);
+                user.saveInBackground();
 
                 list.saveInBackground(new SaveCallback() {
                     @Override

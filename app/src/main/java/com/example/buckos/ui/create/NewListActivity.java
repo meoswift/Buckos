@@ -15,9 +15,11 @@ import android.widget.Toast;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
+import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -87,13 +89,21 @@ public class NewListActivity extends AppCompatActivity {
     }
 
     private void createList() {
+        User user = (User) ParseUser.getCurrentUser();
+        ParseRelation<Category> userInterests = user.getInterests();
+
         final BucketList list = new BucketList();
+        Category selectedCategory = (Category) mCategorySpinner.getSelectedItem();
 
         // Set core properties of a bucket list object
         list.setName(mListTitleEditText.getText().toString());
         list.setDescription(mListDescriptionEditText.getText().toString());
         list.setAuthor(ParseUser.getCurrentUser());
-        list.setCategory((Category) mCategorySpinner.getSelectedItem());
+        list.setCategory(selectedCategory);
+
+        // if new category, add new interest to user
+        userInterests.add(selectedCategory);
+        user.saveInBackground();
 
         list.saveInBackground(new SaveCallback() {
             @Override

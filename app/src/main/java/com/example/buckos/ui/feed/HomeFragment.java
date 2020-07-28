@@ -18,12 +18,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.buckos.R;
+import com.example.buckos.models.Category;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.example.buckos.models.Story;
+import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
@@ -74,9 +78,6 @@ public class HomeFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 queryStories();
             }
         });
@@ -91,7 +92,6 @@ public class HomeFragment extends Fragment {
         query.include(Story.KEY_LIST);
         query.include(Story.KEY_CATEGORY);
         // order by time created
-        query.orderByDescending(Story.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Story>() {
             @Override
             public void done(List<Story> stories, ParseException e) {
@@ -99,14 +99,15 @@ public class HomeFragment extends Fragment {
                 // in each story, get the photos attached
                 for (int i = 0; i < stories.size(); i++) {
                     Story story = stories.get(i);
-                    Item item = (Item) story.getItem();
-                    mStories.add(story);
-                    queryPhotosInStory(story, item);
+                    addStoryByRelevance(story);
                 }
 
                 // If there are no posts, also remove progress bar & refresher
-                mHomeProgressBar.setVisibility(View.GONE);
-                mSwipeRefreshLayout.setRefreshing(false);
+                if (stories.size() == 0) {
+                    mHomeProgressBar.setVisibility(View.GONE);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
             }
         });
     }
@@ -125,4 +126,31 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    // Add story to the top of Feed if its category if of user's interests
+    // Else, add story at the end
+    private void addStoryByRelevance(final Story story) {
+        User user = (User) ParseUser.getCurrentUser();
+        ParseRelation<Category> interests = user.getInterests();
+
+        // checks if current story is of user's interests
+        ParseQuery<Category> query = interests.getQuery();
+        query.whereEqualTo("objectId", story.getCategory().getObjectId());
+
+        query.findInBackground(new FindCallback<Category>() {
+            @Override
+            public void done(List<Category> category, ParseException e) {
+                // if not, add story to bottom. else, add to the top
+                if (category.size() == 0)
+                    mStories.add(story);
+                else
+                    mStories.add(0, story);
+
+                Item item = (Item) story.getItem();
+                queryPhotosInStory(story, item);
+            }
+        });
+    }
+
+
 }
