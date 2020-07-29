@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -89,9 +91,12 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             listTitleTextView = itemView.findViewById(R.id.listTitleTv);
             categoryTagTextView = itemView.findViewById(R.id.categoryTag);
 
-            TextView commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
+            // handle commenting
+            ImageButton commentIcon = itemView.findViewById(R.id.commentIcon);
+            LinearLayout commentBox = itemView.findViewById(R.id.commentBox);
 
-            commentsCountTextView.setOnClickListener(this);
+            commentBox.setOnClickListener(this);
+            commentIcon.setOnClickListener(this);
         }
 
         // Set profile pic with either file from database or default image
@@ -114,13 +119,15 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.commentBox:
+                case R.id.commentIcon:
+                    Story story = mStoriesList.get(getAdapterPosition());
 
-            if (v.getId() == R.id.commentCountTv) {
-                Story story = mStoriesList.get(getAdapterPosition());
-
-                Intent intent = new Intent(mContext, CommentsActivity.class);
-                intent.putExtra("story", Parcels.wrap(story));
-                mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, CommentsActivity.class);
+                    intent.putExtra("story", Parcels.wrap(story));
+                    mContext.startActivity(intent);
+                    break;
             }
         }
     }

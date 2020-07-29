@@ -11,38 +11,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/lato_bold"
-        android:text="Explore"
-        android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
+        android:text="explore"
+        android:textColor="#000000"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/cityInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/cityInputLayout"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:hint="Search username"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/exploreUsers">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/usernameInputEt"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:ems="10"-->
+<!--            android:imeOptions="actionSearch"-->
+<!--            android:inputType="textPersonName"-->
+<!--            android:textSize="14sp" />-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+
+    <EditText
+        android:id="@+id/usernameInputEt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:hint="Search username"
+        android:background="@drawable/textinputborder"
+        android:drawableRight="@drawable/ic_baseline_search_24"
+        android:hint="Search"
+        android:inputType="textVisiblePassword"
+        android:padding="8dp"
+        android:paddingLeft="10dp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exploreUsers">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/usernameInputEt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:imeOptions="actionSearch"
-            android:inputType="textPersonName"
-            android:textSize="16sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/exploreUsers" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userResultsRv"
@@ -58,13 +77,13 @@
         android:id="@+id/suggestionsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:layout_marginStart="16dp"
         android:text="See Following suggestions"
-        android:textColor="#1E88E5"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameInputEt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

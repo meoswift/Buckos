@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/story_separator"
-    android:paddingBottom="16dp">
+    android:paddingBottom="12dp">
 
     <ImageView
         android:id="@+id/authorProfilePic"
@@ -91,20 +91,20 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storyPhotosRv">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="500dp">
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:gravity="center">
 
             <ImageButton
                 android:id="@+id/heartButton"
@@ -112,41 +112,71 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:tint="#E53935"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
             <TextView
                 android:id="@+id/heartCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="30 likes"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/heartButton"
-                app:layout_constraintStart_toEndOf="@+id/heartButton"
-                app:layout_constraintTop_toTopOf="@+id/heartButton" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="30" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/commentBox"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="500dp">
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/commentIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:padding="2dp"
+                app:srcCompat="@drawable/ic_comment" />
 
             <TextView
                 android:id="@+id/commentCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Comments"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="5"
+                android:textSize="14sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_round_share_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="Share"
+                android:textSize="14sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -174,8 +204,8 @@
         android:paddingEnd="8dp"
         android:paddingBottom="2dp"
         android:text="Just for fun"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
+        android:textColor="#000000"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/authorProfilePic" />
 

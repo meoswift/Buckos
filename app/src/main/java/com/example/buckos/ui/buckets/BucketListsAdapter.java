@@ -169,6 +169,4 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         });
     }
 
-
-
 }

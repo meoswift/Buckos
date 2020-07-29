@@ -25,7 +25,7 @@
     <item
         android:id="@+id/action_travel"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_public_24"
+        android:icon="@drawable/ic_baseline_airplanemode_active_24"
         android:title="Explore"
         app:showAsAction="always" />
 

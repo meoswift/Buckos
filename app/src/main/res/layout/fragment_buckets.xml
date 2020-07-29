@@ -46,11 +46,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/lato_bold"
-                android:text="Buckets"
-                android:textColor="@color/colorPrimary"
-                android:textSize="30sp"
+                android:text="profile"
+                android:textColor="#000000"
+                android:textSize="28sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -73,12 +73,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/colorPrimary"
                 android:insetTop="8dp"
                 android:insetBottom="8dp"
-                android:text="+ New Bucket"
+                android:text="New Bucket"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yourBucketsLabel"
-                app:strokeColor="@color/colorPrimary" />
+                app:layout_constraintTop_toBottomOf="@+id/yourBucketsLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,37 +11,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/lato_bold"
-        android:text="Traveling"
-        android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
+        android:text="travel"
+        android:textColor="#000000"
+        android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/cityInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+    <EditText
+        android:id="@+id/cityInputEt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/textinputborder"
+        android:drawableRight="@drawable/ic_baseline_search_24"
         android:hint="City name"
+        android:inputType="textVisiblePassword"
+        android:paddingLeft="10dp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exploreLabel">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cityInputEt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:imeOptions="actionSearch"
-            android:inputType="textPersonName"
-            android:textSize="18sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/exploreLabel"
+        android:padding="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cityResultsRv"
@@ -64,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cityResultsRv" />
+        app:layout_constraintTop_toBottomOf="@+id/cityInputEt" />
 
     <ProgressBar
         android:id="@+id/travelProgressBar"

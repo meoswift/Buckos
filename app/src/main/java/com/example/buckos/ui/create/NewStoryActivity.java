@@ -64,6 +64,7 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
         // include objects related to a story
         query.include(Item.KEY_AUTHOR);
         query.include(Item.KEY_LIST);
+        query.whereEqualTo(Item.KEY_COMPLETED, true);
         query.whereEqualTo(Item.KEY_AUTHOR, ParseUser.getCurrentUser());
         // order by time created
         query.orderByDescending(Story.KEY_CREATED_AT);
@@ -108,6 +109,7 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
         story.setDescription(item.getDescription());
         story.setItem(item);
         story.setList(item.getList());
+        story.setCategory(item.getCategory());
 
         // save in database
         story.saveInBackground(new SaveCallback() {
