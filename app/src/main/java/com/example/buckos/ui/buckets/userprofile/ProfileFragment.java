@@ -103,6 +103,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         backButton.setOnClickListener(this);
         followingLabel.setOnClickListener(this);
+        followersLabel.setOnClickListener(this);
     }
 
     private void setPullToRefreshContainer() {

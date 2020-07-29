@@ -2,6 +2,7 @@ package com.example.buckos.ui.buckets;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Story;
+import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.items.ListDetailsActivity;
 import com.example.buckos.models.Photo;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +25,8 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -117,10 +121,33 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
                 deleteItemsInList(list);
                 deleteAllPhotosInList(list);
                 deleteAllStoriesInList(list);
+                deleteInterestIfNeeded(list);
                 mBucketLists.remove(position);
                 notifyItemRemoved(position);
                 Snackbar snackbar = Snackbar.make(mView, "List deleted", Snackbar.LENGTH_LONG);
                 snackbar.show();
+            }
+        });
+    }
+
+    private void deleteInterestIfNeeded(final BucketList list) {
+        final User user = (User) ParseUser.getCurrentUser();
+
+        ParseQuery<BucketList> query = ParseQuery.getQuery(BucketList.class);
+        query.whereEqualTo(BucketList.KEY_CATEGORY, list.getCategory());
+        query.whereEqualTo(BucketList.KEY_AUTHOR, user);
+        query.include(BucketList.KEY_CATEGORY);
+        query.findInBackground(new FindCallback<BucketList>() {
+            @Override
+            public void done(List<BucketList> lists, ParseException e) {
+                Category interest = list.getCategory();
+
+                // if there's no longer any list of this category, delete interest
+                if (lists.size() == 0) {
+                    ParseRelation<Category> interests = user.getInterests();
+                    interests.remove(interest);
+                    user.saveInBackground();
+                }
             }
         });
     }
@@ -168,5 +195,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             }
         });
     }
+
+
 
 }

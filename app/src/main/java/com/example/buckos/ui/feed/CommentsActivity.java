@@ -93,7 +93,7 @@ public class CommentsActivity extends AppCompatActivity {
         query.include(Comment.KEY_AUTHOR);
         query.whereEqualTo(Comment.KEY_STORY, mStory);
         // order the posts from newest to oldest
-        query.orderByDescending(Comment.KEY_CREATED_AT);
+        query.orderByAscending(Comment.KEY_CREATED_AT);
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Comment>() {
             public void done(List<Comment> comments, ParseException e) {
@@ -127,7 +127,7 @@ public class CommentsActivity extends AppCompatActivity {
                             "Issue publishing comment!", Toast.LENGTH_SHORT).show();
                 }
 
-                mCommentsList.add(0, comment);
+                mCommentsList.add(comment);
                 mCommentsAdapter.notifyDataSetChanged();
             }
         });
