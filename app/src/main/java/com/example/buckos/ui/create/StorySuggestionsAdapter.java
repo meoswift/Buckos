@@ -141,5 +141,4 @@ public class StorySuggestionsAdapter extends RecyclerView.Adapter<StorySuggestio
 
         return null;
     }
-
 }

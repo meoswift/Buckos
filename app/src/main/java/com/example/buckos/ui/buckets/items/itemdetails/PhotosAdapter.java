@@ -19,6 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -27,7 +28,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     private List<Photo> mPhotos;
     private Context mContext;
 
-    public PhotosAdapter() {}
+    public PhotosAdapter() {
+
+    }
 
     public PhotosAdapter(List<Photo> photos, Context context) {
         mPhotos = photos;
@@ -46,8 +49,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         Photo photo = mPhotos.get(position);
         ParseFile image = photo.getPhotoFile();
         if (image != null) {
-            Glide.with(mContext).load(image.getUrl())
-                    .placeholder(R.drawable.loading)
+            Picasso.get().load(image.getUrl())
+                    .placeholder(R.drawable.background)
                     .into(holder.photoImageView);
         }
     }
@@ -91,7 +94,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         query.findInBackground(new FindCallback<Photo>() {
             @Override
             public void done(List<Photo> objects, ParseException e) {
-                mPhotos.clear();
                 mPhotos.addAll(objects);
                 notifyDataSetChanged();
             }

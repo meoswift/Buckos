@@ -131,5 +131,4 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             }
         }
     }
-
 }

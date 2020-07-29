@@ -75,7 +75,6 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
                 for (int i = 0; i < items.size(); i++) {
                     Item story = items.get(i);
                     mStorySuggestions.add(story);
-                    Log.d("debug", story.getName());
                     mAdapter.notifyDataSetChanged();
                 }
             }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.buckos.R;
 import com.example.buckos.models.Item;
 import com.example.buckos.ui.travel.placebookmark.SaveToListActivity;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -58,6 +59,7 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private void createNewItem() {
         Item item = new Item();
+        item.setAuthor(ParseUser.getCurrentUser());
         item.setName(mItemTitleEditText.getText().toString());
         item.setDescription(mItemDescriptionEditText.getText().toString());
 

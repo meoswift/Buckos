@@ -52,6 +52,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private RecyclerView mUserStoriesRecyclerView;
     private SwipeRefreshLayout swipeContainer;
     private TextView mFollowingTextView;
+    private TextView mFollowersTextView;
 
     private User user;
     private List<Story> mUserStories;
@@ -81,11 +82,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mBioTextView = view.findViewById(R.id.bioTv);
         mProfilePicImageView = view.findViewById(R.id.authorProfilePic);
         mProfileToolbar = view.findViewById(R.id.profileToolbar);
-        ImageView backButton = view.findViewById(R.id.backButton);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
-        LinearLayout followingLabel = view.findViewById(R.id.following);
         mFollowingTextView = view.findViewById(R.id.followingCountTv);
+        mFollowersTextView = view.findViewById(R.id.followersCountTv);
+
+        ImageView backButton = view.findViewById(R.id.backButton);
+        LinearLayout followingLabel = view.findViewById(R.id.following);
+        LinearLayout followersLabel = view.findViewById(R.id.followers);
+
 
         // pull to refresh
         setPullToRefreshContainer();
@@ -115,6 +120,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mDisplayNameTextView.setText(user.getName());
         mBioTextView.setText(user.getBio());
         setFollowingCount();
+        setFollowersCount();
         setProfilePic();
 
         setAdapterForUserStories();
@@ -180,6 +186,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     .circleCrop().into(mProfilePicImageView);
     }
 
+    // Set the number of following
     private void setFollowingCount() {
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_FROM, user);
@@ -191,6 +198,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    // Set the number of followers
+    private void setFollowersCount() {
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEqualTo(Follow.KEY_TO, user);
+        query.findInBackground(new FindCallback<Follow>() {
+            @Override
+            public void done(List<Follow> followList, ParseException e) {
+                mFollowersTextView.setText(String.valueOf(followList.size()));
+            }
+        });
+    }
+
+    // When user click edit or Log out, executes appropriate task
     private void handleProfileMenuClicked() {
         mProfileToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -235,6 +255,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         .replace(R.id.your_placeholder, followingFragment)
                         .addToBackStack(null)
                         .commit();
+                break;
+            case R.id.followers:
+                Fragment followersFragment = new FollowersFragment();
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.your_placeholder, followersFragment)
+                        .addToBackStack(null)
+                        .commit();
+                break;
         }
     }
 }
