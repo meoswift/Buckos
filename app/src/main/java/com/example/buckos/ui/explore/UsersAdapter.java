@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -35,7 +36,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         mUsersResults = usersResults;
         mContext = context;
         mCurrentUser = (User) ParseUser.getCurrentUser();
-        mFollowingUsers = mCurrentUser.getFollowingUsers();
     }
 
     @NonNull
@@ -106,40 +106,45 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     private void setSelectedUserFollowingStatus(final ViewHolder holder, int position) {
         final User selectedUser = mUsersResults.get(position);
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
 
-        ParseQuery query = mFollowingUsers.getQuery();
+        // if selected user is followed by current user, button becomes Following
+        query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
+        query.whereEqualTo(Follow.KEY_TO, selectedUser);
 
-        // if selected user is in following list, set button to Following status
-        query.whereEqualTo(User.KEY_OBJECT_ID, selectedUser.getObjectId());
-        query.findInBackground(new FindCallback<User>() {
+        query.findInBackground(new FindCallback<Follow>() {
             @Override
-            public void done(List<User> followingList, ParseException e) {
-                if (followingList.size() == 1) {
+            public void done(List<Follow> followList, ParseException e) {
+                if (followList.size() == 1) {
                     setFollowingButton(holder.followButton);
                 }
             }
         });
+
     }
 
     private void modifyFollowingStatusOnClick(final Button followButton, int position) {
         final User selectedUser = mUsersResults.get(position);
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
 
-        ParseQuery query = mFollowingUsers.getQuery();
-
-        // if selected user is in following list, set button to Following status
-        query.whereEqualTo(User.KEY_OBJECT_ID, selectedUser.getObjectId());
-        query.findInBackground(new FindCallback<User>() {
+        // modify follow button based on whether current user has followed selected user
+        query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
+        query.whereEqualTo(Follow.KEY_TO, selectedUser);
+        query.findInBackground(new FindCallback<Follow>() {
             @Override
-            public void done(List<User> followingList, ParseException e) {
-                if (followingList.size() == 1) {
-                    mFollowingUsers.remove(selectedUser);
-                    setFollowButton(followButton);
-                } else {
-                    mFollowingUsers.add(selectedUser);
+            public void done(List<Follow> followList, ParseException e) {
+                // have not followed
+                if (followList.size() == 0) {
+                    Follow relationship = new Follow();
+                    relationship.setFrom(mCurrentUser);
+                    relationship.setTo(selectedUser);
+                    relationship.saveInBackground();
                     setFollowingButton(followButton);
+                } else {
+                    Follow relationship = followList.get(0);
+                    relationship.deleteInBackground();
+                    setFollowButton(followButton);
                 }
-
-                mCurrentUser.saveInBackground();
             }
         });
     }

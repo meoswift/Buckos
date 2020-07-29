@@ -58,7 +58,6 @@ public class FollowingFragment extends Fragment implements View.OnClickListener 
 
         // Initialize current user and following list
         mUser = (User) ParseUser.getCurrentUser();
-        mFollowingUsers = mUser.getFollowingUsers();
 
         // Set up adapter for following list
         mFollowingUsersList = new ArrayList<>();

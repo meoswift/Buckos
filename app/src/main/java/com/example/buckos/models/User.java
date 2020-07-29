@@ -41,14 +41,6 @@ public class User extends ParseUser {
         return getParseFile(KEY_PROFILE_PIC);
     }
 
-    public void setFollowedBy(String username) {
-        followedBy = "Followed by " + username;
-    }
-
-    public String getFollowedBy() {
-        return followedBy;
-    }
-
     public ParseRelation<Category> getInterests() {
         return getRelation(KEY_INTERESTS);
     }

@@ -46,7 +46,7 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
         User user = mSuggestedUsers.get(position);
         holder.usernameTextView.setText(user.getUsername());
         holder.displayNameTextView.setText(user.getName());
-        holder.followedByTextView.setText(user.getFollowedBy());
+//        holder.followedByTextView.setText(user.getFollowedBy());
         Glide.with(mContext)
                 .load(mContext.getDrawable(R.drawable.bucket))
                 .circleCrop()
@@ -83,34 +83,34 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            modifyFollowingStatusOnClick(followButton, position);
+//            modifyFollowingStatusOnClick(followButton, position);
         }
     }
 
-    private void modifyFollowingStatusOnClick(final Button followButton, int position) {
-        final User selectedUser = mSuggestedUsers.get(position);
-        final User currentUser = (User) ParseUser.getCurrentUser();
-
-        final ParseRelation<User> followingList = currentUser.getFollowingUsers();
-        ParseQuery query = followingList.getQuery();
-
-        // if selected user is in following list, set button to Following status
-        query.whereEqualTo(User.KEY_OBJECT_ID, selectedUser.getObjectId());
-        query.findInBackground(new FindCallback<User>() {
-            @Override
-            public void done(List<User> followings, ParseException e) {
-                if (followings.size() == 1) {
-                    followingList.remove(selectedUser);
-                    setFollowButton(followButton);
-                } else {
-                    followingList.add(selectedUser);
-                    setFollowingButton(followButton);
-                }
-
-                currentUser.saveInBackground();
-            }
-        });
-    }
+//    private void modifyFollowingStatusOnClick(final Button followButton, int position) {
+//        final User selectedUser = mSuggestedUsers.get(position);
+//        final User currentUser = (User) ParseUser.getCurrentUser();
+//
+//        final ParseRelation<User> followingList = currentUser.getFollowingUsers();
+//        ParseQuery query = followingList.getQuery();
+//
+//        // if selected user is in following list, set button to Following status
+//        query.whereEqualTo(User.KEY_OBJECT_ID, selectedUser.getObjectId());
+//        query.findInBackground(new FindCallback<User>() {
+//            @Override
+//            public void done(List<User> followings, ParseException e) {
+//                if (followings.size() == 1) {
+//                    followingList.remove(selectedUser);
+//                    setFollowButton(followButton);
+//                } else {
+//                    followingList.add(selectedUser);
+//                    setFollowingButton(followButton);
+//                }
+//
+//                currentUser.saveInBackground();
+//            }
+//        });
+//    }
 
 
     private void setFollowingButton(Button followButton) {

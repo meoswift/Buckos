@@ -76,7 +76,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         // Get current user & following list
         user = (User) ParseUser.getCurrentUser();
-        mFollowingUsers = user.getFollowingUsers();
 
         // Find views
         mDisplayNameTextView = view.findViewById(R.id.displayNameTv);
