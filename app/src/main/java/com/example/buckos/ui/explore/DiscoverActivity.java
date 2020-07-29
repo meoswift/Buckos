@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.buckos.R;
+import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -40,7 +41,7 @@ public class DiscoverActivity extends AppCompatActivity {
         suggestedUsersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mCurrentUser = (User) ParseUser.getCurrentUser();
-//        querySuggestedUsersList();
+        querySuggestedUsersList();
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,55 +51,59 @@ public class DiscoverActivity extends AppCompatActivity {
         });
     }
 
-//    // Get all users that current user is following
-//    private void querySuggestedUsersList() {
-//
-//        ParseQuery<User> query = followingList.getQuery();
-//        query.findInBackground(new FindCallback<User>() {
-//            @Override
-//            public void done(List<User> friends, ParseException e) {
-//                for (User friend : friends) {
-//                    queryUserFollowingList(friend);
-//                }
-//            }
-//        });
-//    }
+    // Get all users that current user is following
+    private void querySuggestedUsersList() {
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
+        query.include(Follow.KEY_TO);
+        query.findInBackground(new FindCallback<Follow>() {
+            @Override
+            public void done(List<Follow> followList, ParseException e) {
+                for (Follow follow : followList) {
+                    User friend = follow.getTo();
+                    queryUserFollowingList(friend);
+                }
+            }
+        });
+    }
 
-//    // Get Following list of current user's friend
-//    private void queryUserFollowingList(final User friend) {
-//
-//        // get all users that followed user is following
-//        ParseQuery<User> query = followingList.getQuery();
-//        query.findInBackground(new FindCallback<User>() {
-//            @Override
-//            public void done(List<User> friendOfFriends, ParseException e) {
-//                for (User friendOfFriend : friendOfFriends) {
-//                    isFollowedByCurrentUser(friend, friendOfFriend);
-//                }
-//            }
-//        });
-//    }
+    // Get Following list of current user's friend
+    private void queryUserFollowingList(final User friend) {
+        // get all users that followed user is following
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEqualTo(Follow.KEY_FROM, friend);
+        query.whereNotEqualTo(Follow.KEY_TO, mCurrentUser);
+        query.include(Follow.KEY_TO);
+        query.findInBackground(new FindCallback<Follow>() {
+            @Override
+            public void done(List<Follow> followList, ParseException e) {
+                for (Follow follow : followList) {
+                    User friendOfFriend = follow.getTo();
+                    isFollowedByCurrentUser(friend, friendOfFriend);
+                }
+            }
+        });
+    }
 
-//    // Checks if anyone in the Following list of friend has been followed current user
-//    private void isFollowedByCurrentUser(final User friend, final User friendOfFriend) {
-//        ParseRelation<User> followingList = mCurrentUser.getFollowingUsers();
-//
-//        // get users that current user is following
-//        ParseQuery<User> query = followingList.getQuery();
-//        // checks if current user has already followed friend of friend
-//        query.whereEqualTo(User.KEY_OBJECT_ID, friendOfFriend.getObjectId());
-//        query.findInBackground(new FindCallback<User>() {
-//            @Override
-//            public void done(List<User> users, ParseException e) {
-//                if (users.size() == 0) {
-//                    if (!mSuggestedUsersList.contains(friendOfFriend)) {
-//                        mSuggestedUsersList.add(friendOfFriend);
-//                        friendOfFriend.setFollowedBy(friend.getUsername());
-//                        mAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            }
-//        });
-//
-//    }
+    // Checks if anyone in the Following list of friend has been followed current user
+    private void isFollowedByCurrentUser(final User friend, final User friendOfFriend) {
+        // get users that current user is following
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+
+        // checks if current user has already followed friend of friend
+        query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
+        query.whereEqualTo(Follow.KEY_TO, friendOfFriend);
+        query.findInBackground(new FindCallback<Follow>() {
+            @Override
+            public void done(List<Follow> followList, ParseException e) {
+                // have not yet followed friend of fried
+                if (followList.size() == 0) {
+                    mSuggestedUsersList.add(friendOfFriend);
+                    friendOfFriend.setFollowedBy(friend.getUsername());
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
 }

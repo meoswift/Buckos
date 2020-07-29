@@ -30,6 +30,7 @@
         android:background="@drawable/textinputborder"
         android:drawableRight="@drawable/ic_baseline_search_24"
         android:hint="City name"
+        android:imeOptions="actionSearch"
         android:inputType="textVisiblePassword"
         android:paddingLeft="10dp"
         android:textSize="14sp"
@@ -42,12 +43,11 @@
         android:id="@+id/cityResultsRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/cityInputEt"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView

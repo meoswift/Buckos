@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -46,11 +48,8 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
         User user = mSuggestedUsers.get(position);
         holder.usernameTextView.setText(user.getUsername());
         holder.displayNameTextView.setText(user.getName());
-//        holder.followedByTextView.setText(user.getFollowedBy());
-        Glide.with(mContext)
-                .load(mContext.getDrawable(R.drawable.bucket))
-                .circleCrop()
-                .into(holder.profilePicImageView);
+        holder.followedByTextView.setText(user.getFollowedBy());
+        holder.setProfilePic(user);
 
         setFollowButton(holder.followButton);
     }
@@ -83,34 +82,47 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-//            modifyFollowingStatusOnClick(followButton, position);
+            modifyFollowingStatusOnClick(followButton, position);
+        }
+
+        // Set profile pic with either file from database or default image
+        private void setProfilePic(User user) {
+            ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
+
+            if (image != null)
+                Glide.with(mContext).load(image.getUrl()).circleCrop().into(profilePicImageView);
+            else
+                Glide.with(mContext).load(R.drawable.bucket).circleCrop().into(profilePicImageView);
         }
     }
 
-//    private void modifyFollowingStatusOnClick(final Button followButton, int position) {
-//        final User selectedUser = mSuggestedUsers.get(position);
-//        final User currentUser = (User) ParseUser.getCurrentUser();
-//
-//        final ParseRelation<User> followingList = currentUser.getFollowingUsers();
-//        ParseQuery query = followingList.getQuery();
-//
-//        // if selected user is in following list, set button to Following status
-//        query.whereEqualTo(User.KEY_OBJECT_ID, selectedUser.getObjectId());
-//        query.findInBackground(new FindCallback<User>() {
-//            @Override
-//            public void done(List<User> followings, ParseException e) {
-//                if (followings.size() == 1) {
-//                    followingList.remove(selectedUser);
-//                    setFollowButton(followButton);
-//                } else {
-//                    followingList.add(selectedUser);
-//                    setFollowingButton(followButton);
-//                }
-//
-//                currentUser.saveInBackground();
-//            }
-//        });
-//    }
+    private void modifyFollowingStatusOnClick(final Button followButton, int position) {
+        final User selectedUser = mSuggestedUsers.get(position);
+        final User currentUser = (User) ParseUser.getCurrentUser();
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+
+
+        // modify follow button based on whether current user has followed selected user
+        query.whereEqualTo(Follow.KEY_FROM, currentUser);
+        query.whereEqualTo(Follow.KEY_TO, selectedUser);
+        query.findInBackground(new FindCallback<Follow>() {
+            @Override
+            public void done(List<Follow> followList, ParseException e) {
+                // have not followed
+                if (followList.size() == 0) {
+                    Follow relationship = new Follow();
+                    relationship.setFrom(currentUser);
+                    relationship.setTo(selectedUser);
+                    relationship.saveInBackground();
+                    setFollowingButton(followButton);
+                } else {
+                    Follow relationship = followList.get(0);
+                    relationship.deleteInBackground();
+                    setFollowButton(followButton);
+                }
+            }
+        });
+    }
 
 
     private void setFollowingButton(Button followButton) {
@@ -124,6 +136,5 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
         followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorWhite));
     }
-
 
 }

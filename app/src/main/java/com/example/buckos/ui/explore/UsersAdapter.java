@@ -18,6 +18,7 @@ import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -51,14 +52,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = mUsersResults.get(position);
         holder.usernameTextView.setText(user.getUsername());
         holder.displayNameTextView.setText(user.getName());
-        Glide.with(mContext)
-                .load(mContext.getDrawable(R.drawable.bucket))
-                .circleCrop()
-                .into(holder.profilePicImageView);
+        holder.setProfilePic(user);
+
+        // if the result is current user, follow button cannot show
+        if (user.getObjectId().equals(mCurrentUser.getObjectId())) {
+            holder.followButton.setVisibility(View.GONE);
+        }
 
         setFollowButton(holder.followButton);
         setSelectedUserFollowingStatus(holder, position);
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -88,7 +93,16 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             // Add selected user to current user's list of following
             if (v.getId() == R.id.followButton)
                 modifyFollowingStatusOnClick(followButton, getAdapterPosition());
+        }
 
+        // Set profile pic with either file from database or default image
+        private void setProfilePic(User user) {
+            ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
+
+            if (image != null)
+                Glide.with(mContext).load(image.getUrl()).circleCrop().into(profilePicImageView);
+            else
+                Glide.with(mContext).load(R.drawable.bucket).circleCrop().into(profilePicImageView);
         }
     }
 
@@ -148,4 +162,5 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             }
         });
     }
+
 }

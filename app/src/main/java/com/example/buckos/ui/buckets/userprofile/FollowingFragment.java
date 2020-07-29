@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.buckos.R;
+import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.example.buckos.ui.explore.UsersAdapter;
 import com.parse.FindCallback;
@@ -29,13 +30,9 @@ import java.util.List;
 
 public class FollowingFragment extends Fragment implements View.OnClickListener {
 
-    private RecyclerView mFollowingUsersRecyclerView;
-    private ImageButton mBackButton;
-
     private List<User> mFollowingUsersList;
     private UsersAdapter mUsersAdapter;
     private User mUser;
-    private ParseRelation<User> mFollowingUsers;
 
     public FollowingFragment() {
         // Required empty public constructor
@@ -53,8 +50,8 @@ public class FollowingFragment extends Fragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
 
         // Find views
-        mFollowingUsersRecyclerView = view.findViewById(R.id.followingUsersRv);
-        mBackButton = view.findViewById(R.id.backButton);
+        RecyclerView followingUsersRecyclerView = view.findViewById(R.id.followingUsersRv);
+        ImageButton backButton = view.findViewById(R.id.backButton);
 
         // Initialize current user and following list
         mUser = (User) ParseUser.getCurrentUser();
@@ -62,21 +59,27 @@ public class FollowingFragment extends Fragment implements View.OnClickListener 
         // Set up adapter for following list
         mFollowingUsersList = new ArrayList<>();
         mUsersAdapter = new UsersAdapter(mFollowingUsersList, getContext());
-        mFollowingUsersRecyclerView.setAdapter(mUsersAdapter);
-        mFollowingUsersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        followingUsersRecyclerView.setAdapter(mUsersAdapter);
+        followingUsersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         queryFollowingUsers();
 
-        mBackButton.setOnClickListener(this);
+        backButton.setOnClickListener(this);
     }
 
 
     private void queryFollowingUsers() {
-        ParseQuery<User> query = mFollowingUsers.getQuery();
-        query.findInBackground(new FindCallback<User>() {
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEqualTo(Follow.KEY_FROM, mUser);
+        query.include(Follow.KEY_TO);
+        query.findInBackground(new FindCallback<Follow>() {
             @Override
-            public void done(List<User> following, ParseException e) {
-                mFollowingUsersList.addAll(following);
+            public void done(List<Follow> followList, ParseException e) {
+                for (Follow relationship : followList) {
+                    User followedUser = relationship.getTo();
+                    mFollowingUsersList.add(followedUser);
+                }
+
                 mUsersAdapter.notifyDataSetChanged();
             }
         });

@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
+import com.example.buckos.models.Follow;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.example.buckos.models.Story;
@@ -27,6 +28,7 @@ import com.example.buckos.models.User;
 import com.example.buckos.ui.authentication.LoginActivity;
 import com.example.buckos.ui.feed.StoriesAdapter;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -47,16 +49,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView mBioTextView;
     private ImageView mProfilePicImageView;
     private Toolbar mProfileToolbar;
-    private ImageView mBackButton;
     private RecyclerView mUserStoriesRecyclerView;
     private SwipeRefreshLayout swipeContainer;
-    private LinearLayout mFollowingLabel;
     private TextView mFollowingTextView;
 
     private User user;
     private List<Story> mUserStories;
     private StoriesAdapter mStoriesAdapter;
-    private ParseRelation<User> mFollowingUsers;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -82,10 +81,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mBioTextView = view.findViewById(R.id.bioTv);
         mProfilePicImageView = view.findViewById(R.id.authorProfilePic);
         mProfileToolbar = view.findViewById(R.id.profileToolbar);
-        mBackButton = view.findViewById(R.id.backButton);
+        ImageView backButton = view.findViewById(R.id.backButton);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
-        mFollowingLabel = view.findViewById(R.id.following);
+        LinearLayout followingLabel = view.findViewById(R.id.following);
         mFollowingTextView = view.findViewById(R.id.followingCountTv);
 
         // pull to refresh
@@ -97,8 +96,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // 2 options: edit profile - log out
         handleProfileMenuClicked();
 
-        mBackButton.setOnClickListener(this);
-        mFollowingLabel.setOnClickListener(this);
+        backButton.setOnClickListener(this);
+        followingLabel.setOnClickListener(this);
     }
 
     private void setPullToRefreshContainer() {
@@ -106,9 +105,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 queryStoriesFromUser();
             }
         });
@@ -185,11 +181,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setFollowingCount() {
-        ParseQuery<User> query = mFollowingUsers.getQuery();
-        query.findInBackground(new FindCallback<User>() {
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEqualTo(Follow.KEY_FROM, user);
+        query.findInBackground(new FindCallback<Follow>() {
             @Override
-            public void done(List<User> users, ParseException e) {
-                mFollowingTextView.setText(String.valueOf(users.size()));
+            public void done(List<Follow> followList, ParseException e) {
+                mFollowingTextView.setText(String.valueOf(followList.size()));
             }
         });
     }

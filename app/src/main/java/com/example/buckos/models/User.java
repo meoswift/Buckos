@@ -45,4 +45,11 @@ public class User extends ParseUser {
         return getRelation(KEY_INTERESTS);
     }
 
+    public void setFollowedBy(String username) {
+        followedBy = "Followed by " + username;
+    }
+
+    public String getFollowedBy() {
+        return followedBy;
+    }
 }
