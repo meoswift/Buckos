@@ -57,6 +57,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         // if the result is current user, follow button cannot show
         if (user.getObjectId().equals(mCurrentUser.getObjectId())) {
             holder.followButton.setVisibility(View.GONE);
+        } else {
+            holder.followButton.setVisibility(View.VISIBLE);
         }
 
         setFollowButton(holder.followButton);

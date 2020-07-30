@@ -10,6 +10,7 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // This class represents a Story object in the Parse database. Each Story object has a list of
 // Photo objects.
@@ -101,5 +102,18 @@ public class Story extends ParseObject {
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
 
         return ago;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Story story = (Story) o;
+        return Objects.equals(getObjectId(), story.getObjectId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getObjectId());
     }
 }

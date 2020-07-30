@@ -43,6 +43,7 @@ public class HomeFragment extends Fragment {
 
     private StoriesAdapter mAdapter;
     private List<Story> mStories;
+    private ArrayList<Story> mCachedStories;
     private ProgressBar mHomeProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -66,6 +67,7 @@ public class HomeFragment extends Fragment {
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         mStories = new ArrayList<>();
+        mCachedStories = new ArrayList<>();
         mAdapter = new StoriesAdapter(mStories, getContext());
         storiesRecyclerView.setAdapter(mAdapter);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -81,6 +83,8 @@ public class HomeFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mStories.clear();
+                mStories.addAll(mCachedStories);
                 queryStoriesFromFriends();
             }
         });
@@ -88,7 +92,6 @@ public class HomeFragment extends Fragment {
 
     // get all stories from people current user is following
     private void queryStoriesFromFriends() {
-
         final User user = (User) ParseUser.getCurrentUser();
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_FROM, user);
@@ -96,8 +99,6 @@ public class HomeFragment extends Fragment {
         query.findInBackground(new FindCallback<Follow>() {
             @Override
             public void done(List<Follow> followList, ParseException e) {
-                mStories.clear();
-
                 List<User> storyAuthorsList = new ArrayList<>();
 
                 // get a list of authors for stories in Feed (yourself + friends)
@@ -111,6 +112,7 @@ public class HomeFragment extends Fragment {
                 for (User author : storyAuthorsList) {
                     queryStories(author);
                 }
+
             }
         });
     }
@@ -124,11 +126,11 @@ public class HomeFragment extends Fragment {
         query.include(Story.KEY_LIST);
         query.include(Story.KEY_CATEGORY);
         query.whereEqualTo(Story.KEY_AUTHOR, user);
+        query.orderByDescending(Story.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Story>() {
             @Override
             public void done(List<Story> stories, ParseException e) {
                 // add the stories by order of relevance
-
                 for (int i = 0; i < stories.size(); i++) {
                     Story story = stories.get(i);
                     addStoryByRelevance(story);
@@ -139,7 +141,6 @@ public class HomeFragment extends Fragment {
                     mHomeProgressBar.setVisibility(View.GONE);
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
-
             }
         });
     }
@@ -147,28 +148,39 @@ public class HomeFragment extends Fragment {
     // Add story to the top of Feed if its category if of user's interests
     // Else, add story at the end
     private void addStoryByRelevance(final Story story) {
-
         User user = (User) ParseUser.getCurrentUser();
         ParseRelation<Category> interests = user.getInterests();
 
         // checks if current story is of user's interests
         ParseQuery<Category> query = interests.getQuery();
-        query.whereEqualTo("objectId", story.getCategory().getObjectId());
-
+        query.whereEqualTo(Category.KEY_OBJECT_ID, story.getCategory().getObjectId());
         query.findInBackground(new FindCallback<Category>() {
             @Override
             public void done(List<Category> category, ParseException e) {
                 // if not, add story to bottom. else, add to the top
                 if (category.size() == 0) {
-                    mStories.add(story);
+                    if (!mCachedStories.contains(story)) {
+                        mStories.add(story);
+                    }
                 } else {
-                    mStories.add(0, story);
+                    if (!mCachedStories.contains(story)) {
+                        mStories.add(0, story);
+                    }
                 }
 
                 Item item = (Item) story.getItem();
                 queryPhotosInStory(story, item);
+                mHomeProgressBar.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                cacheStories();
             }
         });
+    }
+
+    private void cacheStories() {
+        mCachedStories.clear();
+        mCachedStories.addAll(mStories);
     }
 
     // For each story, get the photos included
@@ -180,8 +192,6 @@ public class HomeFragment extends Fragment {
             public void done(List<Photo> photos, ParseException e) {
                 story.setPhotosInStory(photos);
                 mAdapter.notifyDataSetChanged();
-                mHomeProgressBar.setVisibility(View.GONE);
-                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

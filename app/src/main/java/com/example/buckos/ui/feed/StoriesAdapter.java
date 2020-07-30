@@ -128,12 +128,13 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private void setProfilePic(User user) {
             ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
 
-            if (image != null)
+            if (image != null) {
                 Glide.with(mContext).load(image.getUrl()).circleCrop()
                         .into(authorProfilePicImageView);
-            else
+            } else {
                 Glide.with(mContext).load(R.drawable.no_profile_pic).circleCrop()
                         .into(authorProfilePicImageView);
+            }
         }
 
         public void setAdapterForPhotos(Story story) {
