@@ -79,8 +79,6 @@ public class CommentsActivity extends AppCompatActivity {
                 CommentsActivity.super.onBackPressed();
             }
         });
-
-
     }
 
     // Get all Comment objects in a post and add to local comments list

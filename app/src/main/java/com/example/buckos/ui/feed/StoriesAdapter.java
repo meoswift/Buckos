@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
+import com.example.buckos.models.Comment;
 import com.example.buckos.models.Like;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
@@ -72,6 +73,9 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.setProfilePic(author);
         setLikeButtonOnLikeStatus(holder.heartButton, story);
 
+        getCommentsCount(holder.commentsCountTextView, story);
+        getLikesCount(holder.likesCountTextView, story);
+
         holder.setAdapterForPhotos(story);
     }
 
@@ -81,6 +85,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView commentsCountTextView;
+        private TextView likesCountTextView;
         private ImageView authorProfilePicImageView;
         private TextView authorDisplayNameTextView;
         private TextView storyTitleTextView;
@@ -103,6 +109,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             storyTimeStamp = itemView.findViewById(R.id.storyTimeStamp);
             listTitleTextView = itemView.findViewById(R.id.listTitleTv);
             categoryTagTextView = itemView.findViewById(R.id.categoryTag);
+            commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
+            likesCountTextView = itemView.findViewById(R.id.heartCountTv);
 
             // handle liking
             heartButton = itemView.findViewById(R.id.heartButton);
@@ -161,17 +169,20 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             query.findInBackground(new FindCallback<Like>() {
                 @Override
                 public void done(List<Like> likes, ParseException e) {
-                    // not liked yet -> like post
+                    int currentLikeCount = Integer.parseInt(likesCountTextView.getText().toString());
+                    // not liked yet -> like post and update like count
                     if (likes.size() == 0) {
                         Like like = new Like();
                         like.setLikeFromUser(mCurrentUser);
                         like.setLikeToStory(story);
                         like.saveInBackground();
+                        likesCountTextView.setText(String.valueOf(currentLikeCount + 1));
                         updateLikeButtonOnLikeStatus(heartButton, true);
-                    // liked already -> unlike post
+                    // liked already -> unlike post and update like count
                     } else {
                         Like like = likes.get(0);
                         like.deleteInBackground();
+                        likesCountTextView.setText(String.valueOf(currentLikeCount - 1));
                         updateLikeButtonOnLikeStatus(heartButton,false);
                     }
                 }
@@ -206,6 +217,33 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             Drawable res = mContext.getDrawable(R.drawable.ic_baseline_favorite_border_24);
             heartButton.setImageDrawable(res);
         }
+    }
+
+    // query for total number of comments on a Story
+    private void getCommentsCount(final TextView commentsCount, Story story) {
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+        // include the user object related to the story
+        query.include(Comment.KEY_AUTHOR);
+        query.whereEqualTo(Comment.KEY_STORY, story);
+        query.orderByAscending(Comment.KEY_CREATED_AT);
+        // start an asynchronous call for posts
+        query.findInBackground(new FindCallback<Comment>() {
+            public void done(List<Comment> comments, ParseException e) {
+                commentsCount.setText(String.valueOf(comments.size()));
+            }
+        });
+    }
+
+    // query for total number of likes on a Story
+    private void getLikesCount(final TextView likesCount, Story story) {
+        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+        query.whereEqualTo(Like.KEY_TO_STORY, story);
+        // start an asynchronous call
+        query.findInBackground(new FindCallback<Like>() {
+            public void done(List<Like> likes, ParseException e) {
+                likesCount.setText(String.valueOf(likes.size()));
+            }
+        });
     }
 
 
