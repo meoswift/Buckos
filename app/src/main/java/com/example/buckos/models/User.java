@@ -1,11 +1,15 @@
 package com.example.buckos.models;
 
+import androidx.annotation.Nullable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
+
+import java.util.Objects;
 
 @ParseClassName("_User")
 @Parcel(analyze = {User.class})
@@ -37,10 +41,6 @@ public class User extends ParseUser {
         put(User.KEY_PROFILE_PIC, photoFile);
     }
 
-    public ParseFile getProfilePic() {
-        return getParseFile(KEY_PROFILE_PIC);
-    }
-
     public ParseRelation<Category> getInterests() {
         return getRelation(KEY_INTERESTS);
     }
@@ -51,5 +51,16 @@ public class User extends ParseUser {
 
     public String getFollowedBy() {
         return followedBy;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        User user = (User) obj;
+        return Objects.equals(getObjectId(), user.getObjectId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getObjectId());
     }
 }

@@ -14,9 +14,12 @@ import android.widget.Spinner;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
+import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -93,9 +96,15 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void saveListChanges() {
+        Category selectedCategory = (Category) mCategorySpinner.getSelectedItem();
+        User user = (User) ParseUser.getCurrentUser();
+        ParseRelation<Category> interests = user.getInterests();
+
+        // update new list's information and add new user interest if needed
         mBucketList.setName(mListTitleEditText.getText().toString());
         mBucketList.setDescription(mListDescriptionEditText.getText().toString());
-        mBucketList.setCategory((Category) mCategorySpinner.getSelectedItem());
+        mBucketList.setCategory(selectedCategory);
+        interests.add(selectedCategory);
 
         mBucketList.saveInBackground(new SaveCallback() {
             @Override

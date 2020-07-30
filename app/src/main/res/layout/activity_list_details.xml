@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.buckets.items.ListDetailsActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarListDetail"
         android:layout_width="match_parent"
@@ -17,12 +18,11 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
     <TextView
         android:id="@+id/listTitleTv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
@@ -79,10 +79,11 @@
         android:id="@+id/editListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:backgroundTint="#FFFFFF"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarListDetail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_round_edit_24" />
@@ -91,9 +92,10 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:backgroundTint="#FFFFFF"
+        android:padding="8dp"
         android:tint="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/toolbarListDetail"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/text_border"
         android:paddingStart="12dp"
         android:paddingTop="4dp"

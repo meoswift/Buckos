@@ -2,6 +2,7 @@ package com.example.buckos.ui.buckets.items;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,9 +14,18 @@ import androidx.fragment.app.Fragment;
 
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
+import com.example.buckos.models.Category;
+import com.example.buckos.models.User;
 import com.google.android.material.tabs.TabLayout;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
+
+import java.util.List;
 
 // Activity that displays the list of completed and incomplete items in a specific list
 public class ListDetailsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -122,10 +132,12 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_LIST_REQUEST && resultCode == RESULT_OK) {
+            Category oldCategory = mBucketList.getCategory();
             mBucketList = Parcels.unwrap(data.getParcelableExtra("list"));
 
             // populate views based on changes
             populateListViews();
+            updateUserInterestsIfNeeded(oldCategory);
         }
     }
 
@@ -137,4 +149,27 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         mCategoryTagTextView.setText(mBucketList.getCategory().getCategoryName());
     }
+
+    // when user update list category, update their interests
+    private void updateUserInterestsIfNeeded(final Category oldCategory) {
+        final User user = (User) ParseUser.getCurrentUser();
+
+        ParseQuery<BucketList> query = ParseQuery.getQuery(BucketList.class);
+        query.whereEqualTo(BucketList.KEY_CATEGORY, oldCategory);
+        query.whereEqualTo(BucketList.KEY_AUTHOR, user);
+        query.include(BucketList.KEY_CATEGORY);
+        query.findInBackground(new FindCallback<BucketList>() {
+            @Override
+            public void done(List<BucketList> lists, ParseException e) {
+                // if there's no longer any list of this category, delete interest
+                if (lists.size() == 0) {
+                    ParseRelation<Category> interests = user.getInterests();
+                    interests.remove(oldCategory);
+                    user.saveInBackground();
+                }
+            }
+        });
+
+    }
+
 }

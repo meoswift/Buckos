@@ -98,9 +98,11 @@ public class DiscoverActivity extends AppCompatActivity {
             public void done(List<Follow> followList, ParseException e) {
                 // have not yet followed friend of fried
                 if (followList.size() == 0) {
-                    mSuggestedUsersList.add(friendOfFriend);
-                    friendOfFriend.setFollowedBy(friend.getUsername());
-                    mAdapter.notifyDataSetChanged();
+                    if (!mSuggestedUsersList.contains(friendOfFriend)) {
+                        mSuggestedUsersList.add(friendOfFriend);
+                        friendOfFriend.setFollowedBy(friend.getUsername());
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         });
