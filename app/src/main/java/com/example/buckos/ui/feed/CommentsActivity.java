@@ -69,7 +69,6 @@ public class CommentsActivity extends AppCompatActivity {
         mPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("debug", "hello!");
                 createComment(mAddCommentEditText.getText().toString());
             }
         });
@@ -77,7 +76,6 @@ public class CommentsActivity extends AppCompatActivity {
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("debug", "hello");
                 CommentsActivity.super.onBackPressed();
             }
         });

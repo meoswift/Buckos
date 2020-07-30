@@ -77,10 +77,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
 
         if (image != null)
-            Glide.with(mContext).load(image.getUrl()).circleCrop().into(mProfilePicImageView);
+            Glide.with(mContext).load(image.getUrl()).circleCrop()
+                    .into(mProfilePicImageView);
         else
-            Glide.with(mContext).load(R.drawable.ic_launcher_background)
-                    .circleCrop().into(mProfilePicImageView);
+            Glide.with(mContext).load(R.drawable.no_profile_pic).circleCrop()
+                    .into(mProfilePicImageView);
     }
 
 }

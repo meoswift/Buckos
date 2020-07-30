@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +86,23 @@ public class SearchUserFragment extends Fragment {
     }
 
     private void getUsersResults() {
+        mUsernameQuery.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                performSearch();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                performSearch();
+            }
+        });
+
         mUsernameQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -98,6 +117,8 @@ public class SearchUserFragment extends Fragment {
             }
         });
     }
+
+
 
     private void performSearch() {
         ParseQuery<ParseUser> query = ParseUser.getQuery();

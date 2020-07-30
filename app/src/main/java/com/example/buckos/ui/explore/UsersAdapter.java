@@ -102,7 +102,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             if (image != null)
                 Glide.with(mContext).load(image.getUrl()).circleCrop().into(profilePicImageView);
             else
-                Glide.with(mContext).load(R.drawable.bucket).circleCrop().into(profilePicImageView);
+                Glide.with(mContext).load(R.drawable.no_profile_pic)
+                        .circleCrop().into(profilePicImageView);
         }
     }
 

@@ -12,7 +12,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -102,14 +102,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
             android:gravity="center">
 
             <ImageButton
                 android:id="@+id/heartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="4dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:tint="#E53935"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
@@ -118,7 +117,6 @@
                 android:id="@+id/heartCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:fontFamily="@font/lato_bold"
                 android:text="30" />
 
@@ -127,10 +125,8 @@
         <LinearLayout
             android:id="@+id/commentBox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center">
 
@@ -139,14 +135,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:padding="2dp"
+                android:padding="4dp"
                 app:srcCompat="@drawable/ic_comment" />
 
             <TextView
                 android:id="@+id/commentCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:fontFamily="@font/lato_bold"
                 android:text="5"
                 android:textSize="14sp" />

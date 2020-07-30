@@ -2,9 +2,11 @@ package com.example.buckos.ui.feed;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,10 +20,17 @@ import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
+import com.example.buckos.models.Like;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.models.User;
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -32,10 +41,12 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
     private List<Story> mStoriesList;
     private Context mContext;
+    private User mCurrentUser;
 
     public StoriesAdapter(List<Story> storiesList, Context context) {
         this.mStoriesList = storiesList;
         this.mContext = context;
+        mCurrentUser = (User) ParseUser.getCurrentUser();
     }
 
     @NonNull
@@ -59,6 +70,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.listTitleTextView.setText(list.getName());
         holder.categoryTagTextView.setText(category.getCategoryName());
         holder.setProfilePic(author);
+        setLikeButtonOnLikeStatus(holder.heartButton, story);
 
         holder.setAdapterForPhotos(story);
     }
@@ -76,6 +88,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView storyTimeStamp;
         private TextView listTitleTextView;
         private TextView categoryTagTextView;
+        private ImageButton heartButton;
 
         private RecyclerView storyPhotosRecyclerView;
 
@@ -91,6 +104,10 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             listTitleTextView = itemView.findViewById(R.id.listTitleTv);
             categoryTagTextView = itemView.findViewById(R.id.categoryTag);
 
+            // handle liking
+            heartButton = itemView.findViewById(R.id.heartButton);
+            heartButton.setOnClickListener(this);
+
             // handle commenting
             ImageButton commentIcon = itemView.findViewById(R.id.commentIcon);
             LinearLayout commentBox = itemView.findViewById(R.id.commentBox);
@@ -104,9 +121,11 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
 
             if (image != null)
-                Glide.with(mContext).load(image.getUrl()).circleCrop().into(authorProfilePicImageView);
+                Glide.with(mContext).load(image.getUrl()).circleCrop()
+                        .into(authorProfilePicImageView);
             else
-                Glide.with(mContext).load(R.drawable.bucket).circleCrop().into(authorProfilePicImageView);
+                Glide.with(mContext).load(R.drawable.no_profile_pic).circleCrop()
+                        .into(authorProfilePicImageView);
         }
 
         public void setAdapterForPhotos(Story story) {
@@ -123,12 +142,71 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
                 case R.id.commentBox:
                 case R.id.commentIcon:
                     Story story = mStoriesList.get(getAdapterPosition());
-
                     Intent intent = new Intent(mContext, CommentsActivity.class);
                     intent.putExtra("story", Parcels.wrap(story));
                     mContext.startActivity(intent);
                     break;
+                case R.id.heartButton:
+                    story = mStoriesList.get(getAdapterPosition());
+                    toggleLikeStory(story);
+                    break;
             }
         }
+
+        // On click, either like or unlike the story. update database accordingly.
+        private void toggleLikeStory(final Story story) {
+            ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+            query.whereEqualTo(Like.KEY_FROM_USER, mCurrentUser);
+            query.whereEqualTo(Like.KEY_TO_STORY, story);
+            query.findInBackground(new FindCallback<Like>() {
+                @Override
+                public void done(List<Like> likes, ParseException e) {
+                    // not liked yet -> like post
+                    if (likes.size() == 0) {
+                        Like like = new Like();
+                        like.setLikeFromUser(mCurrentUser);
+                        like.setLikeToStory(story);
+                        like.saveInBackground();
+                        updateLikeButtonOnLikeStatus(heartButton, true);
+                    // liked already -> unlike post
+                    } else {
+                        Like like = likes.get(0);
+                        like.deleteInBackground();
+                        updateLikeButtonOnLikeStatus(heartButton,false);
+                    }
+                }
+            });
+        }
     }
+
+    // query whether an user has liked a button or not. set the drawable for like button
+    // based on like status
+    private void setLikeButtonOnLikeStatus(final ImageButton heartButton, Story story) {
+        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+        query.whereEqualTo(Like.KEY_FROM_USER, mCurrentUser);
+        query.whereEqualTo(Like.KEY_TO_STORY, story);
+        query.findInBackground(new FindCallback<Like>() {
+            @Override
+            public void done(List<Like> likes, ParseException e) {
+                if (likes.size() == 0) {
+                    updateLikeButtonOnLikeStatus(heartButton, false);
+                } else {
+                    updateLikeButtonOnLikeStatus(heartButton, true);
+                }
+            }
+        });
+    }
+
+    // when user like or unlike a post, update the like button drawable
+    private void updateLikeButtonOnLikeStatus(ImageButton heartButton, boolean isLiked) {
+        if (isLiked) {
+            Drawable res = mContext.getDrawable(R.drawable.ic_baseline_favorite_24);
+            heartButton.setImageDrawable(res);
+        } else {
+            Drawable res = mContext.getDrawable(R.drawable.ic_baseline_favorite_border_24);
+            heartButton.setImageDrawable(res);
+        }
+    }
+
+
 }

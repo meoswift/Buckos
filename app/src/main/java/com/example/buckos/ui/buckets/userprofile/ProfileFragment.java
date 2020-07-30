@@ -183,7 +183,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (image != null)
             Glide.with(getContext()).load(image.getUrl()).circleCrop().into(mProfilePicImageView);
         else
-            Glide.with(getContext()).load(R.drawable.ic_launcher_background)
+            Glide.with(getContext()).load(R.drawable.no_profile_pic)
                     .circleCrop().into(mProfilePicImageView);
     }
 

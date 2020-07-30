@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.buckets.items.EditListActivity"></activity>
+        <activity android:name=".ui.feed.LikesActivity"></activity>
+        <activity android:name=".ui.buckets.items.EditListActivity" />
         <activity android:name=".ui.create.NewStoryActivity" />
         <activity android:name=".ui.explore.DiscoverActivity" />
         <activity android:name=".ui.feed.CommentsActivity" />

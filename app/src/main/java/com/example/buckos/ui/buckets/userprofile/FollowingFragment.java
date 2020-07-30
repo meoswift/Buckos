@@ -68,6 +68,7 @@ public class FollowingFragment extends Fragment implements View.OnClickListener 
     }
 
 
+    // get users that current user is following
     private void queryFollowingUsers() {
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_FROM, mUser);
