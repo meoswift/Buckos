@@ -14,6 +14,8 @@ import com.example.buckos.R;
 import com.example.buckos.models.Category;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -68,6 +70,26 @@ public class DiscoverActivity extends AppCompatActivity {
             if (follows.size() == 0) {
                 checkForMutualInterests(user);
                 checkForMutualFriends(user);
+                suggestIfFollowYou(user);
+            }
+        });
+    }
+
+    // Suggest user if they have followed current user - not followed back
+    private void suggestIfFollowYou(User user) {
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEqualTo(Follow.KEY_FROM, user);
+        query.whereEqualTo(Follow.KEY_TO, mCurrentUser);
+
+        query.findInBackground((followList, e) -> {
+            // if other user has followed current user
+            if (followList.size() == 1) {
+                if (!mSuggestedUsersList.contains(user)) {
+                    user.setSuggestionReason("Follows you");
+                    mSuggestedUsersList.add(user);
+                    mAdapter.notifyDataSetChanged();
+                    findViewById(R.id.noSuggestionsLabel).setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -144,8 +166,6 @@ public class DiscoverActivity extends AppCompatActivity {
             query1.include(Follow.KEY_TO);
             query1.findInBackground((currentFollowList, e1) -> {
                 for (Follow follow : currentFollowList) {
-                    Log.d("debug", follow.getTo().getName());
-                    Log.d("debug", "hello");
                     currentUserFollowings.add(follow.getTo());
                 }
 
@@ -175,5 +195,9 @@ public class DiscoverActivity extends AppCompatActivity {
             });
         });
     }
+
+
+
+
 
 }

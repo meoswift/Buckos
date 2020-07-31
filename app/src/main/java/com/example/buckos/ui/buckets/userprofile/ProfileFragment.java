@@ -35,6 +35,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -246,12 +248,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", Parcels.wrap(user));
+
         switch (v.getId()) {
             case R.id.backButton:
                 getActivity().onBackPressed();
                 break;
             case R.id.following:
                 Fragment followingFragment = new FollowingFragment();
+                followingFragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.your_placeholder, followingFragment)
                         .addToBackStack(null)
@@ -259,6 +265,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.followers:
                 Fragment followersFragment = new FollowersFragment();
+                followersFragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.your_placeholder, followersFragment)
                         .addToBackStack(null)

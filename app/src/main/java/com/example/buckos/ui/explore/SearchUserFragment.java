@@ -70,7 +70,7 @@ public class SearchUserFragment extends Fragment {
 
         // Set up adapter and layout manager for lists of user results
         mUsersList = new ArrayList<>();
-        mAdapter = new UsersAdapter(mUsersList, getContext());
+        mAdapter = new UsersAdapter(mUsersList, getContext(), this);
         userResultsRecyclerView.setAdapter(mAdapter);
         userResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

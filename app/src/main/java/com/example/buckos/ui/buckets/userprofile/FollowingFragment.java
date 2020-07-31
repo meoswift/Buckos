@@ -25,6 +25,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,12 +55,13 @@ public class FollowingFragment extends Fragment implements View.OnClickListener 
         RecyclerView followingUsersRecyclerView = view.findViewById(R.id.followingUsersRv);
         ImageButton backButton = view.findViewById(R.id.backButton);
 
-        // Initialize current user and following list
-        mUser = (User) ParseUser.getCurrentUser();
+        // Initialize user
+        Bundle bundle = this.getArguments();
+        mUser = Parcels.unwrap(bundle.getParcelable("user"));
 
         // Set up adapter for following list
         mFollowingUsersList = new ArrayList<>();
-        mUsersAdapter = new UsersAdapter(mFollowingUsersList, getContext());
+        mUsersAdapter = new UsersAdapter(mFollowingUsersList, getContext(), this);
         followingUsersRecyclerView.setAdapter(mUsersAdapter);
         followingUsersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -73,16 +76,13 @@ public class FollowingFragment extends Fragment implements View.OnClickListener 
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_FROM, mUser);
         query.include(Follow.KEY_TO);
-        query.findInBackground(new FindCallback<Follow>() {
-            @Override
-            public void done(List<Follow> followList, ParseException e) {
-                for (Follow relationship : followList) {
-                    User followedUser = relationship.getTo();
-                    mFollowingUsersList.add(followedUser);
-                }
-
-                mUsersAdapter.notifyDataSetChanged();
+        query.findInBackground((followList, e) -> {
+            for (Follow relationship : followList) {
+                User followedUser = relationship.getTo();
+                mFollowingUsersList.add(followedUser);
             }
+
+            mUsersAdapter.notifyDataSetChanged();
         });
     }
 

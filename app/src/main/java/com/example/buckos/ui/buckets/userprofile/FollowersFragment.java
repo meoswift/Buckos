@@ -22,6 +22,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +52,13 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
         RecyclerView followersRecyclerView = view.findViewById(R.id.followersRv);
         ImageButton backButton = view.findViewById(R.id.backButton);
 
-        // Initialize current user and following list
-        mUser = (User) ParseUser.getCurrentUser();
+        // Initialize user
+        Bundle bundle = this.getArguments();
+        mUser = Parcels.unwrap(bundle.getParcelable("user"));
 
         // Set up adapter for following list
         mFollowersList = new ArrayList<>();
-        mUsersAdapter = new UsersAdapter(mFollowersList, getContext());
+        mUsersAdapter = new UsersAdapter(mFollowersList, getContext(), this);
         followersRecyclerView.setAdapter(mUsersAdapter);
         followersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -1,6 +1,8 @@
 package com.example.buckos.ui.explore;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +12,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
+import com.example.buckos.ui.buckets.userprofile.FollowingFragment;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -30,13 +36,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     private List<User> mUsersResults;
     private Context mContext;
-    private ParseRelation<User> mFollowingUsers;
+    private Fragment mFragment;
     private User mCurrentUser;
 
-    public UsersAdapter(List<User> usersResults, Context context) {
+    public UsersAdapter(List<User> usersResults, Context context, Fragment fragment) {
         mUsersResults = usersResults;
         mContext = context;
         mCurrentUser = (User) ParseUser.getCurrentUser();
+        mFragment = fragment;
     }
 
     @NonNull
@@ -66,7 +73,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
 
-
     @Override
     public int getItemCount() {
         return mUsersResults.size();
@@ -88,13 +94,27 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             followButton = itemView.findViewById(R.id.followButton);
 
             followButton.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             // Add selected user to current user's list of following
-            if (v.getId() == R.id.followButton)
+            if (v.getId() == R.id.followButton) {
                 modifyFollowingStatusOnClick(followButton, getAdapterPosition());
+            } else {
+                // Open selected user's profile
+                Bundle bundle = new Bundle();
+                User user = mUsersResults.get(getAdapterPosition());
+                bundle.putParcelable("user", Parcels.wrap(user));
+
+                Fragment othersProfileFragment = new OthersProfileFragment();
+                othersProfileFragment.setArguments(bundle);
+                mFragment.getParentFragmentManager().beginTransaction()
+                        .replace(R.id.your_placeholder, othersProfileFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
         }
 
         // Set profile pic with either file from database or default image
