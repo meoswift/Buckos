@@ -69,10 +69,16 @@ public class DiscoverActivity extends AppCompatActivity {
         query.findInBackground((follows, e) -> {
             // If not followed yet
             if (follows.size() == 0) {
-                checkForMutualFollowers(user);
                 checkForMutualInterests(user);
+                checkForMutualFriends(user);
+                suggestIfFollowYou();
             }
         });
+    }
+
+    private void suggestIfFollowYou() {
+
+
     }
 
 
@@ -121,15 +127,17 @@ public class DiscoverActivity extends AppCompatActivity {
         });
     }
 
+
+
     // For each user not followed by current user -> get a list of their followers.
-    // Compare their followers list with current user's followers list.
-    // If there are mutual followers between You and Random user, suggest that user
+    // Compare their followers list with current user's following list.
+    // If there are mutual friends between You and Random user, suggest that user
     @SuppressLint("DefaultLocale")
-    private void checkForMutualFollowers(User user) {
+    private void checkForMutualFriends(User user) {
 
         // create 2 lists: current user's followers AND other user's followers
         List<User> otherUserFollowers = new ArrayList<>();
-        List<User> currentUserFollowers = new ArrayList<>();
+        List<User> currentUserFollowings = new ArrayList<>();
 
         // query user's followers. add to list
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
@@ -140,17 +148,17 @@ public class DiscoverActivity extends AppCompatActivity {
                 otherUserFollowers.add(follow.getFrom());
             }
 
-            // query other user's followers. add to list.
-            query.whereEqualTo(Follow.KEY_TO, mCurrentUser);
-            query.include(Follow.KEY_FROM);
+            // query current user's following list. add to list.
+            query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
+            query.include(Follow.KEY_TO);
             query.findInBackground((currentFollowList, e1) -> {
                 for (Follow follow : currentFollowList) {
-                    currentUserFollowers.add(follow.getFrom());
+                    currentUserFollowings.add(follow.getTo());
                 }
 
                 // create a list of common followers between current user & other user
                 List<User> common = new ArrayList(otherUserFollowers);
-                common.retainAll(currentUserFollowers);
+                common.retainAll(currentUserFollowings);
 
                 // if there's any mutual followers, add user to suggestions list
                 int commonFollowersCount = common.size();
@@ -174,6 +182,8 @@ public class DiscoverActivity extends AppCompatActivity {
             });
         });
     }
+
+
 
 
 }

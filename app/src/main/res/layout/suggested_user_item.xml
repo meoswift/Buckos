@@ -18,13 +18,15 @@
 
     <TextView
         android:id="@+id/displayNameTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Linh Tran"
         android:textColor="#000000"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/followButton"
         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="meoswift"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
         app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
 
@@ -57,11 +59,13 @@
 
     <TextView
         android:id="@+id/followedByTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Followed by Bretman Rock"
         android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/followButton"
         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
         app:layout_constraintTop_toBottomOf="@+id/nameTv" />
 
