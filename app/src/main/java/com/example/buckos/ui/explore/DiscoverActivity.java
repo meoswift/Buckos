@@ -2,6 +2,7 @@ package com.example.buckos.ui.explore;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -14,6 +15,7 @@ import com.example.buckos.models.Category;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -41,20 +43,33 @@ public class DiscoverActivity extends AppCompatActivity {
         suggestedUsersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mCurrentUser = (User) ParseUser.getCurrentUser();
-//        querySuggestedUsersList();
-        querySuggestionsByMutualFollowers();
-        querySuggestionsByMutualInterests();
+        querySuggestions();
 
         backButton.setOnClickListener(v -> DiscoverActivity.super.onBackPressed());
     }
-    
 
-
-    private void querySuggestionsByMutualInterests() {
+    // get all users who are not yourself
+    private void querySuggestions() {
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
         query.whereNotEqualTo(User.KEY_OBJECT_ID, mCurrentUser.getObjectId());
         query.findInBackground((users, e) -> {
             for (User user : users) {
+                checkIfFollowedByCurrentUser(user);
+            }
+        });
+    }
+
+    // checks if current user has followed the user or not
+    // if not, checks if user shares mutual followers or interests
+    private void checkIfFollowedByCurrentUser(User user) {
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
+        query.whereEqualTo(Follow.KEY_TO, user);
+
+        query.findInBackground((follows, e) -> {
+            // If not followed yet
+            if (follows.size() == 0) {
+                checkForMutualFollowers(user);
                 checkForMutualInterests(user);
             }
         });
@@ -69,22 +84,25 @@ public class DiscoverActivity extends AppCompatActivity {
         final List<Category> userInterests = new ArrayList<>();
         final List<Category> friendInterests = new ArrayList<>();
 
+        // query current user's interests
         ParseQuery<Category> query = mCurrentUser.getInterests().getQuery();
-
         query.findInBackground((interests, e) -> {
             userInterests.addAll(interests);
+
+            // query friend's interests
             ParseQuery<Category> queryFriend = friend.getInterests().getQuery();
             queryFriend.findInBackground((interestsList, e1) -> {
                 friendInterests.addAll(interestsList);
+
+                // create a list of common interests from 2 lists above
                 List<Category> common = new ArrayList(friendInterests);
                 common.retainAll(userInterests);
 
-                int commonInterestsCount = common.size();
-
                 // if there's any common interests, add user to suggestions list
+                int commonInterestsCount = common.size();
                 if (commonInterestsCount > 0) {
                     if (!mSuggestedUsersList.contains(friend)) {
-                        Category commonInterest = common.get(0);
+                        Category commonInterest = common.get(0);   // first common
                         if (commonInterestsCount == 1) {
                             friend.setSuggestionReason(String.format("You both like %s",
                                     commonInterest.getCategoryName()));
@@ -93,6 +111,7 @@ public class DiscoverActivity extends AppCompatActivity {
                                     commonInterest.getCategoryName(), commonInterestsCount - 1));
                         }
 
+                        // add user to suggestions list
                         mSuggestedUsersList.add(friend);
                         mAdapter.notifyDataSetChanged();
                         findViewById(R.id.noSuggestionsLabel).setVisibility(View.GONE);
@@ -102,36 +121,58 @@ public class DiscoverActivity extends AppCompatActivity {
         });
     }
 
-    // For each user user have not followed, get a list of their followers.
+    // For each user not followed by current user -> get a list of their followers.
     // Compare their followers list with current user's followers list.
     // If there are mutual followers between You and Random user, suggest that user
-    private void querySuggestionsByMutualFollowers() {
-        ParseQuery<User> query = ParseQuery.getQuery(User.class);
-        query.whereNotEqualTo(User.KEY_OBJECT_ID, mCurrentUser.getObjectId());
-        query.findInBackground((users, e) -> {
-            for (User user : users) {
-                isFollowedByCurrentUser(user);
-            }
-        });
+    @SuppressLint("DefaultLocale")
+    private void checkForMutualFollowers(User user) {
 
-    }
+        // create 2 lists: current user's followers AND other user's followers
+        List<User> otherUserFollowers = new ArrayList<>();
+        List<User> currentUserFollowers = new ArrayList<>();
 
-    private void isFollowedByCurrentUser(User user) {
-        // get users that current user is following
+        // query user's followers. add to list
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
-
-        // checks if current user has already followed friend of friend
-        query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
         query.whereEqualTo(Follow.KEY_TO, user);
-        query.findInBackground((followList, e) -> {
-            if (followList.size() == 0) {
-                checkMutualFollowers(user);
+        query.include(Follow.KEY_FROM);
+        query.findInBackground((otherFollowList, e) -> {
+            for (Follow follow : otherFollowList) {
+                otherUserFollowers.add(follow.getFrom());
             }
+
+            // query other user's followers. add to list.
+            query.whereEqualTo(Follow.KEY_TO, mCurrentUser);
+            query.include(Follow.KEY_FROM);
+            query.findInBackground((currentFollowList, e1) -> {
+                for (Follow follow : currentFollowList) {
+                    currentUserFollowers.add(follow.getFrom());
+                }
+
+                // create a list of common followers between current user & other user
+                List<User> common = new ArrayList(otherUserFollowers);
+                common.retainAll(currentUserFollowers);
+
+                // if there's any mutual followers, add user to suggestions list
+                int commonFollowersCount = common.size();
+                if (commonFollowersCount > 0) {
+                    if (!mSuggestedUsersList.contains(user)) {
+                        User commonFollower = common.get(0);
+                        if (commonFollowersCount == 1) {
+                            user.setSuggestionReason(String.format("Followed by %s",
+                                    commonFollower.getName()));
+                        } else {
+                            user.setSuggestionReason(String.format("Followed by %s + %d more",
+                                    commonFollower.getName(), commonFollowersCount - 1));
+                        }
+
+                        // add user to suggestions list
+                        mSuggestedUsersList.add(user);
+                        mAdapter.notifyDataSetChanged();
+                        findViewById(R.id.noSuggestionsLabel).setVisibility(View.GONE);
+                    }
+                }
+            });
         });
-    }
-
-    private void checkMutualFollowers(User user) {
-
     }
 
 
