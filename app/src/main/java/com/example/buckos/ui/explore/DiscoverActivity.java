@@ -14,9 +14,6 @@ import com.example.buckos.R;
 import com.example.buckos.models.Category;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -71,16 +68,9 @@ public class DiscoverActivity extends AppCompatActivity {
             if (follows.size() == 0) {
                 checkForMutualInterests(user);
                 checkForMutualFriends(user);
-                suggestIfFollowYou();
             }
         });
     }
-
-    private void suggestIfFollowYou() {
-
-
-    }
-
 
     // For each user, get a list of their interests.
     // Compare their interests list with current user's interests list.
@@ -128,18 +118,17 @@ public class DiscoverActivity extends AppCompatActivity {
     }
 
 
-
     // For each user not followed by current user -> get a list of their followers.
     // Compare their followers list with current user's following list.
     // If there are mutual friends between You and Random user, suggest that user
     @SuppressLint("DefaultLocale")
     private void checkForMutualFriends(User user) {
 
-        // create 2 lists: current user's followers AND other user's followers
+        // create 2 lists: current user's followings AND other user's followers
         List<User> otherUserFollowers = new ArrayList<>();
         List<User> currentUserFollowings = new ArrayList<>();
 
-        // query user's followers. add to list
+        // query other user's followers. add to list
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_TO, user);
         query.include(Follow.KEY_FROM);
@@ -149,10 +138,14 @@ public class DiscoverActivity extends AppCompatActivity {
             }
 
             // query current user's following list. add to list.
-            query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
-            query.include(Follow.KEY_TO);
-            query.findInBackground((currentFollowList, e1) -> {
+            ParseQuery<Follow> query1 = ParseQuery.getQuery(Follow.class);
+
+            query1.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
+            query1.include(Follow.KEY_TO);
+            query1.findInBackground((currentFollowList, e1) -> {
                 for (Follow follow : currentFollowList) {
+                    Log.d("debug", follow.getTo().getName());
+                    Log.d("debug", "hello");
                     currentUserFollowings.add(follow.getTo());
                 }
 
@@ -182,8 +175,5 @@ public class DiscoverActivity extends AppCompatActivity {
             });
         });
     }
-
-
-
 
 }
