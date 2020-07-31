@@ -14,11 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.buckos.R;
+import com.example.buckos.models.Story;
 import com.example.buckos.ui.MainActivity;
 import com.example.buckos.ui.buckets.BucketsFragment;
 import com.example.buckos.ui.feed.HomeFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.parceler.Parcels;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;

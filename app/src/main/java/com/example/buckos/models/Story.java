@@ -4,6 +4,7 @@ import android.text.format.DateUtils;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
@@ -24,6 +25,8 @@ public class Story extends ParseObject {
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_LIST = "list";
     public static final String KEY_CATEGORY = "category";
+    public static final String KEY_LIKES = "likes";
+
 
     private List<Photo> mPhotosInStory;
 
@@ -87,13 +90,8 @@ public class Story extends ParseObject {
         put(KEY_CATEGORY, category);
     }
 
-    public String getShortenedDescription() {
-        String description = getDescription();
-        if (description.length() > 200) {
-            return description.substring(0, 200) + "...";
-        } else {
-            return description;
-        }
+    public ParseRelation<User> getLikes() {
+        return getRelation(KEY_LIKES);
     }
 
     public String getFormatedTime() {

@@ -19,7 +19,8 @@ public class User extends ParseUser {
     public static final String KEY_BIO = "bio";
     public static final String KEY_PROFILE_PIC = "profilePic";
     public static final String KEY_INTERESTS = "interests";
-    public static String followedBy = "";
+    private String followedBy = "";
+    private String interestedIn = "";
 
     public void setName(String name) {
         put(KEY_NAME, name);
@@ -45,11 +46,11 @@ public class User extends ParseUser {
         return getRelation(KEY_INTERESTS);
     }
 
-    public void setFollowedBy(String username) {
-        followedBy = "Followed by " + username;
+    public void setSuggestionReason(String reason) {
+        followedBy = reason;
     }
 
-    public String getFollowedBy() {
+    public String getSuggestionReason() {
         return followedBy;
     }
 

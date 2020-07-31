@@ -76,6 +76,7 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
                     Item story = items.get(i);
                     mStorySuggestions.add(story);
                     mAdapter.notifyDataSetChanged();
+                    findViewById(R.id.createStoryLabel).setVisibility(View.GONE);
                 }
             }
         });
@@ -99,7 +100,7 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void createStoryFromSelectedItem(Item item) {
+    private Story createStoryFromSelectedItem(Item item) {
         Story story = new Story();
 
         // set core properties of a story
@@ -117,5 +118,7 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(NewStoryActivity.this, "New story posted!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        return story;
     }
 }

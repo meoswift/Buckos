@@ -55,17 +55,15 @@ public class LoginActivity extends AppCompatActivity {
     // Function that authenticates a user based on input username and password
     private void loginUser(String username, String password) {
         // user get logged in with the provided username and password
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user == null) {
-                    // Log in failed.
-                    Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                // User is logged in successfully, navigate to Home/Feed.
-                startMainActivity();
-                Toast.makeText(LoginActivity.this, "Welcome to Buck It!", Toast.LENGTH_SHORT).show();
+        ParseUser.logInInBackground(username, password, (user, e) -> {
+            if (user == null) {
+                // Log in failed.
+                Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                return;
             }
+            // User is logged in successfully, navigate to Home/Feed.
+            startMainActivity();
+            Toast.makeText(LoginActivity.this, "Welcome to Buck It!", Toast.LENGTH_SHORT).show();
         });
     }
 

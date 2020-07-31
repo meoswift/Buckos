@@ -76,12 +76,9 @@ public class SearchUserFragment extends Fragment {
 
         getUsersResults();
 
-        suggestionsTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), DiscoverActivity.class);
-                startActivity(intent);
-            }
+        suggestionsTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), DiscoverActivity.class);
+            startActivity(intent);
         });
     }
 

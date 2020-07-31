@@ -110,7 +110,6 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:tint="#E53935"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
             <TextView
@@ -118,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
-                android:text="30" />
+                android:text="0" />
 
         </LinearLayout>
 
@@ -143,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
-                android:text="5"
+                android:text="0"
                 android:textSize="14sp" />
 
 

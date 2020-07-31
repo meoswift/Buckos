@@ -55,17 +55,15 @@ public class SignUpActivity extends AppCompatActivity {
         user.setBio(bio);
 
         // Invoke signUpInBackground
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e != null) {
-                    // Log in failed. Check logcat for error and send a Toast to let user know
-                    return;
-                }
-                // User is logged in successfully, navigate to Home/Feed.
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // prevents user from going back to sign up screen
+        user.signUpInBackground(e -> {
+            if (e != null) {
+                // Log in failed. Check logcat for error and send a Toast to let user know
+                return;
             }
+            // User is logged in successfully, navigate to Home/Feed.
+            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // prevents user from going back to sign up screen
         });
     }
 }

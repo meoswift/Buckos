@@ -31,7 +31,6 @@
         android:textColor="#000000"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/authorProfilePic"
         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
         app:layout_constraintTop_toTopOf="@+id/authorProfilePic" />
 
@@ -45,7 +44,7 @@
         android:fontFamily="@font/lato_bold"
         android:text="Post title"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/authorProfilePic" />
@@ -58,7 +57,7 @@
         android:layout_marginEnd="16dp"
         android:text="Item story"
         android:textColor="#1B1B1B"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listTitleTv" />
@@ -67,8 +66,8 @@
         android:id="@+id/storyPhotosRv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,11 +77,11 @@
         android:id="@+id/addedLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:text="completed an item"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/authorDisplayName"
-        app:layout_constraintTop_toTopOf="@+id/authorDisplayName" />
+        app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/authorDisplayName" />
 
     <TextView
         android:id="@+id/listTitleTv"
@@ -91,7 +90,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="List title"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storyTitle" />

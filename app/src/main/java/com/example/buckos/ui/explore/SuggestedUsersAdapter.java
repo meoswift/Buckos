@@ -48,7 +48,7 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
         User user = mSuggestedUsers.get(position);
         holder.usernameTextView.setText(user.getUsername());
         holder.displayNameTextView.setText(user.getName());
-        holder.followedByTextView.setText(user.getFollowedBy());
+        holder.followedByTextView.setText(user.getSuggestionReason());
         holder.setProfilePic(user);
 
         setFollowButton(holder.followButton);
