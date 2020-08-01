@@ -129,7 +129,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
 
     private void setAdapterForUserStories() {
         mUserStories = new ArrayList<>();
-        mStoriesAdapter = new StoriesAdapter(mUserStories, getContext());
+        mStoriesAdapter = new StoriesAdapter(mUserStories, getContext(), this);
         mUserStoriesRecyclerView.setAdapter(mStoriesAdapter);
         mUserStoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

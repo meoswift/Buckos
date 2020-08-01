@@ -3,6 +3,7 @@ package com.example.buckos.ui.feed;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +27,7 @@ import com.example.buckos.models.Like;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.models.User;
+import com.example.buckos.ui.explore.OthersProfileFragment;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -43,11 +46,13 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
     private List<Story> mStoriesList;
     private Context mContext;
+    private Fragment mFragment;
     private User mCurrentUser;
 
-    public StoriesAdapter(List<Story> storiesList, Context context) {
-        this.mStoriesList = storiesList;
-        this.mContext = context;
+    public StoriesAdapter(List<Story> storiesList, Context context, Fragment fragment) {
+        mStoriesList = storiesList;
+        mContext = context;
+        mFragment = fragment;
         mCurrentUser = (User) ParseUser.getCurrentUser();
     }
 
@@ -71,19 +76,46 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.storyTimeStamp.setText(story.getFormatedTime());
         holder.listTitleTextView.setText(list.getName());
         holder.categoryTagTextView.setText(category.getCategoryName());
+
+        // set profile pic
         holder.setProfilePic(author);
+        // Open user's profile on profile pic clicked
+        holder.authorProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openProfile(author);
+            }
+        });
+
+        // set heart button - a post is liked or not
         setLikeButtonOnLikeStatus(holder.heartButton, story);
 
+        // get the comments and the likes count
         getCommentsCount(holder.commentsCountTextView, story);
         getLikesCount(holder.likesCountTextView, story);
 
+        // display the photos in a story
         holder.setAdapterForPhotos(story);
+    }
+
+    private void openProfile(User author) {
+        // Open selected user's profile
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", Parcels.wrap(author));
+
+        Fragment othersProfileFragment = new OthersProfileFragment();
+        othersProfileFragment.setArguments(bundle);
+        mFragment.getParentFragmentManager().beginTransaction()
+                .replace(R.id.your_placeholder, othersProfileFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
     public int getItemCount() {
         return mStoriesList.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView commentsCountTextView;
@@ -160,6 +192,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
                     story = mStoriesList.get(getAdapterPosition());
                     toggleLikeStory(story);
                     break;
+                case R.id.authorProfilePic:
+
             }
         }
 

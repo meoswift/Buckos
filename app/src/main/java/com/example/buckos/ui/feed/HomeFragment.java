@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         mStories = new ArrayList<>();
         mCachedStories = new ArrayList<>();
-        mAdapter = new StoriesAdapter(mStories, getContext());
+        mAdapter = new StoriesAdapter(mStories, getContext(), this);
         storiesRecyclerView.setAdapter(mAdapter);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
