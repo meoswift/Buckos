@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.buckos.R;
@@ -65,6 +66,7 @@ public class SearchUserFragment extends Fragment {
         mUsernameQuery = view.findViewById(R.id.usernameInputEt);
         RecyclerView userResultsRecyclerView = view.findViewById(R.id.userResultsRv);
         TextView suggestionsTextView = view.findViewById(R.id.suggestionsTextView);
+        ImageButton backButton = view.findViewById(R.id.backButton);
 
         mUsernameQuery.requestFocus(); // hints user
 
@@ -74,11 +76,18 @@ public class SearchUserFragment extends Fragment {
         userResultsRecyclerView.setAdapter(mAdapter);
         userResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // get results for query
         getUsersResults();
 
+        // shows users following suggestions
         suggestionsTextView.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), DiscoverActivity.class);
             startActivity(intent);
+        });
+
+        // returns to previous fragment on back pressed
+        backButton.setOnClickListener(v -> {
+            getActivity().onBackPressed();
         });
     }
 

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.example.buckos.R;
 import com.example.buckos.ui.create.CreatePostBottomSheet;
+import com.example.buckos.ui.explore.ExploreFragment;
 import com.example.buckos.ui.explore.SearchUserFragment;
 import com.example.buckos.ui.feed.HomeFragment;
 import com.example.buckos.ui.travel.TravelFragment;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new TravelFragment();
                         break;
                     case R.id.action_explore:
-                        fragment = new SearchUserFragment();
+                        fragment = new ExploreFragment();
                     default:
                         break;
                 }
