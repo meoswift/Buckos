@@ -1,7 +1,5 @@
 package com.example.buckos.ui.feed;
 
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,33 +9,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Category;
-import com.example.buckos.models.Follow;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.example.buckos.models.Story;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-import org.parceler.Parcels;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static com.parse.ParseQuery.*;
 
 // This fragment displays the Feed with posts from all users
 public class HomeFragment extends Fragment {
@@ -81,119 +74,105 @@ public class HomeFragment extends Fragment {
 
     private void setPullToRefreshContainer() {
         // Setup refresh listener which triggers new data loading
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mStories.clear();
-                mStories.addAll(mCachedStories);
-                queryStoriesFromFriends();
-            }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mStories.clear();
+            mStories.addAll(mCachedStories);
+            queryStoriesFromFriends();
         });
     }
 
     // get all stories from people current user is following
     private void queryStoriesFromFriends() {
         final User user = (User) ParseUser.getCurrentUser();
-        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
-        query.whereEqualTo(Follow.KEY_FROM, user);
-        query.orderByDescending(Follow.KEY_CREATED_AT);
-        query.findInBackground(new FindCallback<Follow>() {
-            @Override
-            public void done(List<Follow> followList, ParseException e) {
-                List<User> storyAuthorsList = new ArrayList<>();
+        ParseRelation<User> friends = user.getFriends();
+        ParseRelation<Category> interests = user.getInterests();
 
-                // get a list of authors for stories in Feed (yourself + friends)
-                storyAuthorsList.add(user);
-                for (Follow follow : followList) {
-                    User friend = follow.getTo();
-                    storyAuthorsList.add(friend);
-                }
+        // query compound user's friends and themselves
+        ParseQuery<User> friendsQuery = friends.getQuery();
+        ParseQuery<User> userQuery = getQuery(User.class);
+        userQuery.whereEqualTo(User.KEY_OBJECT_ID, user.getObjectId());
 
-                // get stories from authors list
-                for (User author : storyAuthorsList) {
-                    queryStories(author);
-                }
+        List<ParseQuery<User>> queries = new ArrayList<>();
+        queries.add(friendsQuery);
+        queries.add(userQuery);
 
-            }
-        });
+        // query interests
+        ParseQuery<Category> categoryQuery = interests.getQuery();
+        ParseQuery<User> mainQuery = ParseQuery.or(queries);
+
+        queryStories(mainQuery, categoryQuery);
     }
 
-    // Get stories from specific user
-    private void queryStories(User user) {
-        ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
+    // Get stories from specific user - relevant ones
+    private void queryStories(ParseQuery queries, ParseQuery categoryQuery) {
+        ParseQuery<Story> query = getQuery(Story.class);
+
         // include objects related to a story
         query.include(Story.KEY_AUTHOR);
         query.include(Story.KEY_ITEM);
         query.include(Story.KEY_LIST);
         query.include(Story.KEY_CATEGORY);
-        query.whereEqualTo(Story.KEY_AUTHOR, user);
+
+        // get all stories from friends that has same interests
+        query.whereMatchesQuery(Story.KEY_AUTHOR, queries);
+        query.whereMatchesQuery(Story.KEY_CATEGORY, categoryQuery);
         query.orderByDescending(Story.KEY_CREATED_AT);
-        query.findInBackground(new FindCallback<Story>() {
-            @Override
-            public void done(List<Story> stories, ParseException e) {
-                // add the stories by order of relevance
-                for (int i = 0; i < stories.size(); i++) {
-                    Story story = stories.get(i);
-                    addStoryByRelevance(story);
-                }
 
-                // If there are no posts, also remove progress bar & refresher
-                if (stories.size() == 0) {
-                    mHomeProgressBar.setVisibility(View.GONE);
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            }
+        query.findInBackground((stories, e) -> {
+            // add all relevant stories
+            mStories.addAll(stories);
+            queryIrrelevantStories(queries, categoryQuery);
         });
     }
 
-    // Add story to the top of Feed if its category if of user's interests
-    // Else, add story at the end
-    private void addStoryByRelevance(final Story story) {
-        User user = (User) ParseUser.getCurrentUser();
-        ParseRelation<Category> interests = user.getInterests();
+    // Get stories from specific user - irrelevant ones
+    private void queryIrrelevantStories(ParseQuery queries, ParseQuery categoryQuery) {
+        ParseQuery<Story> query = getQuery(Story.class);
 
-        // checks if current story is of user's interests
-        ParseQuery<Category> query = interests.getQuery();
-        query.whereEqualTo(Category.KEY_OBJECT_ID, story.getCategory().getObjectId());
-        query.findInBackground(new FindCallback<Category>() {
-            @Override
-            public void done(List<Category> category, ParseException e) {
-                // if not, add story to bottom. else, add to the top
-                if (category.size() == 0) {
-                    if (!mCachedStories.contains(story)) {
-                        mStories.add(story);
-                    }
-                } else {
-                    if (!mCachedStories.contains(story)) {
-                        mStories.add(0, story);
-                    }
-                }
+        // include objects related to a story
+        query.include(Story.KEY_AUTHOR);
+        query.include(Story.KEY_ITEM);
+        query.include(Story.KEY_LIST);
+        query.include(Story.KEY_CATEGORY);
 
-                Item item = (Item) story.getItem();
-                queryPhotosInStory(story, item);
-                mHomeProgressBar.setVisibility(View.GONE);
-                mSwipeRefreshLayout.setRefreshing(false);
+        // get all stories from friends that has same interests
+        query.whereMatchesQuery(Story.KEY_AUTHOR, queries);
+        query.whereDoesNotMatchQuery(Story.KEY_CATEGORY, categoryQuery);
+        query.orderByDescending(Story.KEY_CREATED_AT);
 
-                cacheStories();
-            }
+        query.findInBackground((stories, e) -> {
+            // add all irrelevant stories
+            mStories.addAll(stories);
+
+            // query all photos from each story
+            queryPhotos();
         });
+
     }
 
-    private void cacheStories() {
-        mCachedStories.clear();
-        mCachedStories.addAll(mStories);
+    // Get photos from each post
+    private void queryPhotos() {
+        // If there are no posts, also remove progress bar & refresher
+        if (mStories.size() == 0) {
+            mHomeProgressBar.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+
+        for (Story story : mStories) {
+            Item item = (Item) story.getItem();
+            queryPhotosInStory(story, item);
+        }
     }
 
     // For each story, get the photos included
     private void queryPhotosInStory(final Story story, Item item) {
-        ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
+        ParseQuery<Photo> query = getQuery(Photo.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
-        query.findInBackground(new FindCallback<Photo>() {
-            @Override
-            public void done(List<Photo> photos, ParseException e) {
-                story.setPhotosInStory(photos);
-                mAdapter.notifyDataSetChanged();
-            }
+        query.findInBackground((photos, e) -> {
+            story.setPhotosInStory(photos);
+            mAdapter.notifyDataSetChanged();
+            mHomeProgressBar.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setRefreshing(false);
         });
     }
 

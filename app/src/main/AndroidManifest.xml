@@ -21,7 +21,8 @@
         <activity android:name=".ui.buckets.items.EditListActivity" />
         <activity android:name=".ui.create.NewStoryActivity" />
         <activity android:name=".ui.explore.DiscoverActivity" />
-        <activity android:name=".ui.feed.CommentsActivity" />
+        <activity android:name=".ui.feed.CommentsActivity"
+            android:windowSoftInputMode="stateVisible"/>
         <activity
             android:name=".ui.create.NewItemActivity"
             android:windowSoftInputMode="stateVisible" />

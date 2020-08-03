@@ -27,7 +27,9 @@ import com.example.buckos.models.Like;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.models.User;
+import com.example.buckos.ui.buckets.userprofile.ProfileFragment;
 import com.example.buckos.ui.explore.OthersProfileFragment;
+import com.parse.CountCallback;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -38,6 +40,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -77,14 +80,16 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.listTitleTextView.setText(list.getName());
         holder.categoryTagTextView.setText(category.getCategoryName());
 
-        // set profile pic
-        holder.setProfilePic(author);
+        // set profile pic of author
+        holder.setProfilePic(author, holder.authorProfilePicImageView);
+        // set profile pic of current user
+        holder.setProfilePic(mCurrentUser, holder.userProfilePic);
         // Open user's profile on profile pic clicked
-        holder.authorProfilePicImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openProfile(author);
-            }
+        holder.userProfilePic.setOnClickListener(v -> {
+            openProfile(mCurrentUser);
+        });
+        holder.authorProfilePicImageView.setOnClickListener(v -> {
+            openProfile(author);
         });
 
         // set heart button - a post is liked or not
@@ -100,13 +105,19 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
     private void openProfile(User author) {
         // Open selected user's profile
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("user", Parcels.wrap(author));
+        Fragment fragment;
 
-        Fragment othersProfileFragment = new OthersProfileFragment();
-        othersProfileFragment.setArguments(bundle);
+        if (author.equals(mCurrentUser)) {
+            fragment = new ProfileFragment();
+        } else {
+            Bundle bundle = new Bundle();
+            fragment = new OthersProfileFragment();
+            bundle.putParcelable("user", Parcels.wrap(author));
+            fragment.setArguments(bundle);
+        }
+
         mFragment.getParentFragmentManager().beginTransaction()
-                .replace(R.id.your_placeholder, othersProfileFragment)
+                .replace(R.id.your_placeholder, fragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -115,7 +126,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     public int getItemCount() {
         return mStoriesList.size();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView commentsCountTextView;
@@ -128,6 +138,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView listTitleTextView;
         private TextView categoryTagTextView;
         private ImageButton heartButton;
+        private ImageView userProfilePic;
+        private TextView newCommentBox;
 
         private RecyclerView storyPhotosRecyclerView;
 
@@ -144,6 +156,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             categoryTagTextView = itemView.findViewById(R.id.categoryTag);
             commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
             likesCountTextView = itemView.findViewById(R.id.heartCountTv);
+            userProfilePic = itemView.findViewById(R.id.userProfilePic);
+            newCommentBox = itemView.findViewById(R.id.newCommentBox);
 
             // handle liking
             heartButton = itemView.findViewById(R.id.heartButton);
@@ -154,19 +168,20 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             LinearLayout commentBox = itemView.findViewById(R.id.commentBox);
 
             commentBox.setOnClickListener(this);
+            newCommentBox.setOnClickListener(this);
             commentIcon.setOnClickListener(this);
         }
 
         // Set profile pic with either file from database or default image
-        private void setProfilePic(User user) {
+        private void setProfilePic(User user, ImageView profilePicHolder) {
             ParseFile image = (ParseFile) user.get(User.KEY_PROFILE_PIC);
 
             if (image != null) {
                 Glide.with(mContext).load(image.getUrl()).circleCrop()
-                        .into(authorProfilePicImageView);
+                        .into(profilePicHolder);
             } else {
                 Glide.with(mContext).load(R.drawable.no_profile_pic).circleCrop()
-                        .into(authorProfilePicImageView);
+                        .into(profilePicHolder);
             }
         }
 
@@ -180,10 +195,12 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
+            Story story = mStoriesList.get(getAdapterPosition());
+
             switch (v.getId()) {
                 case R.id.commentBox:
                 case R.id.commentIcon:
-                    Story story = mStoriesList.get(getAdapterPosition());
+                case R.id.newCommentBox:
                     Intent intent = new Intent(mContext, CommentsActivity.class);
                     intent.putExtra("story", Parcels.wrap(story));
                     mContext.startActivity(intent);
@@ -192,8 +209,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
                     story = mStoriesList.get(getAdapterPosition());
                     toggleLikeStory(story);
                     break;
-                case R.id.authorProfilePic:
-
             }
         }
 
@@ -293,10 +308,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         query.whereEqualTo(Comment.KEY_STORY, story);
         query.orderByAscending(Comment.KEY_CREATED_AT);
         // start an asynchronous call for posts
-        query.findInBackground(new FindCallback<Comment>() {
-            public void done(List<Comment> comments, ParseException e) {
-                commentsCount.setText(String.valueOf(comments.size()));
-            }
+        query.countInBackground((count, e) -> {
+            commentsCount.setText(String.valueOf(count));
         });
     }
 
@@ -304,11 +317,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     private void getLikesCount(final TextView likesCount, Story story) {
         final ParseRelation<User> likes = story.getLikes();
         ParseQuery<User> query = likes.getQuery();
-        query.findInBackground(new FindCallback<User>() {
-            @Override
-            public void done(List<User> objects, ParseException e) {
-                likesCount.setText(String.valueOf(objects.size()));
-            }
+        query.countInBackground((count, e) -> {
+            likesCount.setText(String.valueOf(count));
         });
     }
 

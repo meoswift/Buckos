@@ -20,7 +20,9 @@ import com.example.buckos.R;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.userprofile.FollowingFragment;
+import com.example.buckos.ui.buckets.userprofile.ProfileFragment;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -62,7 +64,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         holder.setProfilePic(user);
 
         // if the result is current user, follow button cannot show
-        if (user.getObjectId().equals(mCurrentUser.getObjectId())) {
+        if (user.equals(mCurrentUser)) {
             holder.followButton.setVisibility(View.GONE);
         } else {
             holder.followButton.setVisibility(View.VISIBLE);
@@ -104,14 +106,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 modifyFollowingStatusOnClick(followButton, getAdapterPosition());
             } else {
                 // Open selected user's profile
-                Bundle bundle = new Bundle();
                 User user = mUsersResults.get(getAdapterPosition());
-                bundle.putParcelable("user", Parcels.wrap(user));
+                Fragment fragment;
 
-                Fragment othersProfileFragment = new OthersProfileFragment();
-                othersProfileFragment.setArguments(bundle);
+                if (user.equals(mCurrentUser)) {
+                    fragment = new ProfileFragment();
+                } else {
+                    Bundle bundle = new Bundle();
+                    fragment = new OthersProfileFragment();
+                    bundle.putParcelable("user", Parcels.wrap(user));
+                    fragment.setArguments(bundle);
+                }
+
                 mFragment.getParentFragmentManager().beginTransaction()
-                        .replace(R.id.your_placeholder, othersProfileFragment)
+                        .replace(R.id.your_placeholder, fragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -145,16 +153,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         final User selectedUser = mUsersResults.get(position);
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
 
-        // if selected user is followed by current user, button becomes Following
+        // selected user is followed by current user, button becomes Following
         query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
         query.whereEqualTo(Follow.KEY_TO, selectedUser);
 
-        query.findInBackground(new FindCallback<Follow>() {
-            @Override
-            public void done(List<Follow> followList, ParseException e) {
-                if (followList.size() == 1) {
-                    setFollowingButton(holder.followButton);
-                }
+        query.findInBackground((followList, e) -> {
+            if (followList.size() == 1) {
+                setFollowingButton(holder.followButton);
             }
         });
 
@@ -163,6 +168,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private void modifyFollowingStatusOnClick(final Button followButton, int position) {
         final User selectedUser = mUsersResults.get(position);
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        ParseRelation<User> friends = mCurrentUser.getFriends();
 
         // modify follow button based on whether current user has followed selected user
         query.whereEqualTo(Follow.KEY_FROM, mCurrentUser);
@@ -176,10 +182,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     relationship.setFrom(mCurrentUser);
                     relationship.setTo(selectedUser);
                     relationship.saveInBackground();
+                    friends.add(selectedUser);
+                    mCurrentUser.saveInBackground();
                     setFollowingButton(followButton);
                 } else {
                     Follow relationship = followList.get(0);
                     relationship.deleteInBackground();
+                    friends.remove(selectedUser);
+                    mCurrentUser.saveInBackground();
                     setFollowButton(followButton);
                 }
             }

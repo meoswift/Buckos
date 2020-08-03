@@ -34,13 +34,10 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
 
     private List<User> mSuggestedUsers;
     private Context mContext;
-    private FragmentManager mFragmentManager;
 
-    public SuggestedUsersAdapter(List<User> suggestedUsers, Context context,
-                                 FragmentManager fragmentManager) {
+    public SuggestedUsersAdapter(List<User> suggestedUsers, Context context) {
         mSuggestedUsers = suggestedUsers;
         mContext = context;
-        mFragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -85,7 +82,6 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
             followedByTextView = itemView.findViewById(R.id.followedByTv);
 
             followButton.setOnClickListener(this);
-            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -93,18 +89,6 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
             int position = getAdapterPosition();
             if (v.getId() == R.id.followButton) {
                 modifyFollowingStatusOnClick(followButton, position);
-            } else {
-                // Open selected user's profile
-                Bundle bundle = new Bundle();
-                User user = mSuggestedUsers.get(getAdapterPosition());
-                bundle.putParcelable("user", Parcels.wrap(user));
-
-                Fragment othersProfileFragment = new OthersProfileFragment();
-                othersProfileFragment.setArguments(bundle);
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.your_placeholder, othersProfileFragment)
-                        .addToBackStack(null)
-                        .commit();
             }
         }
 
@@ -123,6 +107,7 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
     private void modifyFollowingStatusOnClick(final Button followButton, int position) {
         final User selectedUser = mSuggestedUsers.get(position);
         final User currentUser = (User) ParseUser.getCurrentUser();
+        ParseRelation<User> friends = currentUser.getFriends();
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
 
 
@@ -138,10 +123,14 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
                     relationship.setFrom(currentUser);
                     relationship.setTo(selectedUser);
                     relationship.saveInBackground();
+                    friends.add(selectedUser);
+                    currentUser.saveInBackground();
                     setFollowingButton(followButton);
                 } else {
                     Follow relationship = followList.get(0);
                     relationship.deleteInBackground();
+                    friends.remove(selectedUser);
+                    currentUser.saveInBackground();
                     setFollowButton(followButton);
                 }
             }

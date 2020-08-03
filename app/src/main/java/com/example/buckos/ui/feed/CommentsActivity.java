@@ -49,6 +49,8 @@ public class CommentsActivity extends AppCompatActivity {
         mAddCommentEditText = findViewById(R.id.addCommentEt);
         RecyclerView mCommentsRecyclerView = findViewById(R.id.commentsRv);
 
+        mAddCommentEditText.requestFocus();
+
         // Retrieve the post object that comment will be added to
         Intent intent = getIntent();
         mStory = Parcels.unwrap(intent.getParcelableExtra("story"));

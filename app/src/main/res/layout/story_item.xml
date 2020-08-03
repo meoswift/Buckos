@@ -93,7 +93,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storyPhotosRv">
@@ -108,8 +107,8 @@
                 android:id="@+id/heartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
             <TextView
@@ -151,10 +150,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -202,5 +201,33 @@
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/authorProfilePic" />
+
+    <ImageView
+        android:id="@+id/userProfilePic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/newCommentBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/commentborder"
+        android:padding="8dp"
+        android:text="Add a comment"
+        android:textColor="#99000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/userProfilePic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/userProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/userProfilePic" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,6 +47,7 @@
         android:insetTop="12sp"
         android:insetBottom="12sp"
         android:text="Follow"
+        app:cornerRadius="50dp"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="12sp"

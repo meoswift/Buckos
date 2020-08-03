@@ -61,6 +61,11 @@ public class CreatePostBottomSheet extends BottomSheetDialogFragment implements 
     }
 
     @Override
+    public int getTheme() {
+        return R.style.BottomSheetDialogTheme;
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.storyLinearLayout:

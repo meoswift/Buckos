@@ -49,6 +49,7 @@
         android:insetTop="12sp"
         android:insetBottom="12sp"
         android:text="Follow"
+        app:cornerRadius="50dp"
         android:textAllCaps="false"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"

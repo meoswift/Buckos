@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -40,8 +41,7 @@ public class DiscoverActivity extends AppCompatActivity {
         ImageButton backButton = findViewById(R.id.backButton);
 
         mSuggestedUsersList = new ArrayList<>();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        mAdapter = new SuggestedUsersAdapter(mSuggestedUsersList, this, fragmentManager);
+        mAdapter = new SuggestedUsersAdapter(mSuggestedUsersList, this);
         suggestedUsersRecyclerView.setAdapter(mAdapter);
         suggestedUsersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -199,8 +199,6 @@ public class DiscoverActivity extends AppCompatActivity {
             });
         });
     }
-
-
 
 
 

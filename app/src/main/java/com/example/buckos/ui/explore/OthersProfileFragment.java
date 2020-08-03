@@ -31,6 +31,7 @@ import com.example.buckos.ui.buckets.userprofile.EditProfileActivity;
 import com.example.buckos.ui.buckets.userprofile.FollowersFragment;
 import com.example.buckos.ui.buckets.userprofile.FollowingFragment;
 import com.example.buckos.ui.feed.StoriesAdapter;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -53,6 +54,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private SwipeRefreshLayout swipeContainer;
     private TextView mFollowingTextView;
     private TextView mFollowersTextView;
+    private TextView mStoriesTextView;
     private TextView mNameHeaderTextView;
 
     private User user;
@@ -86,6 +88,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
         mFollowingTextView = view.findViewById(R.id.followingCountTv);
         mFollowersTextView = view.findViewById(R.id.followersCountTv);
+        mStoriesTextView = view.findViewById(R.id.stor)
         mNameHeaderTextView = view.findViewById(R.id.nameHeaderTv);
 
 
@@ -98,7 +101,6 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
 
         // populate info and user stories
         populateUserProfile();
-
 
         backButton.setOnClickListener(this);
         followingLabel.setOnClickListener(this);
@@ -122,6 +124,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         mBioTextView.setText(user.getBio());
         setFollowingCount();
         setFollowersCount();
+        setStoriesCount();
         setProfilePic();
 
         setAdapterForUserStories();
@@ -147,16 +150,13 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         // where author is current user and order by time created
         query.whereEqualTo(Story.KEY_AUTHOR, user);
         query.orderByDescending(Story.KEY_CREATED_AT);
-        query.findInBackground(new FindCallback<Story>() {
-            @Override
-            public void done(List<Story> stories, ParseException e) {
-                mUserStories.clear();
-                for (int i = 0; i < stories.size(); i++) {
-                    Story story = stories.get(i);
-                    Item item = (Item) story.getItem();
-                    mUserStories.add(story);
-                    queryPhotosInStory(story, item);
-                }
+        query.findInBackground((stories, e) -> {
+            mUserStories.clear();
+            for (int i = 0; i < stories.size(); i++) {
+                Story story = stories.get(i);
+                Item item = (Item) story.getItem();
+                mUserStories.add(story);
+                queryPhotosInStory(story, item);
             }
         });
     }
@@ -165,14 +165,11 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private void queryPhotosInStory(final Story story, Item item) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
-        query.findInBackground(new FindCallback<Photo>() {
-            @Override
-            public void done(List<Photo> photos, ParseException e) {
-                story.setPhotosInStory(photos);
-                mStoriesAdapter.notifyDataSetChanged();
-                // call setRefreshing(false) to signal refresh has finished
-                swipeContainer.setRefreshing(false);
-            }
+        query.findInBackground((photos, e) -> {
+            story.setPhotosInStory(photos);
+            mStoriesAdapter.notifyDataSetChanged();
+            // call setRefreshing(false) to signal refresh has finished
+            swipeContainer.setRefreshing(false);
         });
     }
 
@@ -188,14 +185,21 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     }
 
     // Set the number of following
+    private void setStoriesCount() {
+        ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
+        // include objects related to a story
+        query.include(Story.KEY_AUTHOR);
+        query.countInBackground((count, e) -> {
+            mSto.setText(String.valueOf(count));
+        });
+    }
+
+    // Set the number of following
     private void setFollowingCount() {
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_FROM, user);
-        query.findInBackground(new FindCallback<Follow>() {
-            @Override
-            public void done(List<Follow> followList, ParseException e) {
-                mFollowingTextView.setText(String.valueOf(followList.size()));
-            }
+        query.countInBackground((count, e) -> {
+            mFollowingTextView.setText(String.valueOf(count));
         });
     }
 
@@ -203,11 +207,8 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private void setFollowersCount() {
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_TO, user);
-        query.findInBackground(new FindCallback<Follow>() {
-            @Override
-            public void done(List<Follow> followList, ParseException e) {
-                mFollowersTextView.setText(String.valueOf(followList.size()));
-            }
+        query.countInBackground((count, e) -> {
+            mFollowersTextView.setText(String.valueOf(count));
         });
     }
 
