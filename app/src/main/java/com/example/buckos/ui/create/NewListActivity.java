@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
+import com.example.buckos.models.Story;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -52,6 +53,7 @@ public class NewListActivity extends AppCompatActivity {
         // Show cursor at description to hint user
         mListDescriptionEditText.requestFocus();
 
+        // get all categories for a list
         queryCategories();
 
         // Create new bucket and direct user to Buckets tab

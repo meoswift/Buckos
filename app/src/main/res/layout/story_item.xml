@@ -230,4 +230,16 @@
         app:layout_constraintStart_toEndOf="@+id/userProfilePic"
         app:layout_constraintTop_toTopOf="@+id/userProfilePic" />
 
+    <ImageButton
+        android:id="@+id/storyMoreMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_more_horiz_24" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

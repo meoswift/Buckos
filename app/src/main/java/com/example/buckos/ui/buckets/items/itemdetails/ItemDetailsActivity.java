@@ -200,15 +200,16 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     public void deleteStoriesOfItem(Item item) {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
-        query.findInBackground(new FindCallback<Story>() {
-            @Override
-            public void done(List<Story> stories, ParseException e) {
-                for (Story story : stories) {
-                    story.deleteInBackground();
-                }
+        query.findInBackground((stories, e) -> {
+            for (Story story : stories) {
+                story.deleteCommentsInStory(story);
+                story.deleteLikesInStory(story);
+                story.deleteInBackground();
             }
         });
     }
+
+
 
     // Post story of a completed item to Home feed
     private void postNewStory() {

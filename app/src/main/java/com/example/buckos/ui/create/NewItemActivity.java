@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Item;
+import com.example.buckos.models.Story;
 import com.example.buckos.ui.travel.placebookmark.SaveToListActivity;
 import com.parse.ParseUser;
 
@@ -23,8 +24,6 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
     private static final int NEW_ITEM_REQUEST = 1010;
     private EditText mItemTitleEditText;
     private EditText mItemDescriptionEditText;
-    private TextView mCreateButton;
-    private ImageView mCloseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +32,18 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
 
         mItemTitleEditText = findViewById(R.id.itemTitleEt);
         mItemDescriptionEditText = findViewById(R.id.itemDescriptionEt);
-        mCreateButton = findViewById(R.id.createBtn);
-        mCloseButton = findViewById(R.id.closeBtn);
+        TextView mCreateButton = findViewById(R.id.createBtn);
+        ImageView mCloseButton = findViewById(R.id.closeBtn);
 
         // Show cursor at description to hint user
         mItemDescriptionEditText.requestFocus();
+
+        // coming from home feed or explore tab with an item
+        Intent intent = getIntent();
+        if (intent != null) {
+            Story story = Parcels.unwrap(intent.getParcelableExtra("story"));
+            mItemTitleEditText.setText(story.getTitle());
+        }
 
         mCreateButton.setOnClickListener(this);
         mCloseButton.setOnClickListener(this);

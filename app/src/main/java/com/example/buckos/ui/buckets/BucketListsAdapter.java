@@ -184,13 +184,12 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     private void deleteAllStoriesInList(BucketList list) {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
         query.whereEqualTo(Photo.KEY_LIST, list);
-        query.findInBackground(new FindCallback<Story>() {
-            @Override
-            public void done(List<Story> stories, ParseException e) {
-                for (int i = 0; i < stories.size(); i++) {
-                    Story story = stories.get(i);
-                    story.deleteInBackground();
-                }
+        query.findInBackground((stories, e) -> {
+            for (int i = 0; i < stories.size(); i++) {
+                Story story = stories.get(i);
+                story.deleteCommentsInStory(story);
+                story.deleteLikesInStory(story);
+                story.deleteInBackground();
             }
         });
     }

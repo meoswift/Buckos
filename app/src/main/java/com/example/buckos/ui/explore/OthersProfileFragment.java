@@ -88,7 +88,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
         mFollowingTextView = view.findViewById(R.id.followingCountTv);
         mFollowersTextView = view.findViewById(R.id.followersCountTv);
-        mStoriesTextView = view.findViewById(R.id.stor)
+        mStoriesTextView = view.findViewById(R.id.storiesCountTv);
         mNameHeaderTextView = view.findViewById(R.id.nameHeaderTv);
 
 
@@ -188,9 +188,9 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private void setStoriesCount() {
         ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
         // include objects related to a story
-        query.include(Story.KEY_AUTHOR);
+        query.whereEqualTo(Story.KEY_AUTHOR, user);
         query.countInBackground((count, e) -> {
-            mSto.setText(String.valueOf(count));
+            mStoriesTextView.setText(String.valueOf(count));
         });
     }
 

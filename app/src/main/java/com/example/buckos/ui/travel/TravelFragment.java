@@ -142,7 +142,5 @@ public class TravelFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PlacesAdapter.SAVE_TO_LIST && requestCode == RESULT_CANCELLED)
-            mAdapter.notifyDataSetChanged();
     }
 }

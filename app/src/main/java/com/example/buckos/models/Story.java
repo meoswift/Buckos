@@ -2,8 +2,11 @@ package com.example.buckos.models;
 
 import android.text.format.DateUtils;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
@@ -113,5 +116,25 @@ public class Story extends ParseObject {
     @Override
     public int hashCode() {
         return Objects.hash(getObjectId());
+    }
+
+    public void deleteCommentsInStory(Story story) {
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+        query.whereEqualTo(Comment.KEY_STORY, story);
+        query.findInBackground((comments, e) -> {
+            for (Comment comment : comments) {
+                comment.deleteInBackground();
+            }
+        });
+    }
+
+    public void deleteLikesInStory(Story story) {
+        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+        query.whereEqualTo(Comment.KEY_STORY, story);
+        query.findInBackground((likes, e) -> {
+            for (Like like : likes) {
+                like.deleteInBackground();
+            }
+        });
     }
 }

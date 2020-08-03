@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +31,7 @@ import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.userprofile.ProfileFragment;
+import com.example.buckos.ui.create.NewItemActivity;
 import com.example.buckos.ui.explore.OthersProfileFragment;
 import com.parse.CountCallback;
 import com.parse.DeleteCallback;
@@ -101,6 +105,10 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
         // display the photos in a story
         holder.setAdapterForPhotos(story);
+
+        holder.storyMoreMenu.setOnClickListener(v -> {
+            holder.handleStoryMenuClicked();
+        });
     }
 
     private void openProfile(User author) {
@@ -139,7 +147,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView categoryTagTextView;
         private ImageButton heartButton;
         private ImageView userProfilePic;
-        private TextView newCommentBox;
+        private ImageButton storyMoreMenu;
 
         private RecyclerView storyPhotosRecyclerView;
 
@@ -157,7 +165,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
             likesCountTextView = itemView.findViewById(R.id.heartCountTv);
             userProfilePic = itemView.findViewById(R.id.userProfilePic);
-            newCommentBox = itemView.findViewById(R.id.newCommentBox);
+            TextView newCommentBox = itemView.findViewById(R.id.newCommentBox);
+            storyMoreMenu = itemView.findViewById(R.id.storyMoreMenu);
 
             // handle liking
             heartButton = itemView.findViewById(R.id.heartButton);
@@ -166,10 +175,12 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             // handle commenting
             ImageButton commentIcon = itemView.findViewById(R.id.commentIcon);
             LinearLayout commentBox = itemView.findViewById(R.id.commentBox);
-
             commentBox.setOnClickListener(this);
             newCommentBox.setOnClickListener(this);
             commentIcon.setOnClickListener(this);
+
+            // handle More menu
+            storyMoreMenu.setOnClickListener(this);
         }
 
         // Set profile pic with either file from database or default image
@@ -209,7 +220,28 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
                     story = mStoriesList.get(getAdapterPosition());
                     toggleLikeStory(story);
                     break;
+                case R.id.storyMoreMenu:
+                    handleStoryMenuClicked();
+                    break;
             }
+        }
+
+        private void handleStoryMenuClicked() {
+            //creating a popup menu
+            PopupMenu popup = new PopupMenu(mContext, storyMoreMenu);
+            //inflating menu from xml resource
+            popup.getMenuInflater().inflate(R.menu.post_menu, popup.getMenu());
+            popup.show();
+
+            // adding click listener
+            popup.setOnMenuItemClickListener(item -> {
+                Log.d("debug", "hello");
+                if (item.getItemId() == R.id.action_save) {
+                    Log.d("debug", "hello3");
+                    saveItemToList(getAdapterPosition());
+                }
+                return false;
+            });
         }
 
         // On click, either like or unlike the story. update database accordingly.
@@ -321,6 +353,14 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             likesCount.setText(String.valueOf(count));
         });
     }
+
+    private void saveItemToList(int position) {
+        Story story = mStoriesList.get(position);
+        Intent intent = new Intent(mContext, NewItemActivity.class);
+        intent.putExtra("story", Parcels.wrap(story));
+        mContext.startActivity(intent);
+    }
+
 
 
 }

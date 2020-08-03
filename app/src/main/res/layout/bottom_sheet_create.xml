@@ -33,7 +33,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_background"
                 android:padding="10dp"
-                android:tint="@color/design_default_color_on_secondary"
+                android:tint="@color/colorBlack"
                 app:srcCompat="@drawable/ic_round_post_add_24" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:padding="4dp"
                 android:text="Story"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/colorWhite"
                 android:textSize="14sp" />
 
 
@@ -67,7 +67,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_background"
                 android:padding="12dp"
-                android:tint="@color/design_default_color_on_secondary"
+                android:tint="@color/colorBlack"
                 app:srcCompat="@drawable/ic_bucket" />
 
             <TextView
@@ -79,7 +79,7 @@
                 android:padding="4dp"
                 android:text="Bucket"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/colorWhite"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -100,7 +100,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_background"
                 android:padding="12dp"
-                android:tint="@color/design_default_color_on_secondary"
+                android:tint="@color/colorBlack"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
 
@@ -113,7 +113,7 @@
                 android:padding="4dp"
                 android:text="Item"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/colorWhite"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -125,9 +125,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/lato_bold"
+        android:fontFamily="@font/playfair_display_bold"
         android:text="Create something new..."
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorWhite"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
