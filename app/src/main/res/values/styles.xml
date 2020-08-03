@@ -1,18 +1,19 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#6D98BA</item>
-        <item name="colorPrimaryDark">#2C000000</item>
-        <item name="colorAccent">#6D98BA</item>
-        <item name="android:fontFamily">@font/roboto</item>
+        <item name="colorPrimary">#dd6e42</item>
+        <item name="colorPrimaryDark">#fff</item>
+        <item name="colorAccent">#e8dab2</item>
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
-    </style>
+    <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+</style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

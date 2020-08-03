@@ -131,14 +131,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     private void setFollowButton(Button followButton) {
         followButton.setText("Follow");
-        followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
         followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorWhite));
     }
 
     private void setFollowingButton(Button followButton) {
         followButton.setText("Following");
         followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorWhite));
-        followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
     }
 
     private void setSelectedUserFollowingStatus(final ViewHolder holder, int position) {

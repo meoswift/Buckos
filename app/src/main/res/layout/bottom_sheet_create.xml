@@ -33,6 +33,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_background"
                 android:padding="10dp"
+                android:tint="@color/design_default_color_on_secondary"
                 app:srcCompat="@drawable/ic_round_post_add_24" />
 
             <TextView
@@ -66,7 +67,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_background"
                 android:padding="12dp"
-                android:tint="@color/colorPrimaryDark"
+                android:tint="@color/design_default_color_on_secondary"
                 app:srcCompat="@drawable/ic_bucket" />
 
             <TextView
@@ -99,7 +100,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_background"
                 android:padding="12dp"
-                android:tint="@color/colorPrimaryDark"
+                android:tint="@color/design_default_color_on_secondary"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
 

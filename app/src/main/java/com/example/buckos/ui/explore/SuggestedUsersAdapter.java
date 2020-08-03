@@ -1,6 +1,7 @@
 package com.example.buckos.ui.explore;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,16 +26,21 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAdapter.ViewHolder> {
 
     private List<User> mSuggestedUsers;
     private Context mContext;
+    private FragmentManager mFragmentManager;
 
-    public SuggestedUsersAdapter(List<User> suggestedUsers, Context context) {
+    public SuggestedUsersAdapter(List<User> suggestedUsers, Context context,
+                                 FragmentManager fragmentManager) {
         mSuggestedUsers = suggestedUsers;
         mContext = context;
+        mFragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -77,12 +85,27 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
             followedByTextView = itemView.findViewById(R.id.followedByTv);
 
             followButton.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            modifyFollowingStatusOnClick(followButton, position);
+            if (v.getId() == R.id.followButton) {
+                modifyFollowingStatusOnClick(followButton, position);
+            } else {
+                // Open selected user's profile
+                Bundle bundle = new Bundle();
+                User user = mSuggestedUsers.get(getAdapterPosition());
+                bundle.putParcelable("user", Parcels.wrap(user));
+
+                Fragment othersProfileFragment = new OthersProfileFragment();
+                othersProfileFragment.setArguments(bundle);
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.your_placeholder, othersProfileFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
         }
 
         // Set profile pic with either file from database or default image
@@ -129,12 +152,12 @@ public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAd
     private void setFollowingButton(Button followButton) {
         followButton.setText("Following");
         followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorWhite));
-        followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
     }
 
     private void setFollowButton(Button followButton) {
         followButton.setText("Follow");
-        followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
         followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorWhite));
     }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +69,9 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         }
 
         holder.categoryTagTextView.setText(category.getCategoryName());
+        holder.bucketListCardView.setOnClickListener(v -> {
+            holder.displayListDetails();
+        });
     }
 
     @Override
@@ -80,6 +84,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
         TextView listTitleTextView;
         TextView listDescriptionTextView;
         TextView categoryTagTextView;
+        CardView bucketListCardView;
 
         public ViewHolder(@NonNull View item) {
             super(item);
@@ -87,13 +92,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
             listTitleTextView = item.findViewById(R.id.listTitle);
             listDescriptionTextView = item.findViewById(R.id.listDescription);
             categoryTagTextView = item.findViewById(R.id.categoryTag);
-
-            item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    displayListDetails();
-                }
-            });
+            bucketListCardView = item.findViewById(R.id.listCard);
         }
 
         private void displayListDetails() {

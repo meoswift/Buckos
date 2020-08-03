@@ -41,18 +41,18 @@
     <Button
         android:id="@+id/followButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:insetTop="12sp"
         android:insetBottom="12sp"
         android:text="Follow"
         android:textAllCaps="false"
-        android:textColor="#5189A5"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/colorPrimary" />
+        app:strokeColor="@color/colorPrimaryDark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

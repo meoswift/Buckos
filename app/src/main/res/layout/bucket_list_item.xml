@@ -6,9 +6,12 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card"
+        android:id="@+id/listCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:checkable="true"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginRight="8dp"

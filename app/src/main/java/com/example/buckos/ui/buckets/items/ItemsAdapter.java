@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
@@ -69,6 +70,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             holder.checkBoxImageView.setImageDrawable(null);
         }
 
+        // Directs the user to details view of an item
+        holder.itemCardView.setOnClickListener(v -> {
+            holder.displayItemDetails();
+        });
+
     }
 
     @Override
@@ -76,11 +82,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         return mItemList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView itemTitleTextView;
         TextView itemNoteTextView;
         ImageView checkBoxImageView;
+        CardView itemCardView;
 
         Item item;
 
@@ -91,9 +98,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             itemTitleTextView = itemView.findViewById(R.id.itemTitle);
             itemNoteTextView = itemView.findViewById(R.id.itemDescription);
             checkBoxImageView = itemView.findViewById(R.id.checkBox);
-
-            // Directs the user to details view of an item
-            itemView.setOnClickListener(this);
+            itemCardView = itemView.findViewById(R.id.itemCard);
 
             // Mark item completed when user check the box
             checkBoxImageView.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +110,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         }
 
         // Show details of an Item. User can also edit the note.
-        @Override
-        public void onClick(View v) {
+        private void displayItemDetails() {
             int position = getAdapterPosition();
             item = mItemList.get(position);
             Intent intent = new Intent(mContext, ItemDetailsActivity.class);
