@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.buckos.R;
 import com.example.buckos.models.Category;
 import com.example.buckos.models.Follow;
+import com.example.buckos.models.Story;
 import com.example.buckos.models.User;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -26,6 +28,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+// Activity that displays following suggestions to user depending on who they've followed and
+// what they are interested in
 public class DiscoverActivity extends AppCompatActivity {
 
     private List<User> mSuggestedUsersList;
@@ -46,10 +50,47 @@ public class DiscoverActivity extends AppCompatActivity {
         suggestedUsersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mCurrentUser = (User) ParseUser.getCurrentUser();
-        querySuggestions();
+
+        querySuggestionsByNumFriends();
 
         backButton.setOnClickListener(v -> DiscoverActivity.super.onBackPressed());
     }
+
+    private void querySuggestionsByNumFriends() {
+        ParseQuery<User> query = mCurrentUser.getFriends().getQuery();
+        query.countInBackground((friends, e) -> {
+            // if user haven't followed anyone
+            if (friends == 0) {
+                queryInitialSuggestions();
+            } else {
+                querySuggestions();
+            }
+        });
+    }
+
+    // suggest all users who have interests
+    private void queryInitialSuggestions() {
+        User currentUser = (User) ParseUser.getCurrentUser();
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+
+        query.whereNotEqualTo(User.KEY_OBJECT_ID, currentUser.getObjectId());
+        query.findInBackground((users, e) -> {
+            mSuggestedUsersList.clear();
+            for (User user : users) {
+                ParseQuery<Category> interestsQuery = user.getInterests().getQuery();
+                interestsQuery.getFirstInBackground((interest, e1) -> {
+                    if (interest != null) {
+                        user.setSuggestionReason("Interested in " + interest.getCategoryName());
+                        mSuggestedUsersList.add(user);
+                        mAdapter.notifyDataSetChanged();
+                        findViewById(R.id.noSuggestionsLabel).setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
+    }
+
+
 
     // get all users who are not yourself
     private void querySuggestions() {

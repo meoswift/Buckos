@@ -36,7 +36,8 @@ import java.util.List;
 
 import static com.parse.ParseQuery.*;
 
-// This fragment displays the Feed with posts from all users
+// This fragment displays the Feed with posts from all users and a Welcome layout when users
+// are new
 public class HomeFragment extends Fragment {
 
     private StoriesAdapter mAdapter;
@@ -186,12 +187,14 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    // display the welcome layout w/ follow suggestions for new users
     private void displayWelcomeLayout() {
         mWelcomeLayout.setVisibility(View.VISIBLE);
 
         // set up adapter that displays follow suggestions for new user
         List<User> followSuggestions = new ArrayList<>();
-        FollowSuggestionsAdapter adapter = new FollowSuggestionsAdapter(followSuggestions, getContext());
+        FollowSuggestionsAdapter adapter = new FollowSuggestionsAdapter(followSuggestions,
+                                                                        getContext(), this);
         mFollowSuggestionsRecyclerView.setAdapter(adapter);
         mFollowSuggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
@@ -199,6 +202,8 @@ public class HomeFragment extends Fragment {
         queryFollowSuggestions(followSuggestions, adapter);
     }
 
+    // get a list of follow suggestions for users who just created an account
+    // suggestions include users who have interests, and not yet followed by current user
     private void queryFollowSuggestions(List<User> followSuggestions, FollowSuggestionsAdapter adapter) {
         User currentUser = (User) ParseUser.getCurrentUser();
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
@@ -206,34 +211,23 @@ public class HomeFragment extends Fragment {
         query.whereNotEqualTo(User.KEY_OBJECT_ID, currentUser.getObjectId());
         query.findInBackground((users, e) -> {
             for (User user : users) {
-                ParseQuery<Follow> queryFollow = ParseQuery.getQuery(Follow.class);
-                queryFollow.whereEqualTo(Follow.KEY_FROM, currentUser);
-                queryFollow.whereEqualTo(Follow.KEY_TO, user);
-                queryFollow.countInBackground((count, e12) -> {
-                    // if have yet followed
-                    if (count == 0) {
-
-                    }
-                });
-
-
-                // Only suggest users who have more than 1 interest
+                // Only suggest users who have more than 1 interest & not followed yet
                 ParseQuery<Category> queryInterests = user.getInterests().getQuery();
                 queryInterests.countInBackground((count, e1) -> {
+                    // if user has more than 1 interest
                     if (count > 0) {
-                        
+                        // if user is in friends list
+                        ParseQuery<User> friendsQuery = currentUser.getFriends().getQuery();
+                        friendsQuery.findInBackground((friends, e2) -> {
+                            if (!friends.contains(user)) {
+                                followSuggestions.add(user);
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
                     }
                 });
             }
         });
-
-
-    }
-
-    private void suggestIfHaveNotFollowed(List<User> followSuggestions,
-                                          FollowSuggestionsAdapter adapter, User user) {
-        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
-        query.whereEq
     }
 
 }

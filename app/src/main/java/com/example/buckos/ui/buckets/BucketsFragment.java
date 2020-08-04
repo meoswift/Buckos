@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +50,7 @@ public class BucketsFragment extends Fragment {
     private Button mNewListButton;
     private BottomNavigationView mBottomNavigationView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ConstraintLayout mInstructionsLayout;
 
     private User user;
     private List<BucketList> mBucketLists;
@@ -72,6 +74,7 @@ public class BucketsFragment extends Fragment {
         mNewListButton = view.findViewById(R.id.newListButton);
         mBottomNavigationView = view.getRootView().findViewById(R.id.bottomNavigation);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        mInstructionsLayout = view.findViewById(R.id.instructionsLayout);
 
         // Get current user to retrieve information
         user = (User) ParseUser.getCurrentUser();
@@ -156,6 +159,10 @@ public class BucketsFragment extends Fragment {
                 // when done loading, hide progress bar and refresher
                 mProgressBar.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
+
+                if (mBucketLists.size() == 0) {
+                    mInstructionsLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
