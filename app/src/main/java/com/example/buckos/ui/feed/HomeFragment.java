@@ -4,11 +4,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +18,12 @@ import android.widget.ProgressBar;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Category;
+import com.example.buckos.models.Follow;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.example.buckos.models.Story;
 import com.example.buckos.models.User;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -37,10 +41,11 @@ public class HomeFragment extends Fragment {
 
     private StoriesAdapter mAdapter;
     private List<Story> mStories;
-    private ArrayList<Story> mCachedStories;
+
     private ProgressBar mHomeProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
+    private ConstraintLayout mWelcomeLayout;
+    private RecyclerView mFollowSuggestionsRecyclerView;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -56,12 +61,15 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find views
         RecyclerView storiesRecyclerView = view.findViewById(R.id.storiesRv);
+        mFollowSuggestionsRecyclerView = view.findViewById(R.id.userSuggestionsRv);
         mHomeProgressBar = view.findViewById(R.id.homeProgressBar);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        mWelcomeLayout = view.findViewById(R.id.welcomeLayout);
 
+        // set up adapter for stories
         mStories = new ArrayList<>();
-        mCachedStories = new ArrayList<>();
         mAdapter = new StoriesAdapter(mStories, getContext(), this);
         storiesRecyclerView.setAdapter(mAdapter);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -75,8 +83,6 @@ public class HomeFragment extends Fragment {
     private void setPullToRefreshContainer() {
         // Setup refresh listener which triggers new data loading
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            mStories.clear();
-            mStories.addAll(mCachedStories);
             queryStoriesFromFriends();
         });
     }
@@ -156,7 +162,11 @@ public class HomeFragment extends Fragment {
         if (mStories.size() == 0) {
             mHomeProgressBar.setVisibility(View.GONE);
             mSwipeRefreshLayout.setRefreshing(false);
+            displayWelcomeLayout();
+            return;
         }
+
+        mWelcomeLayout.setVisibility(View.GONE);
 
         for (Story story : mStories) {
             Item item = (Item) story.getItem();
@@ -174,6 +184,56 @@ public class HomeFragment extends Fragment {
             mHomeProgressBar.setVisibility(View.GONE);
             mSwipeRefreshLayout.setRefreshing(false);
         });
+    }
+
+    private void displayWelcomeLayout() {
+        mWelcomeLayout.setVisibility(View.VISIBLE);
+
+        // set up adapter that displays follow suggestions for new user
+        List<User> followSuggestions = new ArrayList<>();
+        FollowSuggestionsAdapter adapter = new FollowSuggestionsAdapter(followSuggestions, getContext());
+        mFollowSuggestionsRecyclerView.setAdapter(adapter);
+        mFollowSuggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+
+        queryFollowSuggestions(followSuggestions, adapter);
+    }
+
+    private void queryFollowSuggestions(List<User> followSuggestions, FollowSuggestionsAdapter adapter) {
+        User currentUser = (User) ParseUser.getCurrentUser();
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+
+        query.whereNotEqualTo(User.KEY_OBJECT_ID, currentUser.getObjectId());
+        query.findInBackground((users, e) -> {
+            for (User user : users) {
+                ParseQuery<Follow> queryFollow = ParseQuery.getQuery(Follow.class);
+                queryFollow.whereEqualTo(Follow.KEY_FROM, currentUser);
+                queryFollow.whereEqualTo(Follow.KEY_TO, user);
+                queryFollow.countInBackground((count, e12) -> {
+                    // if have yet followed
+                    if (count == 0) {
+
+                    }
+                });
+
+
+                // Only suggest users who have more than 1 interest
+                ParseQuery<Category> queryInterests = user.getInterests().getQuery();
+                queryInterests.countInBackground((count, e1) -> {
+                    if (count > 0) {
+                        
+                    }
+                });
+            }
+        });
+
+
+    }
+
+    private void suggestIfHaveNotFollowed(List<User> followSuggestions,
+                                          FollowSuggestionsAdapter adapter, User user) {
+        ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
+        query.whereEq
     }
 
 }

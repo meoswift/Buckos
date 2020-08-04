@@ -1,14 +1,19 @@
 package com.example.buckos.models;
 
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.util.List;
 import java.util.Objects;
 
 // This class represents an User - with information like name, username, bio, following suggestions
@@ -23,6 +28,7 @@ public class User extends ParseUser {
     public static final String KEY_INTERESTS = "interests";
     public static final String KEY_FRIENDS = "friends";
     private String followedBy = "";
+    public String interestedIn = "";
 
     public void setName(String name) {
         put(KEY_NAME, name);
