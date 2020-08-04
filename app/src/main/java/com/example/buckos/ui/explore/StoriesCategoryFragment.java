@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -61,6 +62,7 @@ public class StoriesCategoryFragment extends Fragment {
 
         // find views
         mStoriesCategoryProgressBar = view.findViewById(R.id.storiesCategoryProgressBar);
+        ImageButton backButton = view.findViewById(R.id.backButton);
 
         // get the selected category
         Bundle bundle = getArguments();
@@ -76,6 +78,9 @@ public class StoriesCategoryFragment extends Fragment {
         storiesRecyclerView.setAdapter(mAdapter);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        backButton.setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
 
         // get all stories of this category
         queryStoriesOfCategory();

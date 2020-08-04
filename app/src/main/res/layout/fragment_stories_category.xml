@@ -24,10 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:padding="8dp"
-        android:src="@drawable/ic_baseline_keyboard_backspace_24"
         android:tint="@color/colorWhite"
+        android:src="@drawable/ic_baseline_keyboard_backspace_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +39,7 @@
         android:layout_marginStart="8dp"
         android:text="Category name"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/categoryToolbar"
         app:layout_constraintStart_toEndOf="@+id/backButton"

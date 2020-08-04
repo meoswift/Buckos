@@ -5,6 +5,8 @@ import com.parse.ParseObject;
 
 import org.parceler.Parcel;
 
+// Follow object represents the Follow relationship between one user to another. When an user
+// follow a new user, a new Follow object is created
 @ParseClassName("Follow")
 @Parcel(analyze = {Follow.class})
 public class Follow extends ParseObject {

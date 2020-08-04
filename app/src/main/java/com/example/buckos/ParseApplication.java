@@ -9,6 +9,7 @@ import com.example.buckos.models.Follow;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Like;
 import com.example.buckos.models.Photo;
+import com.example.buckos.models.Search;
 import com.example.buckos.models.User;
 import com.example.buckos.models.Story;
 import com.parse.Parse;
@@ -36,6 +37,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Category.class);
         ParseObject.registerSubclass(Follow.class);
         ParseObject.registerSubclass(Like.class);
+        ParseObject.registerSubclass(Search.class);
 
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY

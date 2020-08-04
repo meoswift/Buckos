@@ -18,9 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.Follow;
+import com.example.buckos.models.Search;
 import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.userprofile.FollowingFragment;
 import com.example.buckos.ui.buckets.userprofile.ProfileFragment;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -31,6 +33,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.util.Date;
 import java.util.List;
 
 // Adapter that inflates one User item to view and display in RecyclerView
@@ -118,6 +121,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     fragment.setArguments(bundle);
                 }
 
+                recordSearchHistory(user);  // add selected user to search history
+
                 mFragment.getParentFragmentManager().beginTransaction()
                         .replace(R.id.your_placeholder, fragment)
                         .addToBackStack(null)
@@ -134,6 +139,26 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             else
                 Glide.with(mContext).load(R.drawable.no_profile_pic)
                         .circleCrop().into(profilePicImageView);
+        }
+
+
+        // When user click on someone's profile in search results, record into recent search
+        private void recordSearchHistory(User user) {
+            ParseQuery<Search> query = ParseQuery.getQuery(Search.class);
+            query.whereEqualTo(Search.KEY_FROM_USER, mCurrentUser);
+            query.whereEqualTo(Search.KEY_TO_USER, user);
+            query.getFirstInBackground((result, e) -> {
+                if (result == null) {
+                    // not searched yet, create new search
+                    Search search = new Search(mCurrentUser, user, new Date());
+                    search.saveInBackground();
+                } else {
+                    // searched already, update search time
+                    result.modifySearchTime(new Date());
+                    result.saveInBackground();
+                }
+            });
+
         }
     }
 

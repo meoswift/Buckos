@@ -11,6 +11,8 @@ import org.parceler.Parcel;
 
 import java.util.Objects;
 
+// This class represents an User - with information like name, username, bio, following suggestions
+// and interests.
 @ParseClassName("_User")
 @Parcel(analyze = {User.class})
 public class User extends ParseUser {

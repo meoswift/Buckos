@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+// This object represents the category of a list, item, story, and user's interests. There are
+// 6 categories that users can choose from.
 @ParseClassName("Category")
 @Parcel(analyze = {Category.class})
 public class Category extends ParseObject {
@@ -43,7 +45,6 @@ public class Category extends ParseObject {
     public String toString() {
         return getCategoryName();
     }
-
 
     public String getName() {
         return mName;
