@@ -1,9 +1,11 @@
 package com.example.buckos.ui.explore;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,15 +42,19 @@ public class ExploreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         RecyclerView categoriesRecyclerView = view.findViewById(R.id.categoriesRv);
         TextView searchBoxTextView = view.findViewById(R.id.searchBox);
+
+        // set the status bar color to white after changing
+        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.colorWhite));
 
         // allows for optimizations in RecyclerView
         categoriesRecyclerView.setHasFixedSize(true);
 
         // Define 2 column grid layout - display 6 categories of bucket lists
         categoriesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mAdapter = new CategoriesAdapter(getContext(), Category.getCategories());
+        mAdapter = new CategoriesAdapter(getContext(), this, Category.getCategories());
         categoriesRecyclerView.setAdapter(mAdapter);
 
         // when user click on search box, directs user to search fragment

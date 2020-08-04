@@ -62,7 +62,7 @@ public class Category extends ParseObject {
         List<Category> categories = new ArrayList<>();
         categories.add(new Category("Travel", R.drawable.travel, "#e76f51"));          // blue
         categories.add(new Category("Food & Drinks", R.drawable.food, "#F6AE2D"));   // red
-        categories.add(new Category("Just For Fun", R.drawable.jff, "#86BBD8"));    // orange
+        categories.add(new Category("Just for fun", R.drawable.jff, "#86BBD8"));    // orange
         categories.add(new Category("TV & Movies",R.drawable.movies, "#33658A"));     // yellow
         categories.add(new Category("Education", R.drawable.education, "#43AA8B"));       // purple
         categories.add(new Category("Sports", R.drawable.sports, "#2F4858"));          // green

@@ -40,10 +40,10 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
 
         // coming from home feed or explore tab with an item
         Intent intent = getIntent();
-        if (intent != null) {
-            Story story = Parcels.unwrap(intent.getParcelableExtra("story"));
+        Story story = Parcels.unwrap(intent.getParcelableExtra("story"));
+        if (story != null)
             mItemTitleEditText.setText(story.getTitle());
-        }
+
 
         mCreateButton.setOnClickListener(this);
         mCloseButton.setOnClickListener(this);

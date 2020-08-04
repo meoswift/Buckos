@@ -209,8 +209,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-
-
     // Post story of a completed item to Home feed
     private void postNewStory() {
         // create new story instance

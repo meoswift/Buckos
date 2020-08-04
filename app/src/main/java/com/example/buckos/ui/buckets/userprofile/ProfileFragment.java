@@ -55,6 +55,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private SwipeRefreshLayout swipeContainer;
     private TextView mFollowingTextView;
     private TextView mFollowersTextView;
+    private TextView mStoriesTextView;
+
 
     private User user;
     private List<Story> mUserStories;
@@ -88,6 +90,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
         mFollowingTextView = view.findViewById(R.id.followingCountTv);
         mFollowersTextView = view.findViewById(R.id.followersCountTv);
+        mStoriesTextView = view.findViewById(R.id.storiesCountTv);
 
         ImageView backButton = view.findViewById(R.id.backButton);
         LinearLayout followingLabel = view.findViewById(R.id.following);
@@ -125,6 +128,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         setFollowingCount();
         setFollowersCount();
         setProfilePic();
+        setStoriesCount();
 
         setAdapterForUserStories();
     }
@@ -193,11 +197,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void setFollowingCount() {
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_FROM, user);
-        query.findInBackground(new FindCallback<Follow>() {
-            @Override
-            public void done(List<Follow> followList, ParseException e) {
-                mFollowingTextView.setText(String.valueOf(followList.size()));
-            }
+        query.countInBackground((count, e) -> {
+            mFollowingTextView.setText(String.valueOf(count));
         });
     }
 
@@ -205,13 +206,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void setFollowersCount() {
         ParseQuery<Follow> query = ParseQuery.getQuery(Follow.class);
         query.whereEqualTo(Follow.KEY_TO, user);
-        query.findInBackground(new FindCallback<Follow>() {
-            @Override
-            public void done(List<Follow> followList, ParseException e) {
-                mFollowersTextView.setText(String.valueOf(followList.size()));
-            }
+        query.countInBackground((count, e) -> {
+            mFollowersTextView.setText(String.valueOf(count));
         });
     }
+
+    // Set the number of following
+    private void setStoriesCount() {
+        ParseQuery<Story> query = ParseQuery.getQuery(Story.class);
+        // include objects related to a story
+        query.whereEqualTo(Story.KEY_AUTHOR, user);
+        query.countInBackground((count, e) -> {
+            mStoriesTextView.setText(String.valueOf(count));
+        });
+    }
+
 
     // When user click edit or Log out, executes appropriate task
     private void handleProfileMenuClicked() {

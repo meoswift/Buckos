@@ -93,10 +93,6 @@ public class Story extends ParseObject {
         put(KEY_CATEGORY, category);
     }
 
-    public ParseRelation<User> getLikes() {
-        return getRelation(KEY_LIKES);
-    }
-
     public String getFormatedTime() {
         long dateMillis = getCreatedAt().getTime();
         String ago = DateUtils.getRelativeTimeSpanString(dateMillis,
@@ -130,7 +126,7 @@ public class Story extends ParseObject {
 
     public void deleteLikesInStory(Story story) {
         ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-        query.whereEqualTo(Comment.KEY_STORY, story);
+        query.whereEqualTo(Like.KEY_TO_STORY, story);
         query.findInBackground((likes, e) -> {
             for (Like like : likes) {
                 like.deleteInBackground();

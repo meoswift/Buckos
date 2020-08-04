@@ -2,6 +2,9 @@ package com.example.buckos.ui.explore;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +13,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buckos.R;
 import com.example.buckos.models.Category;
+import com.example.buckos.ui.buckets.userprofile.FollowersFragment;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -22,10 +29,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     private Context mContext;
     private List<Category> mCategories;
+    private Fragment mFragment;
 
-    public CategoriesAdapter(Context context, List<Category> categories) {
-        this.mContext = context;
-        this.mCategories = categories;
+    public CategoriesAdapter(Context context, Fragment fragment, List<Category> categories) {
+        mContext = context;
+        mFragment = fragment;
+        mCategories = categories;
     }
 
     @NonNull
@@ -59,6 +68,26 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             categoryLayout = itemView.findViewById(R.id.categoryLayout);
             categoryNameTextView = itemView.findViewById(R.id.categoryName);
             categoryIconImageView = itemView.findViewById(R.id.categoryIcon);
+
+            itemView.setOnClickListener(v -> {
+                queryStoriesOfSelectedCategory();
+            });
+        }
+
+        private void queryStoriesOfSelectedCategory() {
+            Category category = mCategories.get(getAdapterPosition());
+
+            // specify which category
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("category", Parcels.wrap(category));
+
+            // opens fragment with stories of this category
+            Fragment fragment = new StoriesCategoryFragment();
+            fragment.setArguments(bundle);
+            mFragment.getParentFragmentManager().beginTransaction()
+                    .replace(R.id.your_placeholder, fragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

@@ -21,7 +21,7 @@
 
     <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
-        <item name="android:navigationBarColor">#D3D3D3</item>
+        <item name="android:navigationBarColor">#52000000</item>
     </style>
 
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />

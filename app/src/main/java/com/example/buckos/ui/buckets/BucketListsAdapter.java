@@ -155,13 +155,10 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     private void deleteItemsInList(BucketList list) {
         ParseQuery<Item> query = ParseQuery.getQuery(Item.class);
         query.whereEqualTo(Item.KEY_LIST, list);
-        query.findInBackground(new FindCallback<Item>() {
-            @Override
-            public void done(List<Item> objects, ParseException e) {
-                for (int i = 0; i < objects.size(); i++) {
-                    final Item item = objects.get(i);
-                    item.deleteInBackground();
-                }
+        query.findInBackground((objects, e) -> {
+            for (int i = 0; i < objects.size(); i++) {
+                final Item item = objects.get(i);
+                item.deleteInBackground();
             }
         });
     }
@@ -170,13 +167,10 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     private void deleteAllPhotosInList(BucketList list) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Photo.KEY_LIST, list);
-        query.findInBackground(new FindCallback<Photo>() {
-            @Override
-            public void done(List<Photo> photos, ParseException e) {
-                for (int i = 0; i < photos.size(); i++) {
-                    Photo photo = photos.get(i);
-                    photo.deleteInBackground();
-                }
+        query.findInBackground((photos, e) -> {
+            for (int i = 0; i < photos.size(); i++) {
+                Photo photo = photos.get(i);
+                photo.deleteInBackground();
             }
         });
     }

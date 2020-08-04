@@ -106,9 +106,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         // display the photos in a story
         holder.setAdapterForPhotos(story);
 
-        holder.storyMoreMenu.setOnClickListener(v -> {
-            holder.handleStoryMenuClicked();
-        });
     }
 
     private void openProfile(User author) {
@@ -235,9 +232,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
             // adding click listener
             popup.setOnMenuItemClickListener(item -> {
-                Log.d("debug", "hello");
                 if (item.getItemId() == R.id.action_save) {
-                    Log.d("debug", "hello3");
                     saveItemToList(getAdapterPosition());
                 }
                 return false;
@@ -246,19 +241,15 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
         // On click, either like or unlike the story. update database accordingly.
         private void toggleLikeStory(final Story story) {
-            final ParseRelation<User> likes = story.getLikes();
-            ParseQuery<User> query = likes.getQuery();
-
-            query.findInBackground(new FindCallback<User>() {
-                @Override
-                public void done(List<User> likes, ParseException e) {
-                    // user already liked story
-                    if (likes.contains(mCurrentUser)) {
-                        unlikeStory(story);
-                    // user has not liked story
-                    } else {
-                        likeStory(story);
-                    }
+            ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+            query.whereEqualTo(Like.KEY_TO_STORY, story);
+            query.whereEqualTo(Like.KEY_FROM_USER, mCurrentUser);
+            query.findInBackground((likes, e) -> {
+                // user haven't liked story
+                if (likes.size() == 0) {
+                    likeStory(story);
+                } else {
+                    unlikeStory(story);
                 }
             });
 
@@ -266,35 +257,26 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
         private void likeStory(Story story) {
             int currentLikeCount = Integer.parseInt(likesCountTextView.getText().toString());
-            ParseRelation<User> likes = story.getLikes();
 
             Like like = new Like();
             like.setLikeFromUser(mCurrentUser);
             like.setLikeToStory(story);
             like.saveInBackground();
             likesCountTextView.setText(String.valueOf(currentLikeCount + 1));
-            likes.add(mCurrentUser);
             updateLikeButtonOnLikeStatus(heartButton, true);
-            story.saveInBackground();
         }
 
         private void unlikeStory(final Story story) {
             final int currentLikeCount = Integer.parseInt(likesCountTextView.getText().toString());
-            final ParseRelation<User> likes = story.getLikes();
 
             ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
             query.whereEqualTo(Like.KEY_FROM_USER, mCurrentUser);
             query.whereEqualTo(Like.KEY_TO_STORY, story);
-            query.findInBackground(new FindCallback<Like>() {
-                @Override
-                public void done(List<Like> likeList, ParseException e) {
-                    Like like = likeList.get(0);
-                    like.deleteInBackground();
-                    likesCountTextView.setText(String.valueOf(currentLikeCount - 1));
-                    likes.remove(mCurrentUser);
-                    updateLikeButtonOnLikeStatus(heartButton,false);
-                    story.saveInBackground();
-                }
+            query.findInBackground((likeList, e) -> {
+                Like like = likeList.get(0);
+                like.deleteInBackground();
+                likesCountTextView.setText(String.valueOf(currentLikeCount - 1));
+                updateLikeButtonOnLikeStatus(heartButton,false);
             });
 
         }
@@ -303,19 +285,15 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     // query whether an user has liked a button or not. set the drawable for like button
     // based on like status
     private void setLikeButtonOnLikeStatus(final ImageButton heartButton, Story story) {
-        final ParseRelation<User> likes = story.getLikes();
-        ParseQuery<User> query = likes.getQuery();
-
-        query.findInBackground(new FindCallback<User>() {
-            @Override
-            public void done(List<User> likes, ParseException e) {
-                if (likes.contains(mCurrentUser)) {
-                    // user already liked story
-                    updateLikeButtonOnLikeStatus(heartButton, true);
-                } else {
-                    // user has not liked story
-                    updateLikeButtonOnLikeStatus(heartButton, false);
-                }
+        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+        query.whereEqualTo(Like.KEY_TO_STORY, story);
+        query.whereEqualTo(Like.KEY_FROM_USER, mCurrentUser);
+        query.findInBackground((likes, e) -> {
+            // user haven't liked story
+            if (likes.size() == 0) {
+                updateLikeButtonOnLikeStatus(heartButton, false);
+            } else {
+                updateLikeButtonOnLikeStatus(heartButton, true);
             }
         });
 
@@ -347,8 +325,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
     // query for total number of likes on a Story
     private void getLikesCount(final TextView likesCount, Story story) {
-        final ParseRelation<User> likes = story.getLikes();
-        ParseQuery<User> query = likes.getQuery();
+        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+        query.whereEqualTo(Like.KEY_TO_STORY, story);
         query.countInBackground((count, e) -> {
             likesCount.setText(String.valueOf(count));
         });
