@@ -31,12 +31,14 @@ import com.example.buckos.models.Place;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Headers;
 
+import static android.app.Activity.RESULT_OK;
 import static android.telephony.MbmsDownloadSession.RESULT_CANCELLED;
 
 // Fragment that displays a list of tourist attractions based on user's query.

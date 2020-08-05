@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.buckos.R;
@@ -41,7 +42,10 @@ import static com.parse.ParseQuery.*;
 public class HomeFragment extends Fragment {
 
     private StoriesAdapter mAdapter;
+    private FollowSuggestionsAdapter followAdapter;
     private List<Story> mStories;
+    private List<User> followSuggestions;
+    private List<User> cachedSuggestions;
 
     private ProgressBar mHomeProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -68,6 +72,11 @@ public class HomeFragment extends Fragment {
         mHomeProgressBar = view.findViewById(R.id.homeProgressBar);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         mWelcomeLayout = view.findViewById(R.id.welcomeLayout);
+
+        // initialize following suggestions
+        followSuggestions = new ArrayList<>();
+        cachedSuggestions = new ArrayList<>();
+        followAdapter = new FollowSuggestionsAdapter(followSuggestions, getContext(), this);
 
         // set up adapter for stories
         mStories = new ArrayList<>();
@@ -194,15 +203,18 @@ public class HomeFragment extends Fragment {
         mWelcomeLayout.setVisibility(View.VISIBLE);
 
         // set up adapter that displays follow suggestions for new user
-        List<User> followSuggestions = new ArrayList<>();
-        FollowSuggestionsAdapter adapter = new FollowSuggestionsAdapter(followSuggestions,
-                                                                        getContext(), this);
-        mFollowSuggestionsRecyclerView.setAdapter(adapter);
+        mFollowSuggestionsRecyclerView.setAdapter(followAdapter);
         mFollowSuggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         mFollowSuggestionsRecyclerView.setItemViewCacheSize(20);
 
-        queryFollowSuggestions(followSuggestions, adapter);
+        if (cachedSuggestions.size() == 0)
+            queryFollowSuggestions(followSuggestions, followAdapter);
+        else {
+            followSuggestions.clear();
+            followSuggestions.addAll(cachedSuggestions);
+            followAdapter.notifyDataSetChanged();
+        }
     }
 
     // get a list of follow suggestions for users who just created an account
@@ -224,6 +236,7 @@ public class HomeFragment extends Fragment {
                         friendsQuery.findInBackground((friends, e2) -> {
                             if (!friends.contains(user)) {
                                 followSuggestions.add(user);
+                                cachedSuggestions.add(user);
                                 adapter.notifyDataSetChanged();
                             }
                         });
@@ -232,5 +245,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
 }

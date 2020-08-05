@@ -3,16 +3,19 @@ package com.example.buckos.ui.travel;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,11 +60,15 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         holder.ratingBar.setRating(place.getRating());
         holder.userRating.setText(String.valueOf(place.getRating()));
         holder.userRatingCount.setText(place.getUserRatingsTotal());
-        holder.bookmarkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.savePlaceToList();
-            }
+        holder.placeCardView.setOnClickListener(v -> {
+            holder.savePlaceToList();
+        });
+
+        holder.pinButton.setOnClickListener(v -> {
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + place.getName());
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            mContext.startActivity(mapIntent);
         });
     }
 
@@ -77,7 +84,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         private RatingBar ratingBar;
         private TextView userRating;
         private TextView userRatingCount;
-        private ImageView bookmarkButton;
+        private CardView placeCardView;
+        private ImageButton pinButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,7 +95,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             ratingBar = itemView.findViewById(R.id.ratingBar);
             userRating = itemView.findViewById(R.id.userRating);
             userRatingCount = itemView.findViewById(R.id.userRatingCount);
-            bookmarkButton = itemView.findViewById(R.id.bookmarkButton);
+            placeCardView = itemView.findViewById(R.id.placeCard);
+            pinButton = itemView.findViewById(R.id.pinButton);
         }
 
         // Bookmark place - User can add to multiple lists or add to a new one
@@ -95,22 +104,17 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             Place place = mPlaces.get(getAdapterPosition());
             place.setBookmarked(!place.isBookmarked());
 
-            final Drawable bookmarked = mContext.getDrawable(R.drawable.baseline_bookmark);
-            if (place.isBookmarked()) {
-                bookmarkButton.setImageDrawable(bookmarked);
-                Item item = new Item();
-                item.setName(place.getName());
-                item.setCompleted(false);
-                item.setAuthor(ParseUser.getCurrentUser());
-                item.setDescription(place.getAddressName());
+            Item item = new Item();
+            item.setName(place.getName());
+            item.setCompleted(false);
+            item.setAuthor(ParseUser.getCurrentUser());
+            item.setDescription(place.getAddressName());
 
-                Intent intent = new Intent(mContext, SaveToListActivity.class);
-                intent.putExtra("item", Parcels.wrap(item));
-                mFragment.startActivityForResult(intent, SAVE_TO_LIST);
-            } else {
-                Toast.makeText(mContext, "Place already saved!", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(mContext, SaveToListActivity.class);
+            intent.putExtra("item", Parcels.wrap(item));
+            mFragment.startActivityForResult(intent, SAVE_TO_LIST);
         }
+
     }
 
 }

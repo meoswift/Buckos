@@ -173,13 +173,6 @@ public class InProgressFragment extends Fragment {
                     mItemsList.remove(position);
                     Snackbar.make(this.getView(), R.string.item_delete, Snackbar.LENGTH_SHORT).show();
                     break;
-                case ItemDetailsActivity.POST_ITEM:
-                    Intent intent = new Intent();
-
-                    // finish ListDetailsActivity and back to BucketsFragment
-                    getActivity().setResult(RESULT_OK, intent);
-                    getActivity().finish();
-                    break;
             }
 
             mAdapter.notifyDataSetChanged();

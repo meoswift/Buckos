@@ -156,6 +156,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             mItemNoteEditText.setText(item.getDescription());
         // If item clicked on is already completed, do not show option to Share
         if (!item.getCompleted()) {
+            mPostTextView.setText(null);
             mListStatusTextView.setText("In progress");
         }
         mPhotosAdapter.displayPhotosInCurrentItem(item);

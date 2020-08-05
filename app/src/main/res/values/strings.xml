@@ -104,7 +104,7 @@
     <string name="bottom_sheet_option_heading">Add Photo</string>
     <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
     <string name="item_delete">Item deleted</string>
-    <string name="follow_ppl_label">Follow people and see their stories about bucket list items they have accomplished</string>
+    <string name="follow_ppl_label">Follow people and see stories about bucket list items they have accomplished!</string>
     <string name="achievement">shared an achievement</string>
     <string name="goal">updated a new goal</string>
 </resources>

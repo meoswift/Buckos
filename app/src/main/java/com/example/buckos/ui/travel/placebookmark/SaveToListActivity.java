@@ -67,13 +67,11 @@ public class SaveToListActivity extends AppCompatActivity {
         saveToSelectedLists();
         createListOnClicked();
 
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                setResult(RESULT_CANCELED, intent);
-                finish();
-            }
+        mBackButton.setOnClickListener(v -> {
+            Intent intent1 = new Intent();
+            setResult(RESULT_CANCELED, intent1);
+            Toast.makeText(SaveToListActivity.this, "Not saved", Toast.LENGTH_SHORT).show();
+            finish();
         });
     }
 
@@ -132,23 +130,19 @@ public class SaveToListActivity extends AppCompatActivity {
         newItem.setList(list);
         newItem.setCategory(list.getCategory());
         // Save to database
-        newItem.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                finish();
-            }
+        newItem.saveInBackground(e -> {
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
         });
     }
 
     private void createListOnClicked() {
-        mCreateListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NewTravelListActivity.class);
-                intent.putExtra("item", Parcels.wrap(item));
-                startActivity(intent);
-                finish();
-            }
+        mCreateListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), NewTravelListActivity.class);
+            intent.putExtra("item", Parcels.wrap(item));
+            startActivity(intent);
+            finish();
         });
     }
 

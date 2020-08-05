@@ -4,75 +4,116 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="16dp"
-    android:animateLayoutChanges="true">
+    android:paddingBottom="8dp"
+    android:clipToPadding="false">
 
-    <TextView
-        android:id="@+id/placeNameTv"
-        android:layout_width="0dp"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/placeCard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Name"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/bookmarkButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/placeAddressTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="Address"
-        android:textColor="#5A5A5A"
-        app:layout_constraintEnd_toStartOf="@+id/bookmarkButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        style="@style/Widget.AppCompat.RatingBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:progressTint="#FDD835"
-        app:layout_constraintStart_toEndOf="@+id/userRating"
-        app:layout_constraintTop_toBottomOf="@+id/placeNameTv" />
-
-    <TextView
-        android:id="@+id/userRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="4.6"
-        android:textColor="#5A5A5A"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/placeNameTv" />
-
-    <TextView
-        android:id="@+id/userRatingCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="(12497)"
-        app:layout_constraintBottom_toTopOf="@+id/placeAddressTv"
-        app:layout_constraintStart_toEndOf="@+id/ratingBar"
-        app:layout_constraintTop_toBottomOf="@+id/placeNameTv" />
-
-    <ImageView
-        android:id="@+id/bookmarkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:checkable="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/outline_bookmark" />
+        app:cardElevation="4dp"
+        app:cardCornerRadius="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:id="@+id/placeNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="Name"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/pinButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/placeAddressTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Address"
+                android:textColor="#5A5A5A"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/pinButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:progressTint="#FDD835"
+                app:layout_constraintStart_toEndOf="@+id/userRating"
+                app:layout_constraintTop_toBottomOf="@+id/placeNameTv" />
+
+            <TextView
+                android:id="@+id/userRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="4.6"
+                android:textColor="#5A5A5A"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/placeNameTv" />
+
+            <TextView
+                android:id="@+id/userRatingCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="(12497)"
+                app:layout_constraintBottom_toTopOf="@+id/placeAddressTv"
+                app:layout_constraintStart_toEndOf="@+id/ratingBar"
+                app:layout_constraintTop_toBottomOf="@+id/placeNameTv" />
+
+            <TextView
+                android:id="@+id/savedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:visibility="gone"
+                android:text="SAVED"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/pinButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_pin" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

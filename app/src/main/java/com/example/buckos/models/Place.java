@@ -15,7 +15,7 @@ public class Place {
     private String mAddressName;
     private Double mRating;
     private int mUserRatingsTotal;
-    private boolean isBookmarked;
+    private boolean isBookmarked = false;
 
     // no-arg, empty constructor required for Parceler
     public Place() {

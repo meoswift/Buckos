@@ -232,24 +232,6 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <Button
-        android:id="@+id/followButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:insetTop="12sp"
-        android:insetBottom="12sp"
-        android:text="Follow"
-        android:minWidth="0dp"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/profileToolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/colorPrimaryDark" />
-
     <LinearLayout
         android:id="@+id/emptyLabel"
         android:layout_width="match_parent"
