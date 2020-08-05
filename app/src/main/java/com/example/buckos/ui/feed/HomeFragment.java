@@ -84,6 +84,7 @@ public class HomeFragment extends Fragment {
     private void setPullToRefreshContainer() {
         // Setup refresh listener which triggers new data loading
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mStories.clear();
             queryStoriesFromFriends();
         });
     }
@@ -179,6 +180,7 @@ public class HomeFragment extends Fragment {
     private void queryPhotosInStory(final Story story, Item item) {
         ParseQuery<Photo> query = getQuery(Photo.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
+        query.include(Photo.KEY_AUTHOR);
         query.findInBackground((photos, e) -> {
             story.setPhotosInStory(photos);
             mAdapter.notifyDataSetChanged();

@@ -56,6 +56,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private TextView mFollowersTextView;
     private TextView mStoriesTextView;
     private TextView mNameHeaderTextView;
+    private LinearLayout emptyLayout;
 
     private User user;
     private List<Story> mUserStories;
@@ -90,7 +91,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         mFollowersTextView = view.findViewById(R.id.followersCountTv);
         mStoriesTextView = view.findViewById(R.id.storiesCountTv);
         mNameHeaderTextView = view.findViewById(R.id.nameHeaderTv);
-
+        emptyLayout = view.findViewById(R.id.emptyLabel);
 
         ImageView backButton = view.findViewById(R.id.backButton);
         LinearLayout followingLabel = view.findViewById(R.id.following);
@@ -158,6 +159,12 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
                 mUserStories.add(story);
                 queryPhotosInStory(story, item);
             }
+
+            if (stories.size() == 0) {
+                emptyLayout.setVisibility(View.VISIBLE);
+            } else {
+                emptyLayout.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -165,6 +172,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private void queryPhotosInStory(final Story story, Item item) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
+        query.include(Photo.KEY_AUTHOR);
         query.findInBackground((photos, e) -> {
             story.setPhotosInStory(photos);
             mStoriesAdapter.notifyDataSetChanged();

@@ -56,6 +56,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView mFollowingTextView;
     private TextView mFollowersTextView;
     private TextView mStoriesTextView;
+    private LinearLayout mEmptyLayout;
 
 
     private User user;
@@ -91,6 +92,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mFollowingTextView = view.findViewById(R.id.followingCountTv);
         mFollowersTextView = view.findViewById(R.id.followersCountTv);
         mStoriesTextView = view.findViewById(R.id.storiesCountTv);
+        mEmptyLayout = view.findViewById(R.id.emptyLabel);
 
         ImageView backButton = view.findViewById(R.id.backButton);
         LinearLayout followingLabel = view.findViewById(R.id.following);
@@ -163,6 +165,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     mUserStories.add(story);
                     queryPhotosInStory(story, item);
                 }
+
+                if (stories.size() == 0) {
+                    mEmptyLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mEmptyLayout.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -171,6 +179,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void queryPhotosInStory(final Story story, Item item) {
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
+        query.include(Photo.KEY_AUTHOR);
         query.findInBackground(new FindCallback<Photo>() {
             @Override
             public void done(List<Photo> photos, ParseException e) {

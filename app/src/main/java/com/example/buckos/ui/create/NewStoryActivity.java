@@ -3,11 +3,9 @@ package com.example.buckos.ui.create;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,15 +13,11 @@ import android.widget.Toast;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Item;
-import com.example.buckos.models.Photo;
 import com.example.buckos.models.Story;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +94,7 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private Story createStoryFromSelectedItem(Item item) {
+    private void createStoryFromSelectedItem(Item item) {
         Story story = new Story();
 
         // set core properties of a story
@@ -112,13 +106,8 @@ public class NewStoryActivity extends AppCompatActivity implements View.OnClickL
         story.setCategory(item.getCategory());
 
         // save in database
-        story.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Toast.makeText(NewStoryActivity.this, "New story posted!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        story.saveInBackground(e -> Toast.makeText(NewStoryActivity.this,
+                        "New story posted!", Toast.LENGTH_SHORT).show());
 
-        return story;
     }
 }

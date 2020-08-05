@@ -13,6 +13,8 @@ public class Photo extends ParseObject {
     public static final String KEY_IMAGE_FILE = "image";
     public static final String KEY_ITEM = "item";
     public static final String KEY_LIST = "list";
+    public static final String KEY_AUTHOR = "author";
+
 
     public ParseFile getPhotoFile() {
         return getParseFile(KEY_IMAGE_FILE);
@@ -36,5 +38,13 @@ public class Photo extends ParseObject {
 
     public void setList(BucketList list) {
         put(KEY_LIST, list);
+    }
+
+    public void setAuthor(User user) {
+        put(KEY_AUTHOR, user);
+    }
+
+    public User getAuthor() {
+        return (User) getParseUser(KEY_AUTHOR);
     }
 }

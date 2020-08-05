@@ -91,6 +91,8 @@ public class DoneFragment extends Fragment {
 
                 if (mItemsList.size() == 0) {
                     mInstructionsLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mInstructionsLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -121,6 +123,7 @@ public class DoneFragment extends Fragment {
                     // finish ListDetailsActivity and back to BucketsFragment
                     getActivity().setResult(RESULT_OK, intent);
                     getActivity().finish();
+                    break;
             }
 
             mAdapter.notifyDataSetChanged();

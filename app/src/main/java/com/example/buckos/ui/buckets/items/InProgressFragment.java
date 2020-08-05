@@ -114,6 +114,8 @@ public class InProgressFragment extends Fragment {
 
                 if (mItemsList.size() == 0) {
                     mInstructionsLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mInstructionsLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -145,6 +147,7 @@ public class InProgressFragment extends Fragment {
                 mItemsList.add(0, item);
                 mAdapter.notifyItemInserted(0);
                 mItemsRecyclerView.scrollToPosition(0);
+                mInstructionsLayout.setVisibility(View.GONE);
             }
         });
 
@@ -169,6 +172,13 @@ public class InProgressFragment extends Fragment {
                 case ItemDetailsActivity.DELETE_ITEM:
                     mItemsList.remove(position);
                     Snackbar.make(this.getView(), R.string.item_delete, Snackbar.LENGTH_SHORT).show();
+                    break;
+                case ItemDetailsActivity.POST_ITEM:
+                    Intent intent = new Intent();
+
+                    // finish ListDetailsActivity and back to BucketsFragment
+                    getActivity().setResult(RESULT_OK, intent);
+                    getActivity().finish();
                     break;
             }
 

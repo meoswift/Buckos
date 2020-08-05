@@ -131,6 +131,7 @@ public class StoriesCategoryFragment extends Fragment {
     private void queryPhotosInStory(final Story story, Item item) {
         ParseQuery<Photo> query = getQuery(Photo.class);
         query.whereEqualTo(Story.KEY_ITEM, item);
+        query.include(Story.KEY_AUTHOR);
         query.findInBackground((photos, e) -> {
             story.setPhotosInStory(photos);
             mAdapter.notifyDataSetChanged();

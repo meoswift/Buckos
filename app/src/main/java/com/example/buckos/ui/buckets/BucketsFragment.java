@@ -162,6 +162,8 @@ public class BucketsFragment extends Fragment {
 
                 if (mBucketLists.size() == 0) {
                     mInstructionsLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mInstructionsLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -176,6 +178,7 @@ public class BucketsFragment extends Fragment {
             BucketList list = Parcels.unwrap(data.getParcelableExtra("list"));
             mBucketLists.add(0, list);
             mAdapter.notifyItemInserted(0);
+            mInstructionsLayout.setVisibility(View.GONE);
         }
 
         // direct user to home feed after they post a completed item

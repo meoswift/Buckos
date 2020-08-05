@@ -156,7 +156,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             mItemNoteEditText.setText(item.getDescription());
         // If item clicked on is already completed, do not show option to Share
         if (!item.getCompleted()) {
-            mPostTextView.setText(null);
             mListStatusTextView.setText("In progress");
         }
         mPhotosAdapter.displayPhotosInCurrentItem(item);
@@ -167,16 +166,13 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         item.setName(mItemTitleEditText.getText().toString());
         item.setDescription(mItemNoteEditText.getText().toString());
 
-        item.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Intent intent = new Intent();
-                intent.putExtra(ItemsAdapter.KEY_ITEM, Parcels.wrap(item));
-                intent.putExtra(ItemsAdapter.KEY_POSITION, itemPosition);
-                intent.putExtra("action", EDIT_ITEM);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+        item.saveInBackground(e -> {
+            Intent intent = new Intent();
+            intent.putExtra(ItemsAdapter.KEY_ITEM, Parcels.wrap(item));
+            intent.putExtra(ItemsAdapter.KEY_POSITION, itemPosition);
+            intent.putExtra("action", EDIT_ITEM);
+            setResult(RESULT_OK, intent);
+            finish();
         });
     }
 

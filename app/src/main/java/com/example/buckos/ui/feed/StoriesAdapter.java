@@ -26,6 +26,7 @@ import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
 import com.example.buckos.models.Comment;
+import com.example.buckos.models.Item;
 import com.example.buckos.models.Like;
 import com.example.buckos.models.Story;
 import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
@@ -142,6 +143,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         private TextView storyTimeStamp;
         private TextView listTitleTextView;
         private TextView categoryTagTextView;
+        private TextView isCompletedTextView;
         private ImageButton heartButton;
         private ImageView userProfilePic;
         private ImageButton storyMoreMenu;
@@ -162,8 +164,10 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             commentsCountTextView = itemView.findViewById(R.id.commentCountTv);
             likesCountTextView = itemView.findViewById(R.id.heartCountTv);
             userProfilePic = itemView.findViewById(R.id.userProfilePic);
-            TextView newCommentBox = itemView.findViewById(R.id.newCommentBox);
+            isCompletedTextView = itemView.findViewById(R.id.isCompletedLabel);
             storyMoreMenu = itemView.findViewById(R.id.storyMoreMenu);
+
+            TextView newCommentBox = itemView.findViewById(R.id.newCommentBox);
 
             // handle liking
             heartButton = itemView.findViewById(R.id.heartButton);
