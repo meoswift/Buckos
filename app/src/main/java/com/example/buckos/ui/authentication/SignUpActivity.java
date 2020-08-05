@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.buckos.R;
 import com.example.buckos.ui.MainActivity;
@@ -63,6 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
             // User is logged in successfully, navigate to Home/Feed.
             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
             startActivity(intent);
+            Toast.makeText(this, "Welcome to Buck It!", Toast.LENGTH_SHORT).show();
             finish(); // prevents user from going back to sign up screen
         });
     }

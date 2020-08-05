@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,7 @@ public class DoneFragment extends Fragment {
 
     private RecyclerView mItemsRecyclerView;
     private ItemsAdapter mAdapter;
+    private ConstraintLayout mInstructionsLayout;
 
     private List<Item> mItemsList;
     private BucketList mBucketList;
@@ -56,9 +58,13 @@ public class DoneFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mInstructionsLayout = view.findViewById(R.id.instructionsLayout);
+
+        // get the bucket
         Bundle bundle = this.getArguments();
         mBucketList = Parcels.unwrap(bundle.getParcelable("bucketList"));
 
+        // set up adapter
         mItemsList = new ArrayList<>();
         mItemsRecyclerView = view.findViewById(R.id.itemsRv);
         mAdapter = new ItemsAdapter(getContext(), mItemsList, this);
@@ -82,6 +88,10 @@ public class DoneFragment extends Fragment {
                 mItemsList.clear();
                 mItemsList.addAll(objects);
                 mAdapter.notifyDataSetChanged();
+
+                if (mItemsList.size() == 0) {
+                    mInstructionsLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

@@ -198,6 +198,7 @@ public class HomeFragment extends Fragment {
         mFollowSuggestionsRecyclerView.setAdapter(adapter);
         mFollowSuggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
+        mFollowSuggestionsRecyclerView.setItemViewCacheSize(20);
 
         queryFollowSuggestions(followSuggestions, adapter);
     }

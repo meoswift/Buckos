@@ -97,7 +97,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             Glide.with(this).load(image.getUrl())
                     .circleCrop().into(mProfilePicImageView);
         else
-            Glide.with(this).load(R.drawable.ic_launcher_background)
+            Glide.with(this).load(R.drawable.no_profile_pic)
                     .circleCrop().into(mProfilePicImageView);
     }
 

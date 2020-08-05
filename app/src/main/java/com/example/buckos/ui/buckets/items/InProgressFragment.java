@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,7 @@ public class InProgressFragment extends Fragment {
     private ItemsAdapter mAdapter;
     private EditText mNewItemEditText;
     private TextView mAddItemImageView;
+    private ConstraintLayout mInstructionsLayout;
 
     private List<Item> mItemsList;
     private BucketList mBucketList;
@@ -70,6 +72,7 @@ public class InProgressFragment extends Fragment {
         mNewItemEditText = view.findViewById(R.id.newItemEt);
         mAddItemImageView = view.findViewById(R.id.addItemBtn);
         mItemsRecyclerView = view.findViewById(R.id.itemsRv);
+        mInstructionsLayout = view.findViewById(R.id.instructionsLayout);
 
         // Get the current bucket list clicked on
         Bundle bundle = this.getArguments();
@@ -108,6 +111,10 @@ public class InProgressFragment extends Fragment {
                 mItemsList.clear();
                 mItemsList.addAll(objects);
                 mAdapter.notifyDataSetChanged();
+
+                if (mItemsList.size() == 0) {
+                    mInstructionsLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

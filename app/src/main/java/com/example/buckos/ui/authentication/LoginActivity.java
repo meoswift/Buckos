@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             // User is logged in successfully, navigate to Home/Feed.
             startMainActivity();
-            Toast.makeText(LoginActivity.this, "Welcome to Buck It!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
         });
     }
 

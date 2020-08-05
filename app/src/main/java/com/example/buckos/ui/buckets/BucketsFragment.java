@@ -191,7 +191,7 @@ public class BucketsFragment extends Fragment {
         if (image != null)
             Glide.with(getContext()).load(image.getUrl()).circleCrop().into(mProfilePic);
         else
-            Glide.with(getContext()).load(R.drawable.ic_launcher_background)
+            Glide.with(getContext()).load(R.drawable.no_profile_pic)
                     .circleCrop().into(mProfilePic);
     }
 

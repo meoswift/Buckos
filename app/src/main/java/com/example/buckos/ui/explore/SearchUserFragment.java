@@ -86,6 +86,7 @@ public class SearchUserFragment extends Fragment {
         // Set up adapter and layout manager for lists of user results
         mUsersList = new ArrayList<>();
         mAdapter = new UsersAdapter(mUsersList, getContext(), this);
+        userResultsRecyclerView.setItemViewCacheSize(20);
         userResultsRecyclerView.setAdapter(mAdapter);
         userResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -113,15 +114,16 @@ public class SearchUserFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (mUsernameQuery.getText().toString().isEmpty()) {
                     displaySearchHistory();
                 } else {
                     performSearch();
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
         });
 
         mUsernameQuery.setOnEditorActionListener((v, actionId, event) -> {
