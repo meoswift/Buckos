@@ -11,19 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
-import com.example.buckos.ui.explore.UsersAdapter;
-import com.parse.FindCallback;
-import com.parse.ParseException;
+import com.example.buckos.ui.explore.search.UsersAdapter;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 

@@ -108,4 +108,7 @@
     <string name="achievement">shared an achievement</string>
     <string name="goal">updated a new goal</string>
     <string name="profile_no_stories">When they share a new story about their accomplishement, you will see it here.</string>
+    <string name="giza_description">The Great Pyramid of Giza defines bucket list goals. Built over 5000 years ago, it’s the oldest and the biggest of the pyramids, the last structure of the Seven Ancient Wonders of the World that survived.</string>
+    <string name="giza_title">Get stunned by the Great Pyramid of Giza</string>
+    <string name="title_activity_category_explore">CategoryExploreActivity</string>
 </resources>

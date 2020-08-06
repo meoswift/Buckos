@@ -246,7 +246,7 @@ public class HomeFragment extends Fragment {
                             if (!friends.contains(user)) {
                                 followSuggestions.add(user);
                                 cachedSuggestions.add(user);
-                                adapter.notifyDataSetChanged();
+                                adapter.notifyItemInserted(followSuggestions.size() - 1);
                                 mHomeLayout.setVisibility(View.VISIBLE);
                             }
                         });

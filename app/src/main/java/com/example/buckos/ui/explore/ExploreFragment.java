@@ -1,6 +1,5 @@
 package com.example.buckos.ui.explore;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,13 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Category;
-
-import java.util.List;
+import com.example.buckos.ui.explore.category.CategoriesAdapter;
+import com.example.buckos.ui.explore.search.SearchUserFragment;
 
 // This fragment shows categories that user can discover and also allow user to search for
 // other users when clicking on Search icon

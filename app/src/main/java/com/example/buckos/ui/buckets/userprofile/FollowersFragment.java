@@ -16,11 +16,10 @@ import android.widget.ImageButton;
 import com.example.buckos.R;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
-import com.example.buckos.ui.explore.UsersAdapter;
+import com.example.buckos.ui.explore.search.UsersAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 

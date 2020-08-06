@@ -1,27 +1,20 @@
 package com.example.buckos.ui;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 
 import com.example.buckos.R;
 import com.example.buckos.ui.create.CreatePostBottomSheet;
 import com.example.buckos.ui.explore.ExploreFragment;
-import com.example.buckos.ui.explore.SearchUserFragment;
 import com.example.buckos.ui.feed.HomeFragment;
 import com.example.buckos.ui.travel.TravelExploreFragment;
-import com.example.buckos.ui.travel.TravelFragment;
 import com.example.buckos.ui.buckets.BucketsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 // This activity has a Bottom navigation view that allows users to navigate the app
 public class MainActivity extends AppCompatActivity {
