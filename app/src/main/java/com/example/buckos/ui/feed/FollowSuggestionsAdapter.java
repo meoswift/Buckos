@@ -135,6 +135,7 @@ public class FollowSuggestionsAdapter extends RecyclerView.Adapter<FollowSuggest
         }
 
         mFragment.getParentFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, 0, R.anim.enter_from_left, 0)
                 .replace(R.id.your_placeholder, fragment)
                 .addToBackStack(null)
                 .commit();
@@ -179,6 +180,5 @@ public class FollowSuggestionsAdapter extends RecyclerView.Adapter<FollowSuggest
         followButton.setTextColor(ContextCompat.getColor(mContext, R.color.colorWhite));
         followButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
     }
-
 
 }

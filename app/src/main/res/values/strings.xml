@@ -107,4 +107,5 @@
     <string name="follow_ppl_label">Follow people and see stories about bucket list items they have accomplished!</string>
     <string name="achievement">shared an achievement</string>
     <string name="goal">updated a new goal</string>
+    <string name="profile_no_stories">When they share a new story about their accomplishement, you will see it here.</string>
 </resources>

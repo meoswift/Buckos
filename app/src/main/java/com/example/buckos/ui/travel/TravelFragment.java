@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -77,7 +78,16 @@ public class TravelFragment extends Fragment {
         mProgressBar = view.findViewById(R.id.travelProgressBar);
         ImageButton backButton = view.findViewById(R.id.backButton);
 
-        mCityQueryEditText.requestFocus();
+        // get pre selected query if any
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String query = bundle.getString("query");
+            mCityQueryEditText.setText(query);
+            performSearch();
+        } else {
+            mCityQueryEditText.requestFocus();
+        }
+
 
         // Set up the adapter that will display results - POIs based on of user query
         mPlaces = new ArrayList<>();
@@ -101,9 +111,9 @@ public class TravelFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     imm.hideSoftInputFromWindow(mCityQueryEditText.getWindowToken(), 0);
-                    mProgressBar.setVisibility(View.VISIBLE);
+
+                    // perform search
                     performSearch();
-                    mTravelArt.setVisibility(View.GONE);
                     return true;
                 }
                 return false;
@@ -113,9 +123,13 @@ public class TravelFragment extends Fragment {
 
     // Retrieve JSON results from Places API, parse into Place list, and notify adapter.
     private void performSearch() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mTravelArt.setVisibility(View.GONE);
+
         // Format query into appropriate URI format "+"
         String query = mCityQueryEditText.getText().toString();
-        String formattedQuery = "point+of+interest+in+" + query.replace(" ", "+");
+        String formattedQuery = String.format("point+of+interest+in+%s",
+                query.replace(" ", "+"));
 
         // Makes API call to get a list of places
         AsyncHttpClient client = new AsyncHttpClient();
@@ -150,4 +164,5 @@ public class TravelFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 }

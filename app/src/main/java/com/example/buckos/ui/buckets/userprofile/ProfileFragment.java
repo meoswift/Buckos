@@ -6,13 +6,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +50,7 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private static final int EDIT_PROFILE_REQ = 111;
+    private NestedScrollView mProfileLayout;
     private TextView mDisplayNameTextView;
     private TextView mBioTextView;
     private ImageView mProfilePicImageView;
@@ -57,6 +61,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView mFollowersTextView;
     private TextView mStoriesTextView;
     private LinearLayout mEmptyLayout;
+    private ProgressBar mProgressBar;
 
 
     private User user;
@@ -83,6 +88,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         user = (User) ParseUser.getCurrentUser();
 
         // Find views
+        mProfileLayout = view.findViewById(R.id.profileLayout);
         mDisplayNameTextView = view.findViewById(R.id.displayNameTv);
         mBioTextView = view.findViewById(R.id.bioTv);
         mProfilePicImageView = view.findViewById(R.id.authorProfilePic);
@@ -93,6 +99,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mFollowersTextView = view.findViewById(R.id.followersCountTv);
         mStoriesTextView = view.findViewById(R.id.storiesCountTv);
         mEmptyLayout = view.findViewById(R.id.emptyLabel);
+        mProgressBar = view.findViewById(R.id.profilePb);
 
         ImageView backButton = view.findViewById(R.id.backButton);
         LinearLayout followingLabel = view.findViewById(R.id.following);
@@ -125,14 +132,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     // Populate views that comes with an user profile
     private void populateUserProfile() {
+        setProfilePic();
         mDisplayNameTextView.setText(user.getName());
         mBioTextView.setText(user.getBio());
-        setFollowingCount();
-        setFollowersCount();
-        setProfilePic();
-        setStoriesCount();
-
         setAdapterForUserStories();
+
+        new Thread(new Runnable() {
+            public void run(){
+                setFollowingCount();
+                setFollowersCount();
+                setStoriesCount();
+                queryStoriesFromUser();
+            }
+        }).start();
     }
 
     private void setAdapterForUserStories() {
@@ -140,8 +152,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mStoriesAdapter = new StoriesAdapter(mUserStories, getContext(), this);
         mUserStoriesRecyclerView.setAdapter(mStoriesAdapter);
         mUserStoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        queryStoriesFromUser();
     }
 
     // Get stories from all users
@@ -168,6 +178,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
                 if (stories.size() == 0) {
                     mEmptyLayout.setVisibility(View.VISIBLE);
+                    mProgressBar.setVisibility(View.GONE);
+                    mProfileLayout.setVisibility(View.VISIBLE);
                 } else {
                     mEmptyLayout.setVisibility(View.GONE);
                 }
@@ -187,6 +199,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 mStoriesAdapter.notifyDataSetChanged();
                 // call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
+                mProgressBar.setVisibility(View.GONE);
+                mProfileLayout.setVisibility(View.VISIBLE);
             }
         });
     }

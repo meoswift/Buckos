@@ -124,6 +124,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 recordSearchHistory(user);  // add selected user to search history
 
                 mFragment.getParentFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, R.anim.enter_from_left, 0)
                         .replace(R.id.your_placeholder, fragment)
                         .addToBackStack(null)
                         .commit();

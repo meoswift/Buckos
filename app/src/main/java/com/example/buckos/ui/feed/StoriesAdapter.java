@@ -123,6 +123,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         }
 
         mFragment.getParentFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, 0, R.anim.enter_from_left, 0)
                 .replace(R.id.your_placeholder, fragment)
                 .addToBackStack(null)
                 .commit();

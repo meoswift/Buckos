@@ -1,11 +1,13 @@
 package com.example.buckos.ui.explore;
 
+import android.app.MediaRouteButton;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -55,12 +58,13 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private TextView mFollowingTextView;
     private TextView mFollowersTextView;
     private TextView mStoriesTextView;
-    private TextView mNameHeaderTextView;
+    private NestedScrollView mProfileLayout;
     private LinearLayout emptyLayout;
 
     private User user;
     private List<Story> mUserStories;
     private StoriesAdapter mStoriesAdapter;
+    private ProgressBar mProgressBar;
 
     public OthersProfileFragment() {
         // Required empty public constructor
@@ -90,8 +94,9 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         mFollowingTextView = view.findViewById(R.id.followingCountTv);
         mFollowersTextView = view.findViewById(R.id.followersCountTv);
         mStoriesTextView = view.findViewById(R.id.storiesCountTv);
-        mNameHeaderTextView = view.findViewById(R.id.nameHeaderTv);
+        mProfileLayout = view.findViewById(R.id.profileLayout);
         emptyLayout = view.findViewById(R.id.emptyLabel);
+        mProgressBar = view.findViewById(R.id.profilePb);
 
         ImageView backButton = view.findViewById(R.id.backButton);
         LinearLayout followingLabel = view.findViewById(R.id.following);
@@ -120,15 +125,19 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
 
     // Populate views that comes with an user profile
     private void populateUserProfile() {
-        mNameHeaderTextView.setText(user.getName());
+        setProfilePic();
         mDisplayNameTextView.setText(user.getName());
         mBioTextView.setText(user.getBio());
-        setFollowingCount();
-        setFollowersCount();
-        setStoriesCount();
-        setProfilePic();
-
         setAdapterForUserStories();
+
+        new Thread(new Runnable() {
+            public void run(){
+                setFollowingCount();
+                setFollowersCount();
+                setStoriesCount();
+                queryStoriesFromUser();
+            }
+        }).start();
     }
 
     private void setAdapterForUserStories() {
@@ -136,8 +145,6 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         mStoriesAdapter = new StoriesAdapter(mUserStories, getContext(), this);
         mUserStoriesRecyclerView.setAdapter(mStoriesAdapter);
         mUserStoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        queryStoriesFromUser();
     }
 
     // Get stories from all users
@@ -162,6 +169,8 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
 
             if (stories.size() == 0) {
                 emptyLayout.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
+                mProfileLayout.setVisibility(View.VISIBLE);
             } else {
                 emptyLayout.setVisibility(View.GONE);
             }
@@ -178,6 +187,8 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
             mStoriesAdapter.notifyDataSetChanged();
             // call setRefreshing(false) to signal refresh has finished
             swipeContainer.setRefreshing(false);
+            mProgressBar.setVisibility(View.GONE);
+            mProfileLayout.setVisibility(View.VISIBLE);
         });
     }
 

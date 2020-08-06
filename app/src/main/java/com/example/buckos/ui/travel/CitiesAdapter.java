@@ -1,5 +1,6 @@
 package com.example.buckos.ui.travel;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,14 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         holder.countryNameTextView.setText(city.getCountry());
 
         holder.cityCard.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("query", city.getCityName());
+
+            // use city name clicked on as query for search fragment
             Fragment fragment = new TravelFragment();
-            getParentFragmentManager().beginTransaction()
+            fragment.setArguments(bundle);
+            mFragment.getParentFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, 0, R.anim.enter_from_left, 0)
                     .replace(R.id.your_placeholder, fragment)
                     .addToBackStack(null)
                     .commit();

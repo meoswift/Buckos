@@ -85,6 +85,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             Fragment fragment = new StoriesCategoryFragment();
             fragment.setArguments(bundle);
             mFragment.getParentFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, 0, R.anim.enter_from_left, 0)
                     .replace(R.id.your_placeholder, fragment)
                     .addToBackStack(null)
                     .commit();

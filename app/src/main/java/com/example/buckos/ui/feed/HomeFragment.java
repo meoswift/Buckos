@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment {
     private List<User> followSuggestions;
     private List<User> cachedSuggestions;
 
+    private ConstraintLayout mHomeLayout;
     private ProgressBar mHomeProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ConstraintLayout mWelcomeLayout;
@@ -76,6 +77,7 @@ public class HomeFragment extends Fragment {
         mHomeProgressBar = view.findViewById(R.id.homeProgressBar);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         mWelcomeLayout = view.findViewById(R.id.welcomeLayout);
+        mHomeLayout = view.findViewById(R.id.homeLayout);
 
         // initialize following suggestions
         followSuggestions = new ArrayList<>();
@@ -91,6 +93,7 @@ public class HomeFragment extends Fragment {
         // set up refresher for layout
         setPullToRefreshContainer();
         // get all stories from dtb and display to feed
+
         queryStoriesFromFriends();
     }
 
@@ -199,6 +202,7 @@ public class HomeFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
             mHomeProgressBar.setVisibility(View.GONE);
             mSwipeRefreshLayout.setRefreshing(false);
+            mHomeLayout.setVisibility(View.VISIBLE);
         });
     }
 
@@ -218,6 +222,7 @@ public class HomeFragment extends Fragment {
             followSuggestions.clear();
             followSuggestions.addAll(cachedSuggestions);
             followAdapter.notifyDataSetChanged();
+            mHomeLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -242,6 +247,7 @@ public class HomeFragment extends Fragment {
                                 followSuggestions.add(user);
                                 cachedSuggestions.add(user);
                                 adapter.notifyDataSetChanged();
+                                mHomeLayout.setVisibility(View.VISIBLE);
                             }
                         });
                     }
