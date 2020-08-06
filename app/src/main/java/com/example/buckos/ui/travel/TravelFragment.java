@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,15 +32,11 @@ import com.example.buckos.models.Place;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Headers;
-
-import static android.app.Activity.RESULT_OK;
-import static android.telephony.MbmsDownloadSession.RESULT_CANCELLED;
 
 // Fragment that displays a list of tourist attractions based on user's query.
 // User can bookmark a place and add that place to multiple lists.
@@ -70,11 +67,15 @@ public class TravelFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // set the status bar color to white after changing
+        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.colorWhite));
+
         // Find views
         mCityQueryEditText = view.findViewById(R.id.cityInputEt);
-        mCityResultsRecyclerView = view.findViewById(R.id.cityResultsRv);
+        mCityResultsRecyclerView = view.findViewById(R.id.topCitiesRv);
         mTravelArt = view.findViewById(R.id.travelArt);
         mProgressBar = view.findViewById(R.id.travelProgressBar);
+        ImageButton backButton = view.findViewById(R.id.backButton);
 
         mCityQueryEditText.requestFocus();
 
@@ -86,6 +87,10 @@ public class TravelFragment extends Fragment {
         mCityResultsRecyclerView.setItemViewCacheSize(20);
 
         getSearchCityResults();
+
+        backButton.setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
     }
 
     // Perform search when user click on Search button in keyboard

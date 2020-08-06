@@ -17,6 +17,7 @@ import com.example.buckos.ui.create.CreatePostBottomSheet;
 import com.example.buckos.ui.explore.ExploreFragment;
 import com.example.buckos.ui.explore.SearchUserFragment;
 import com.example.buckos.ui.feed.HomeFragment;
+import com.example.buckos.ui.travel.TravelExploreFragment;
 import com.example.buckos.ui.travel.TravelFragment;
 import com.example.buckos.ui.buckets.BucketsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,48 +34,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // set the status bar color to white after changing
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorWhite));
-
         // Find views and define fragments
         mBottomNavigationView = findViewById(R.id.bottomNavigation);
         // Define a fragment manager for bottom navigation
         fragmentManager = getSupportFragmentManager();
 
         // Navigate user to the correct tab when they choose a menu item
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                fragment = null;
-                // Switch fragments depending on chosen menu item
-                switch (menuItem.getItemId()) {
-                    case R.id.action_home:
-                        fragment = new HomeFragment();
-                        break;
-                    case R.id.action_add:
-                        CreatePostBottomSheet createPostBottomSheet = CreatePostBottomSheet.newInstance();
-                        createPostBottomSheet.show(getSupportFragmentManager(), "bottom_sheet");
-                        break;
-                    case R.id.action_buckets:
-                        fragment = new BucketsFragment();
-                        break;
-                    case R.id.action_travel:
-                        fragment = new TravelFragment();
-                        break;
-                    case R.id.action_explore:
-                        fragment = new ExploreFragment();
-                    default:
-                        break;
-                }
-                // Replace the contents of the container with the new fragment and update in view
-                if (fragment != null) {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.your_placeholder, fragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
-                return true;
+        mBottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            fragment = null;
+            // Switch fragments depending on chosen menu item
+            switch (menuItem.getItemId()) {
+                case R.id.action_home:
+                    fragment = new HomeFragment();
+                    break;
+                case R.id.action_add:
+                    CreatePostBottomSheet createPostBottomSheet = CreatePostBottomSheet.newInstance();
+                    createPostBottomSheet.show(getSupportFragmentManager(), "bottom_sheet");
+                    break;
+                case R.id.action_buckets:
+                    fragment = new BucketsFragment();
+                    break;
+                case R.id.action_travel:
+                    fragment = new TravelExploreFragment();
+                    break;
+                case R.id.action_explore:
+                    fragment = new ExploreFragment();
+                default:
+                    break;
             }
+            // Replace the contents of the container with the new fragment and update in view
+            if (fragment != null) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.your_placeholder, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            return true;
         });
         // Set default selection
         mBottomNavigationView.setSelectedItemId(R.id.action_home);

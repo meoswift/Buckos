@@ -87,4 +87,6 @@ public class Place {
     public String getUserRatingsTotal() {
         return String.format("(%d)", mUserRatingsTotal);
     }
+
+
 }
