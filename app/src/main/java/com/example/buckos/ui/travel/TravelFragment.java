@@ -76,9 +76,6 @@ public class TravelFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // set the status bar color to white after changing
-        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.colorWhite));
-
         // Find views
         mCityQueryEditText = view.findViewById(R.id.cityInputEt);
         mCityResultsRecyclerView = view.findViewById(R.id.topCitiesRv);

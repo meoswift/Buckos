@@ -340,7 +340,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     private void saveItemToList(int position) {
         Story story = mStoriesList.get(position);
         Intent intent = new Intent(mContext, NewItemActivity.class);
-        intent.putExtra("story", Parcels.wrap(story));
+        intent.putExtra("title", story.getTitle());
         mContext.startActivity(intent);
     }
 

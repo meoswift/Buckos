@@ -46,19 +46,26 @@ public class CategoryDetailsFragment extends Fragment {
         mTabLayout = view.findViewById(R.id.categoryTabLayout);
 
         // get the selected category
-        // get the selected category
         mBundle = getArguments();
         mCategory = Parcels.unwrap(mBundle.getParcelable("category"));
 
         // set color and title
         setUpCategoryToolbar(view);
 
+        // when first opened, display Trending by default
+        inflateDefaultTab();
         // update tab - trending or stories - on selection
         updateTabOnSelected();
 
         backButton.setOnClickListener(v -> {
             getActivity().onBackPressed();
         });
+    }
+
+    private void inflateDefaultTab() {
+        mFragment = new TrendingFragment(); // Default tab
+        mFragment.setArguments(mBundle);
+        updateTabWithFragment();
     }
 
     private void setUpCategoryToolbar(View view) {
@@ -80,6 +87,8 @@ public class CategoryDetailsFragment extends Fragment {
                 // Open the fragment depending on which tab was chosen
                 switch (position) {
                     case 0:
+                        mFragment = new TrendingFragment();
+                        mFragment.setArguments(mBundle);
                         break;
                     case 1:
                         mFragment = new StoriesCategoryFragment();
@@ -104,7 +113,7 @@ public class CategoryDetailsFragment extends Fragment {
 
     // Function to replace layout with the Tab selected
     private void updateTabWithFragment() {
-        getParentFragmentManager().beginTransaction()
+        getChildFragmentManager().beginTransaction()
                 .replace(R.id.tab_placeholder, mFragment)
                 .addToBackStack(null)
                 .commit();

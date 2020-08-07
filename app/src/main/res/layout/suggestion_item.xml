@@ -1,59 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
     android:padding="8dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="0dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_more_horiz_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- Title, secondary and supporting text -->
-                <TextView
-                    android:id="@+id/suggestionTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:fontFamily="@font/lato_bold"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="16sp"
-                    android:text="Get stunned by the Great Pyramid of Giza" />
 
-                <!-- Media -->
-                <ImageView
-                    android:id="@+id/suggestionImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:scaleType="centerCrop" />
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/suggestionTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="Get stunned by the Great Pyramid of Giza"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/saveButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/suggestionDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="The Great Pyramid of Giza defines bucket list goals. Built over 5000 years ago, it’s the oldest and the biggest of the pyramids, the last structure of the Seven Ancient Wonders of the World that survived." />
+            <!-- Media -->
+            <ImageView
+                android:id="@+id/suggestionImage"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/suggestionTitle" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/suggestionDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="The Great Pyramid of Giza defines bucket list goals. Built over 5000 years ago, it’s the oldest and the biggest of the pyramids, the last structure of the Seven Ancient Wonders of the World that survived."
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/suggestionImage" />
 
-        </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
