@@ -11,7 +11,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cityCard"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
         android:checkable="true"
@@ -27,14 +27,20 @@
             android:orientation="vertical"
             android:gravity="center">
 
+            <ImageView
+                android:id="@+id/cityImage"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
             <TextView
                 android:id="@+id/cityName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/lato_bold"
                 android:text="New York City"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +52,7 @@
                 android:fontFamily="@font/lato"
                 android:text="United States"
                 android:textColor="#000000"
+                android:layout_marginBottom="12dp"
                 android:textSize="14sp" />
 
         </LinearLayout>

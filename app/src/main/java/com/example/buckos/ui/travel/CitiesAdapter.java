@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,8 +12,11 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.buckos.R;
 import com.example.buckos.models.City;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -40,6 +44,10 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
         holder.cityNameTextView.setText(city.getCityName());
         holder.countryNameTextView.setText(city.getCountry());
+        Glide.with(mFragment)
+                .load(city.getCityImage())
+                .centerCrop()
+                .placeholder(R.drawable.image_background).into(holder.cityImageView);
 
         holder.cityCard.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
@@ -65,12 +73,14 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         private TextView cityNameTextView;
         private TextView countryNameTextView;
         private CardView cityCard;
+        private ImageView cityImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             cityNameTextView = itemView.findViewById(R.id.cityName);
             countryNameTextView = itemView.findViewById(R.id.countryName);
+            cityImageView = itemView.findViewById(R.id.cityImage);
             cityCard = itemView.findViewById(R.id.cityCard);
         }
     }
