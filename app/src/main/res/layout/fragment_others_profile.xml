@@ -43,20 +43,20 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileToolbar">
+<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--        android:id="@+id/swipeRefreshLayout"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/profileToolbar">-->
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/profileLayout"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,11 +65,11 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/displayNameTv"
@@ -80,10 +80,24 @@
                         android:fontFamily="@font/lato_bold"
                         android:text="Linh Tran"
                         android:textColor="#000000"
-                        android:textSize="24sp"
+                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/usernameTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Say something about yourself!"
+                        android:textColor="#000000"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
+                        app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
 
                     <TextView
                         android:id="@+id/bioTv"
@@ -91,10 +105,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:text="Say something about yourself!"
+                        android:text="TextView"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
-                        app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
+                        app:layout_constraintTop_toBottomOf="@+id/usernameTv" />
 
                     <ImageView
                         android:id="@+id/authorProfilePic"
@@ -131,7 +145,8 @@
                                 android:layout_weight="1"
                                 android:text="Stories"
                                 android:textAlignment="center"
-                                android:textColor="#707070" />
+                                android:textColor="#707070"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/storiesCountTv"
@@ -148,6 +163,7 @@
                             android:id="@+id/following"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -158,7 +174,8 @@
                                 android:layout_weight="1"
                                 android:text="Following"
                                 android:textAlignment="center"
-                                android:textColor="#707070" />
+                                android:textColor="#707070"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/followingCountTv"
@@ -176,6 +193,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_gravity="center"
                             android:orientation="vertical">
 
                             <TextView
@@ -185,7 +203,8 @@
                                 android:layout_weight="1"
                                 android:text="Followers"
                                 android:textAlignment="center"
-                                android:textColor="#707070" />
+                                android:textColor="#707070"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/followersCountTv"
@@ -200,80 +219,53 @@
 
                     </LinearLayout>
 
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/userStoriesRv"
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/bottom_border"
-                        android:paddingTop="42dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/ic_round_edit_24" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/baseline_notes_24" />
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <FrameLayout
+                        android:id="@+id/tab_placeholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/lato_bold"
-                        android:text="Stories"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/userStoriesRv" />
+                        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ProgressBar
+                    android:id="@+id/profilePb"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/emptyLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wow, so empty!"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/newStories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/profile_no_stories"
-            android:textAlignment="center"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/profilePb"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

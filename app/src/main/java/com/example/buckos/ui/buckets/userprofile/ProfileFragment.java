@@ -53,6 +53,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private NestedScrollView mProfileLayout;
     private TextView mDisplayNameTextView;
     private TextView mBioTextView;
+    private TextView mUsernameTextView;
     private ImageView mProfilePicImageView;
     private Toolbar mProfileToolbar;
     private RecyclerView mUserStoriesRecyclerView;
@@ -91,6 +92,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mProfileLayout = view.findViewById(R.id.profileLayout);
         mDisplayNameTextView = view.findViewById(R.id.displayNameTv);
         mBioTextView = view.findViewById(R.id.bioTv);
+        mUsernameTextView = view.findViewById(R.id.usernameTv);
         mProfilePicImageView = view.findViewById(R.id.authorProfilePic);
         mProfileToolbar = view.findViewById(R.id.profileToolbar);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
@@ -135,6 +137,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         setProfilePic();
         mDisplayNameTextView.setText(user.getName());
         mBioTextView.setText(user.getBio());
+        mUsernameTextView.setText("@" + user.getUsername());
         setAdapterForUserStories();
 
         new Thread(new Runnable() {

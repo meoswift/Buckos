@@ -81,10 +81,24 @@
                         android:fontFamily="@font/lato_bold"
                         android:text="Linh Tran"
                         android:textColor="#000000"
-                        android:textSize="24sp"
+                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/usernameTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Say something about yourself!"
+                        android:textColor="#000000"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
+                        app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
 
                     <TextView
                         android:id="@+id/bioTv"
@@ -92,10 +106,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:text="Say something about yourself!"
+                        android:text="TextView"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/authorProfilePic"
-                        app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
+                        app:layout_constraintTop_toBottomOf="@+id/usernameTv" />
 
                     <ImageView
                         android:id="@+id/authorProfilePic"
@@ -132,7 +146,8 @@
                                 android:layout_weight="1"
                                 android:text="Stories"
                                 android:textAlignment="center"
-                                android:textColor="#707070" />
+                                android:textColor="#707070"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/storiesCountTv"
@@ -149,6 +164,7 @@
                             android:id="@+id/following"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -159,7 +175,8 @@
                                 android:layout_weight="1"
                                 android:text="Following"
                                 android:textAlignment="center"
-                                android:textColor="#707070" />
+                                android:textColor="#707070"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/followingCountTv"
@@ -177,6 +194,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_gravity="center"
                             android:orientation="vertical">
 
                             <TextView
@@ -186,7 +204,8 @@
                                 android:layout_weight="1"
                                 android:text="Followers"
                                 android:textAlignment="center"
-                                android:textColor="#707070" />
+                                android:textColor="#707070"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/followersCountTv"
@@ -206,7 +225,7 @@
                         android:id="@+id/userStoriesRv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/bottom_border"
                         android:paddingTop="42dp"
                         app:layout_constraintBottom_toBottomOf="parent"
