@@ -20,7 +20,7 @@ import com.example.buckos.models.Category;
 import com.example.buckos.models.Follow;
 import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.userprofile.ProfileFragment;
-import com.example.buckos.ui.explore.othersprofile.OthersProfileFragment;
+import com.example.buckos.ui.explore.OthersProfileFragment;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;

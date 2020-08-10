@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,7 @@ import com.example.buckos.ui.buckets.items.itemdetails.PhotosAdapter;
 import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.userprofile.ProfileFragment;
 import com.example.buckos.ui.create.NewItemActivity;
-import com.example.buckos.ui.explore.othersprofile.OthersProfileFragment;
+import com.example.buckos.ui.explore.OthersProfileFragment;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -101,6 +102,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     private void openProfile(User author) {
         // Open selected user's profile
         Fragment fragment;
+        FragmentManager fragmentManager;
 
         if (author.equals(mCurrentUser)) {
             fragment = new ProfileFragment();
@@ -111,7 +113,14 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             fragment.setArguments(bundle);
         }
 
-        mFragment.getParentFragmentManager().beginTransaction()
+
+        if (mFragment.getParentFragment() == null) {
+            fragmentManager = mFragment.getParentFragmentManager();
+        } else {
+            fragmentManager = mFragment.getParentFragment().getParentFragmentManager();
+        }
+
+        fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, 0, R.anim.enter_from_left, 0)
                 .replace(R.id.your_placeholder, fragment)
                 .addToBackStack(null)

@@ -63,7 +63,7 @@ public class CategoryDetailsFragment extends Fragment {
     }
 
     private void inflateDefaultTab() {
-        mFragment = new TrendingFragment(); // Default tab
+        mFragment = new StoriesCategoryFragment(); // Default tab
         mFragment.setArguments(mBundle);
         updateTabWithFragment();
     }
@@ -86,11 +86,11 @@ public class CategoryDetailsFragment extends Fragment {
 
                 // Open the fragment depending on which tab was chosen
                 switch (position) {
-                    case 0:
+                    case 1:
                         mFragment = new TrendingFragment();
                         mFragment.setArguments(mBundle);
                         break;
-                    case 1:
+                    case 0:
                         mFragment = new StoriesCategoryFragment();
                         mFragment.setArguments(mBundle);
                         break;
