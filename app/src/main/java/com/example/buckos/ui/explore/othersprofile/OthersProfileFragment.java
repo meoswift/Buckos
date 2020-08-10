@@ -50,6 +50,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
 
     private TextView mDisplayNameTextView;
     private TextView mBioTextView;
+    private TextView mUsernameTextView;
     private ImageView mProfilePicImageView;
     private RecyclerView mUserStoriesRecyclerView;
     private SwipeRefreshLayout swipeContainer;
@@ -87,6 +88,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
         // Find views
         mDisplayNameTextView = view.findViewById(R.id.displayNameTv);
         mBioTextView = view.findViewById(R.id.bioTv);
+        mUsernameTextView = view.findViewById(R.id.usernameTv);
         mProfilePicImageView = view.findViewById(R.id.authorProfilePic);
         mUserStoriesRecyclerView = view.findViewById(R.id.userStoriesRv);
         swipeContainer = view.findViewById(R.id.swipeRefreshLayout);
@@ -124,6 +126,7 @@ public class OthersProfileFragment extends Fragment implements View.OnClickListe
     private void populateUserProfile() {
         setProfilePic();
         mDisplayNameTextView.setText(user.getName());
+        mUsernameTextView.setText(String.format("@%s", user.getUsername()));
         mBioTextView.setText(user.getBio());
         setAdapterForUserStories();
 

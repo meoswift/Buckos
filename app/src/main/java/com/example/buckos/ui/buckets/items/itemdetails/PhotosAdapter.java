@@ -1,6 +1,7 @@
 package com.example.buckos.ui.buckets.items.itemdetails;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Photo;
 import com.example.buckos.models.User;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -73,21 +75,34 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
 
             // remove a photo on long click
             itemView.setOnLongClickListener(v -> {
-                deletePhoto();
+                User currentUser = (User) ParseUser.getCurrentUser();
+                Photo photo = mPhotos.get(getAdapterPosition());
+                User user = photo.getAuthor();
+                if (user.equals(currentUser)) {
+                    confirmDeleteDialog(photo);
+                }
                 return false;
             });
         }
 
-        private void deletePhoto() {
-            User currentUser = (User) ParseUser.getCurrentUser();
-            Photo photo = mPhotos.get(getAdapterPosition());
-            User user = photo.getAuthor();
-            if (user.equals(currentUser)) {
-                photo.deleteInBackground(e -> {
-                    mPhotos.remove(getAdapterPosition());
-                    notifyItemRemoved(getAdapterPosition());
-                });
-            }
+        private void deletePhoto(Photo photo) {
+            photo.deleteInBackground(e -> {
+                mPhotos.remove(getAdapterPosition());
+                notifyItemRemoved(getAdapterPosition());
+            });
+
+        }
+
+        private void confirmDeleteDialog(Photo photo) {
+            new MaterialAlertDialogBuilder(mContext, R.style.CustomFont)
+                    .setTitle("Delete photo?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        deletePhoto(photo);
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        // nothing
+                    })
+                    .show();
         }
     }
 
@@ -112,12 +127,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         ParseQuery<Photo> query = ParseQuery.getQuery(Photo.class);
         query.whereEqualTo(Photo.KEY_ITEM, item);
         query.include(Photo.KEY_AUTHOR);
-        query.findInBackground(new FindCallback<Photo>() {
-            @Override
-            public void done(List<Photo> objects, ParseException e) {
-                mPhotos.addAll(objects);
-                notifyDataSetChanged();
-            }
+        query.findInBackground((objects, e) -> {
+            mPhotos.addAll(objects);
+            notifyDataSetChanged();
         });
     }
 
