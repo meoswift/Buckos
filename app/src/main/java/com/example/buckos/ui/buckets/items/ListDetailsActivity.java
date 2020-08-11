@@ -158,18 +158,14 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
         query.whereEqualTo(BucketList.KEY_CATEGORY, oldCategory);
         query.whereEqualTo(BucketList.KEY_AUTHOR, user);
         query.include(BucketList.KEY_CATEGORY);
-        query.findInBackground(new FindCallback<BucketList>() {
-            @Override
-            public void done(List<BucketList> lists, ParseException e) {
-                // if there's no longer any list of this category, delete interest
-                if (lists.size() == 0) {
-                    ParseRelation<Category> interests = user.getInterests();
-                    interests.remove(oldCategory);
-                    user.saveInBackground();
-                }
+        query.findInBackground((lists, e) -> {
+            // if there's no longer any list of this category, delete interest
+            if (lists.size() == 0) {
+                ParseRelation<Category> interests = user.getInterests();
+                interests.remove(oldCategory);
+                user.saveInBackground();
             }
         });
-
     }
 
 }

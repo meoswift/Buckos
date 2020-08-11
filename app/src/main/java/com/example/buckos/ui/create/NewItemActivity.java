@@ -36,7 +36,7 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
         ImageView mCloseButton = findViewById(R.id.closeBtn);
 
         // Show cursor at description to hint user
-        mItemTitleEditText.requestFocus();
+        mItemDescriptionEditText.requestFocus();
 
         // coming from home feed or explore tab with an item
         Intent intent = getIntent();

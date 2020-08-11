@@ -154,22 +154,19 @@ public class BucketsFragment extends Fragment {
         // order the posts from newest to oldest
         query.orderByDescending(BucketList.KEY_CREATED_AT);
         // start an asynchronous call for lists
-        query.findInBackground(new FindCallback<BucketList>() {
-            @Override
-            public void done(List<BucketList> objects, ParseException e) {
-                mBucketLists.clear();
-                mBucketLists.addAll(objects);
-                mAdapter.notifyDataSetChanged();
+        query.findInBackground((objects, e) -> {
+            mBucketLists.clear();
+            mBucketLists.addAll(objects);
+            mAdapter.notifyDataSetChanged();
 
-                // when done loading, hide progress bar and refresher
-                mProgressBar.setVisibility(View.GONE);
-                mSwipeRefreshLayout.setRefreshing(false);
+            // when done loading, hide progress bar and refresher
+            mProgressBar.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setRefreshing(false);
 
-                if (mBucketLists.size() == 0) {
-                    mInstructionsLayout.setVisibility(View.VISIBLE);
-                } else {
-                    mInstructionsLayout.setVisibility(View.GONE);
-                }
+            if (mBucketLists.size() == 0) {
+                mInstructionsLayout.setVisibility(View.VISIBLE);
+            } else {
+                mInstructionsLayout.setVisibility(View.GONE);
             }
         });
     }

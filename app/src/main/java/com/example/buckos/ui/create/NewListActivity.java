@@ -51,7 +51,7 @@ public class NewListActivity extends AppCompatActivity {
         mCategorySpinner = findViewById(R.id.categorySpinner);
 
         // Show cursor at description to hint user
-        mListTitleEditText.requestFocus();
+        mListDescriptionEditText.requestFocus();
 
         // get all categories for a list
         queryCategories();

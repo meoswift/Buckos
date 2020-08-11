@@ -312,4 +312,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mStoriesAdapter.notifyDataSetChanged();
+    }
 }

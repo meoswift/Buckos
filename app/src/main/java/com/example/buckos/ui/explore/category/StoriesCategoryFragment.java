@@ -122,4 +122,10 @@ public class StoriesCategoryFragment extends Fragment {
             mStoriesCategoryProgressBar.setVisibility(View.GONE);
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+    }
 }

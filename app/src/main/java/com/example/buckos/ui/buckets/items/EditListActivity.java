@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import com.example.buckos.R;
 import com.example.buckos.models.BucketList;
 import com.example.buckos.models.Category;
+import com.example.buckos.models.Item;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -106,13 +107,24 @@ public class EditListActivity extends AppCompatActivity implements View.OnClickL
         mBucketList.setCategory(selectedCategory);
         interests.add(selectedCategory);
 
-        mBucketList.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Intent intent = new Intent();
-                intent.putExtra("list", Parcels.wrap(mBucketList));
-                setResult(RESULT_OK, intent);
-                finish();
+        mBucketList.saveInBackground(e -> {
+            saveItemsCategoryChange();
+            Intent intent = new Intent();
+            intent.putExtra("list", Parcels.wrap(mBucketList));
+            setResult(RESULT_OK, intent);
+            finish();
+        });
+    }
+
+    private void saveItemsCategoryChange() {
+        Category selectedCategory = (Category) mCategorySpinner.getSelectedItem();
+
+        ParseQuery<Item> query = ParseQuery.getQuery(Item.class);
+        query.whereEqualTo(Item.KEY_LIST, mBucketList);
+        query.findInBackground((items, e) -> {
+            for (Item item : items) {
+                item.setCategory(selectedCategory);
+                item.saveInBackground();
             }
         });
     }
