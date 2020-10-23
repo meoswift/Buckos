@@ -1,16 +1,14 @@
-package com.example.buckos.ui.travel.placebookmark;
+package com.example.buckos.ui.travel.city.placebookmark;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +19,6 @@ import com.example.buckos.models.Category;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.User;
 import com.example.buckos.ui.buckets.items.ListDetailsActivity;
-import com.example.buckos.models.Place;
-import com.example.buckos.ui.create.NewItemActivity;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -33,7 +28,6 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.List;
 
 // Activity that allows user to create a new list and add the Place they bookmarked to that list
 public class NewTravelListActivity extends AppCompatActivity {

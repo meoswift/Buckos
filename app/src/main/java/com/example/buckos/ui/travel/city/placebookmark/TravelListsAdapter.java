@@ -1,4 +1,4 @@
-package com.example.buckos.ui.travel.placebookmark;
+package com.example.buckos.ui.travel.city.placebookmark;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

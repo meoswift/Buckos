@@ -16,9 +16,11 @@ import android.widget.ImageButton;
 
 import com.example.buckos.R;
 import com.example.buckos.models.City;
+import com.example.buckos.ui.travel.city.TravelFragment;
 
 import java.util.List;
 
+// Fragment that display top cities to visit
 public class TravelExploreFragment extends Fragment {
 
     public TravelExploreFragment() {

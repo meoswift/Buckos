@@ -1,18 +1,11 @@
-package com.example.buckos.ui.travel;
+package com.example.buckos.ui.travel.city;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -44,8 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Headers;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 // Fragment that displays a list of tourist attractions based on user's query.
 // User can bookmark a place and add that place to multiple lists.

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,8 +12,7 @@ import android.widget.TextView;
 
 import com.example.buckos.R;
 import com.example.buckos.models.Item;
-import com.example.buckos.models.Story;
-import com.example.buckos.ui.travel.placebookmark.SaveToListActivity;
+import com.example.buckos.ui.travel.city.placebookmark.SaveToListActivity;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;

@@ -1,18 +1,14 @@
-package com.example.buckos.ui.travel;
+package com.example.buckos.ui.travel.city;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.buckos.R;
 import com.example.buckos.models.Item;
 import com.example.buckos.models.Place;
-import com.example.buckos.ui.travel.placebookmark.SaveToListActivity;
+import com.example.buckos.ui.travel.city.placebookmark.SaveToListActivity;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;

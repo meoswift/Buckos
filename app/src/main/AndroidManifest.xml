@@ -31,8 +31,8 @@
         <activity
             android:name=".ui.create.NewListActivity"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".ui.travel.placebookmark.NewTravelListActivity" />
-        <activity android:name=".ui.travel.placebookmark.SaveToListActivity" />
+        <activity android:name=".ui.travel.city.placebookmark.NewTravelListActivity" />
+        <activity android:name=".ui.travel.city.placebookmark.SaveToListActivity" />
         <activity android:name=".ui.buckets.userprofile.EditProfileActivity" />
         <activity android:name=".ui.buckets.items.itemdetails.ItemDetailsActivity" />
         <activity

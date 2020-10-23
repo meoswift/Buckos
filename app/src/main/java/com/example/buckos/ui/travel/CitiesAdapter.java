@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.buckos.R;
 import com.example.buckos.models.City;
-import com.squareup.picasso.Picasso;
+import com.example.buckos.ui.travel.city.TravelFragment;
 
 import java.util.List;
 
+// Adapter that gets information about a top city and display that to RecyclerView
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
 
     List<City> mCities;
