@@ -24,6 +24,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+// Fragment to display current user's following list
 public class FollowingFragment extends Fragment implements View.OnClickListener {
 
     private List<User> mFollowingUsersList;

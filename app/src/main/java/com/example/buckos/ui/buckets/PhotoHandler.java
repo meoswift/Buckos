@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+// Handles adding photos from camera or gallery
 public class PhotoHandler {
     public final String APP_TAG = "Buckos";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;

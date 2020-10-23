@@ -31,6 +31,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// Adapter that gets information of a suggested user to follow and display to RecyclerView
 public class SuggestedUsersAdapter extends RecyclerView.Adapter<SuggestedUsersAdapter.ViewHolder> {
 
     private List<User> mSuggestedUsers;

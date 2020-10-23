@@ -62,12 +62,14 @@ public class CategoryDetailsFragment extends Fragment {
         });
     }
 
+    // Default tab is the list of stories by users
     private void inflateDefaultTab() {
         mFragment = new StoriesCategoryFragment(); // Default tab
         mFragment.setArguments(mBundle);
         updateTabWithFragment();
     }
 
+    // Toolbar color for each category
     private void setUpCategoryToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.categoryToolbar);
         TextView categoryToolbarTitle = view.findViewById(R.id.categoryToolbarTitle);

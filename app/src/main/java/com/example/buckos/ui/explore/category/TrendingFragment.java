@@ -23,6 +23,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// Fragment that display a list of Trending bucket list item in a category
 public class TrendingFragment extends Fragment {
 
     private Category mCategory;

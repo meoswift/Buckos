@@ -46,6 +46,8 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
+// Fragment that display a user profile that is not current user's profile
+// Display stories, followings, followers, but no Edit profile menu
 public class OthersProfileFragment extends Fragment implements View.OnClickListener{
 
     private TextView mDisplayNameTextView;

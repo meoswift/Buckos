@@ -22,6 +22,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// Adapter that get information about list category and display to RecyclerView
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
     private Context mContext;
@@ -71,6 +72,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             });
         }
 
+        // For each category, get a list of stories posted by users from all over the app
         private void queryStoriesOfSelectedCategory() {
             Category category = mCategories.get(getAdapterPosition());
 

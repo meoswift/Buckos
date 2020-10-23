@@ -23,6 +23,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// Adapter that gets info of a bucket list item suggestion and display to RecyclerView
 public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.ViewHolder> {
 
     private List<Suggestion> mSuggestions;
