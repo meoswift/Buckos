@@ -73,6 +73,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.storyDescriptionTextView.setText(story.getDescription());
         holder.storyTimeStamp.setText(story.getFormatedTime());
         holder.listTitleTextView.setText(list.getName());
+
         holder.categoryTagTextView.setText(category.getCategoryName());
 
         // set profile pic of author

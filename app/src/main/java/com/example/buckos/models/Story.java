@@ -28,8 +28,6 @@ public class Story extends ParseObject {
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_LIST = "list";
     public static final String KEY_CATEGORY = "category";
-    public static final String KEY_LIKES = "likes";
-
 
     private List<Photo> mPhotosInStory;
 
@@ -53,7 +51,7 @@ public class Story extends ParseObject {
         return getParseUser(KEY_AUTHOR);
     }
 
-    public ParseObject getItem() {
+    public Item getItem() {
         return (Item) getParseObject(KEY_ITEM);
     }
 

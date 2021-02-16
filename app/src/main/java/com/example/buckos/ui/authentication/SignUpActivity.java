@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import com.example.buckos.ui.MainActivity;
 import com.example.buckos.models.User;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 // This activity allows user to sign up with a new account
@@ -59,6 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         user.signUpInBackground(e -> {
             if (e != null) {
                 // Log in failed. Check logcat for error and send a Toast to let user know
+                Log.d("HuH", e.toString());
                 return;
             }
             // User is logged in successfully, navigate to Home/Feed.

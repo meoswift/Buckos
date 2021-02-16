@@ -28,8 +28,8 @@ public class LoginActivity extends AppCompatActivity {
         mUsernameEditText = findViewById(R.id.usernameEt);
         mPasswordEditText = findViewById(R.id.passwordEt);
 
-        // If a current is already logged in, we will not ask them to login again
-        // Instead, direct them to HomeActivity and skip Login screen.
+//         If a current is already logged in, we will not ask them to login again
+//         Instead, direct them to HomeActivity and skip Login screen.
         if (ParseUser.getCurrentUser() != null) {
             startMainActivity();
         }

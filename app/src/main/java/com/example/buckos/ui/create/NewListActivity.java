@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import com.example.buckos.models.Story;
 import com.example.buckos.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -94,7 +96,7 @@ public class NewListActivity extends AppCompatActivity {
         User user = (User) ParseUser.getCurrentUser();
         ParseRelation<Category> userInterests = user.getInterests();
 
-        final BucketList list = new BucketList();
+        BucketList list = new BucketList();
         Category selectedCategory = (Category) mCategorySpinner.getSelectedItem();
 
         // Set core properties of a bucket list object
@@ -107,15 +109,12 @@ public class NewListActivity extends AppCompatActivity {
         userInterests.add(selectedCategory);
         user.saveInBackground();
 
-        list.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                // direct user to profile that shows the newly added list
-                Intent intent = new Intent();
-                intent.putExtra("list", Parcels.wrap(list));
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+        list.saveInBackground(e -> {
+            // direct user to profile that shows the newly added list
+            Intent intent = new Intent();
+            intent.putExtra("list", Parcels.wrap(list));
+            setResult(RESULT_OK, intent);
+            finish();
         });
     }
 
