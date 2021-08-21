@@ -2,7 +2,7 @@ Original App Design Project - Buckos
 ===
 
 
-## App demo [here](https://drive.google.com/file/d/103qkEjyxxTHoTAABA1NXUja-APM9Onk4/view?usp=sharing)
+## [App demo](https://drive.google.com/file/d/103qkEjyxxTHoTAABA1NXUja-APM9Onk4/view?usp=sharing)
 
 ## Table of Contents
 1. [Overview](#Overview)
